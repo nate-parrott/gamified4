@@ -4,10 +4,10 @@ import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
 import { web } from '../components/playlistHelpers.tsx';
-import { GetGlobalActivityStore } from '../components/activityStore.jsx';
+import { GetGlobalActivityStore } from '../components/activityStore.tsx';
 import { playlistWithAward, comingSoonPage } from '../components/awardUtils.tsx';
 import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeDataSection.jsx';
-import IncentivesSection from '../components/incentives.jsx';
+import IncentivesSection from '../components/incentives.tsx';
 import { coinUnlockModalItem } from '../components/coinUnlockModalItem.jsx';
 import QuizSection from '../components/quiz.jsx';
 import Layout from '../components/Layout.jsx';

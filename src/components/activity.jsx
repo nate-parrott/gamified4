@@ -113,9 +113,9 @@ const playSingleCoinFlightAnimation = (targetCoinsImageNode, delay) => {
 		container.setAttribute("class", "coinAnimationContainer started");
 	}, delay);
 	
-	// const duration = 1000;
-	// setTimeout(() => {
-	// 	body.removeChild(container);
-	// }, delay + duration);
+	const duration = 1000;
+	setTimeout(() => {
+		body.removeChild(container);
+	}, delay + duration);
 }
 

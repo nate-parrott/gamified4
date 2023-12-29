@@ -5,6 +5,15 @@ import React from 'react'
 import './incentives.css';
 import { coinUnlockModalItem } from './coinUnlockModalItem.jsx';
 import { withPrefix } from './utils.js';
+import ActivityStore from './activityStore.js';
+
+export interface Incentive {
+	cost: number;
+	id: string;
+	name: string;
+	playlist: ModalItem[];
+	activityText: string;
+}
 
 export let Incentives = [
 	{
@@ -54,7 +63,13 @@ export let Incentives = [
 	},
 ]
 
-const IncentiveView = ({ name, cost, unlocked, onClick }) => {
+interface IncentiveViewProps {
+	name: string
+	cost: number
+	unlocked: boolean
+	onClick: () => void
+}
+const IncentiveView = ({ name, cost, unlocked, onClick }: IncentiveViewProps) => {
 	let className = 'IncentiveView ' + (unlocked ? 'unlocked' : '');
 	return (
 	  <div className={className} onClick={onClick}>
@@ -66,7 +81,11 @@ const IncentiveView = ({ name, cost, unlocked, onClick }) => {
 	);
 }
 
-const IncentivesSection = ({ playPlaylist, activityStore }) => {
+interface IncentivesSectionProps {
+	playPlaylist: (playlist: ModalPlaylist) => void;
+	activityStore: ActivityStore;
+}
+const IncentivesSection = ({ playPlaylist, activityStore }: IncentivesSectionProps) => {
 	return (
 		<HScroll>
 			{ Incentives.map((incentive, i) => {

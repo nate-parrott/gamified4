@@ -1,10 +1,40 @@
 import Announcer from './announcer.jsx';
 import { uuid } from './utils.js';
 import TrophyLogicTracker from './trophyLogic.jsx';
+import { Incentive } from './incentives.js';
 
-const windowGlobal = typeof window !== 'undefined' && window;
+const windowGlobal: any = typeof window !== 'undefined' && window;
 
-export function GetGlobalActivityStore() {
+interface PersistedData {
+	messages?: Message[];
+	awards?: {[id: string]: Award};
+	values?: {[id: string]: string}; // TODO: Remove?
+	unlockedIncentives?: {[id: string]: number};
+}
+
+interface MessageWithoutID {
+	text?: string;
+	type: 'admin' | 'system' | 'user' | 'divider';
+	specialType?: 'freeCoin'
+	coins?: number;
+	coinMultiplier?: number;
+	cssUnlock?: string;
+}
+
+export interface Message extends MessageWithoutID {
+	id: string;
+}
+
+export interface Award {
+	id: string;
+	name: string;
+	coins: number;
+	activityText: string;
+	suppressDefaultNotification: boolean;
+	category: string; // content? any others?
+}
+
+export function GetGlobalActivityStore(): LocalActivityStorage<PersistedData> {
 	let existing = windowGlobal ? windowGlobal.activityStore : null;
 	if (!existing) {
 		existing = new ActivityStore(new LocalActivityStorage('activity'));
@@ -15,50 +45,41 @@ export function GetGlobalActivityStore() {
 
 const STARTING_COINS = 0;
 
-export class LocalActivityStorage {
-	constructor(key) {
+export class LocalActivityStorage<T> {
+	key: string;
+	constructor(key: string) {
 		this.key = key;
 	}
-	read() {
+	read(): T {
 		if (!windowGlobal) {
-			return {};
+			return {} as T;
 		}
 		if (windowGlobal.localStorage[this.key]) {
 			return JSON.parse(windowGlobal.localStorage[this.key]);
 		} else {
-			return {};
+			return {} as T;
 		}
 	}
-	write(data) {
+	write(data: T) {
 		if (!windowGlobal) return;
 		windowGlobal.localStorage[this.key] = JSON.stringify(data);
 	}
 }
 
-/*
-Award schema:
-{
-	id: 'myAward',
-	name: "My Award!",
-	coins: 5,
-	activityText: "You unlocked a cool award!",
-	suppressDefaultNotification: false,
-	category: 'content'
-}
-
-Message schema:
-{
-	text: "My message!",
-	type: admin/system/user/divider, ('system' messages are monospace)
-  coins: 1,
-  // special fields:
-	specialType: freeCoin/?,
-  id: uuid
-}
-*/
+type CancelToken = () => void;
 
 export default class ActivityStore {
-	constructor(storage) {
+	storage: LocalActivityStorage<PersistedData>;
+	awards: {[id: string]: Award};
+	messages: Message[];
+	values: {[id: string]: any};
+	unlockedIncentives: {[id: string]: number};
+	changeAnnouncer: Announcer;
+	newAwardAnnouncer: Announcer;
+	trophyLogicTracker: TrophyLogicTracker;
+
+
+	constructor(storage: LocalActivityStorage<PersistedData>) {
 		this.storage = storage;
 		
 		let data = this.storage.read();
@@ -118,18 +139,18 @@ export default class ActivityStore {
 		// 	coins: 11
 		// })
 	}
-	onChange(callback) {
+	onChange(callback: (changed: ActivityStore) => CancelToken) {
 		return this.changeAnnouncer.listen(callback);
 	}
-	hasAward(awardId) {
+	hasAward(awardId: string) {
 		return !!this.awards[awardId];
 	}
-	unlockAward(award) {
+	unlockAward(award: Award) {
 		if (this.hasAward(award.id)) {
 			return;
 		}
 		this.awards[award.id] = award;
-		this.coins += (award.coins || 0);
+		// this.coins += (award.coins || 0);
 		this.addMessage({
 			text: award.activityText,
 			coins: award.coins,
@@ -139,10 +160,10 @@ export default class ActivityStore {
 		this.newAwardAnnouncer.announce(award);
 		this.save();
 	}
-	hasIncentive(incentiveId) {
+	hasIncentive(incentiveId: string) {
 		return !!this.unlockedIncentives[incentiveId];
 	}
-	unlockIncentive(incentive) {
+	unlockIncentive(incentive: Incentive) {
 		if (this.hasIncentive(incentive.id)) return;
 		this.unlockedIncentives[incentive.id] = 1;
 		if (incentive.activityText) {
@@ -151,7 +172,7 @@ export default class ActivityStore {
 		this.changeAnnouncer.announce(this);
 		this.save();
 	}
-	addMessage(message) {
+	addMessage(message: MessageWithoutID) {
 		this.messages.push({
 			...message,
 			id: uuid()
@@ -166,7 +187,7 @@ export default class ActivityStore {
 		messages.reverse();
 		return messages;
 	}
-	processMessageDirectives(message) {
+	processMessageDirectives(message: Message) {
 		if (message.cssUnlock && windowGlobal) {
 			windowGlobal.document.body.classList.add(message.cssUnlock);
 		}

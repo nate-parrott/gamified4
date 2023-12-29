@@ -4,7 +4,7 @@ import React from 'react'
 
 import Activity from './activity.jsx'
 import './Layout.css'
-import { GetGlobalActivityStore } from './activityStore.jsx';
+import { GetGlobalActivityStore } from './activityStore.tsx';
 import coin from '../images/coin.png';
 
 class Layout extends React.Component {

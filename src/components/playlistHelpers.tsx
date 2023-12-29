@@ -12,7 +12,7 @@ let shouldOpenFramesInNewTab = () => {
 export function web(url: string): ModalItem | undefined {
 	if (shouldOpenFramesInNewTab()) {
 		windowGlobal.open(url, '_blank');
-		return null;
+		return undefined;
 	}
 	
 	return new ModalItem(({ full }) => {
