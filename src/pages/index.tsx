@@ -101,8 +101,8 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3><span className='nowrap'>Fun stuff! <div className='tooltip'>1 point per click</div></span></h3>
 						<div className='content-tiles'>
-							<Tile src={zest} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
-							<Tile src={zest} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
+							<Tile src={zest} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/uhoh/index.html')) ], {category: 'content'}) } />
+							<Tile src={zest} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/web98/index.html')) ], {category: 'content'}) } />
 						</div>
 					</div>
 
@@ -161,7 +161,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 					<TradeEmailDataSection activityStore={this.activityStore} />
 					<div className='readable-width section footer'>
-							October 2018. Made with <a href='https://www.gatsbyjs.org/'>Gatsby</a> and React. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
+							2024. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
 					</div>
 			</div>
 		  </Layout>
