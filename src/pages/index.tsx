@@ -49,12 +49,12 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 			this.cancelActivityStoreListener = undefined;
 		}
 	}
-	playWithRewards(awardId: string, items: (ModalItem | undefined)[], options: any) {
+	playWithRewards(awardId: string, items: (ModalItem | undefined)[], options?: any) {
 		// filter out undefined in `items` since web() may return null:
-		items = items.filter(item => !!item);
+		const items2 = items.filter(item => !!item) as ModalItem[];
 		
 		let onDismiss = () => this.setState({playlist: undefined});
-		let playlist = playlistWithAward(awardId, items, this.activityStore, onDismiss, options);
+		let playlist = playlistWithAward(awardId, items2, this.activityStore, onDismiss, options);
 		if (playlist.items.length === 0) {
 			return;
 		}
@@ -67,7 +67,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 		return (
 		<Layout>
 			<div className='index-page'>
-					<ModalPlayer playlist={this.state.playlist} onDone={() => this.setState({playlist: null})} />
+					<ModalPlayer playlist={this.state.playlist} onDone={() => this.setState({playlist: undefined})} />
 				
 					<div className='intro' onClick={() => this.setState({playlist: new ModalPlaylist([coinUnlockModalItem(() => {}, false)])})}>
 						<img className='readable-width' src={intro} alt="Nate Parrott dot com: developer, designer and gamification enthusiast." />
@@ -139,8 +139,13 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 	}
 }
 
-let Tile = ({src, alt, onClick}) => (
-	<div className='tile hover-offset' style={{backgroundImage: `url(${src})`}} alt={alt} onClick={onClick} />
+interface TileProps {
+	src: string;
+	alt?: string;
+	onClick: () => void;
+}
+let Tile = ({src, alt, onClick}: TileProps) => (
+	<div className='tile hover-offset' style={{backgroundImage: `url(${src})`}} aria-label={alt} onClick={onClick} />
 )
 
 // const container = document.getElementById('app');
