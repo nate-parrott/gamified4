@@ -33,6 +33,10 @@ body {
 	.side-by-side-or-stack > *:first-child {
 		margin-bottom: 1em;
 	}
+	.side-by-side-or-stack > * {
+		min-height: 400px;
+
+	}
 }
 @media screen and (min-width: 700px) {
 	/* desktop */

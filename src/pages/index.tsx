@@ -99,6 +99,16 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 
 					<div className='readable-width section'>
+						<h3><span className='nowrap'>Fun stuff! <div className='tooltip'>1 point per click</div></span></h3>
+						<div className='content-tiles'>
+							<Tile src={zest} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
+							<Tile src={zest} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
+						</div>
+					</div>
+
+					<TradeNameDataSection activityStore={this.activityStore} />	
+
+					<div className='readable-width section'>
 						<h3>Learn about <span className='nowrap'>things I’ve made! <div className='tooltip'>1 point per click</div></span></h3>
 						<div className='content-tiles'>
 							<Tile src={hab} alt="Design and branding for a beginner-friendly hackathon" onClick={ () => this.playWithRewards('hab', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
@@ -126,8 +136,6 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<Tile src={subway} alt="An subway map that visualizes travel time" onClick={ () => this.playWithRewards('subway', [ web('http://subway.nateparrott.com/') ]) } />
 						</div>
 					</div>
-
-					<TradeNameDataSection activityStore={this.activityStore} />	
 
 					<div className='trophies section'>
 						<div className='bg' />
