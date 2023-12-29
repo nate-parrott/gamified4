@@ -1,7 +1,7 @@
 import React from 'react'
-import ModalPlayer, {ModalItem, ModalPlaylist} from './modalPlayer.jsx';
+import ModalPlayer, {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
 
-const windowGlobal = typeof window !== 'undefined' && window;
+const windowGlobal: any = typeof window !== 'undefined' && window;
 
 let shouldOpenFramesInNewTab = () => {
 	if (!windowGlobal) return false;
@@ -9,7 +9,7 @@ let shouldOpenFramesInNewTab = () => {
 	return iOS || windowGlobal.innerWidth < 500;
 }
 
-export let web = (url) => {
+export function web(url: string): ModalItem | undefined {
 	if (shouldOpenFramesInNewTab()) {
 		windowGlobal.open(url, '_blank');
 		return null;

@@ -1,5 +1,5 @@
 import React from 'react'
-import {ModalItem, ModalPlaylist} from './modalPlayer.jsx';
+import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
 import './coinUnlockModalItem.css';
 import unlockCardBack from '../images/unlock-card-back.svg';
 import unlockCardCoin from '../images/unlock-card-coin.svg';

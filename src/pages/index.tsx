@@ -2,10 +2,10 @@ import * as React from "react"
 import intro from '../images/intro.svg'
 import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
-import ModalPlayer, {ModalPlaylist} from '../components/modalPlayer.jsx';
-import { web } from '../components/playlistHelpers.jsx';
+import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
+import { web } from '../components/playlistHelpers.tsx';
 import { GetGlobalActivityStore } from '../components/activityStore.jsx';
-import { playlistWithAward, comingSoonPage } from '../components/awardUtils.jsx';
+import { playlistWithAward, comingSoonPage } from '../components/awardUtils.tsx';
 import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeDataSection.jsx';
 import IncentivesSection from '../components/incentives.jsx';
 import { coinUnlockModalItem } from '../components/coinUnlockModalItem.jsx';
@@ -25,14 +25,18 @@ import instagrade from '../images/tiles/instagrade.svg'
 import content from '../images/tiles/content.svg'
 import { withPrefix } from 'gatsby-link';
 
-export default class IndexPage extends React.Component {
+interface IndexState {
+	playlist?: ModalPlaylist;
+}
+
+export default class IndexPage extends React.Component<{}, IndexState> {
   activityStore: any;
   cancelActivityStoreListener?: () => void;
 
 	constructor(props: any) {
 		super(props);
 		this.activityStore = GetGlobalActivityStore();
-		this.state = {playlist: null};
+		this.state = {};
 	}
 	componentDidMount() {
 		this.cancelActivityStoreListener = this.activityStore.changeAnnouncer.listen(() => {
@@ -45,11 +49,11 @@ export default class IndexPage extends React.Component {
 			this.cancelActivityStoreListener = undefined;
 		}
 	}
-	playWithRewards(awardId: any, items: any, options: any) {
-		// filter out nulls in `items` since web() may return null:
-		items = items.filter((i) => i !== null);
+	playWithRewards(awardId: string, items: (ModalItem | undefined)[], options: any) {
+		// filter out undefined in `items` since web() may return null:
+		items = items.filter(item => !!item);
 		
-		let onDismiss = () => this.setState({playlist: null});
+		let onDismiss = () => this.setState({playlist: undefined});
 		let playlist = playlistWithAward(awardId, items, this.activityStore, onDismiss, options);
 		if (playlist.items.length === 0) {
 			return;
@@ -68,10 +72,12 @@ export default class IndexPage extends React.Component {
 					<div className='intro' onClick={() => this.setState({playlist: new ModalPlaylist([coinUnlockModalItem(() => {}, false)])})}>
 						<img className='readable-width' src={intro} alt="Nate Parrott dot com: developer, designer and gamification enthusiast." />
 					</div>
+
 					<div className='readable-width boxed-content workflow section'>
 						<h3>How this site works</h3>
 						<img src={workflow} alt="Consume content, earn points, get exclusive experiences!" />
 					</div>
+
 					<div className='readable-width section'>
 						<h3>Learn about <span className='nowrap'>things I’ve made! <div className='tooltip'>1 point per click</div></span></h3>
 						<div className='content-tiles'>
@@ -81,6 +87,7 @@ export default class IndexPage extends React.Component {
 							<Tile src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('http://zest.nateparrott.com/') ], {category: 'content'}) } />
 						</div>
 					</div>
+
 					<div className='cashcash section'>
 						<div className='bg' />
 						<div className='readable-width'>

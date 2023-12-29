@@ -1,10 +1,15 @@
 import { pick1 } from './utils.js';
 import React from 'react'
-import {ModalItem, ModalPlaylist} from './modalPlayer.jsx';
+import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
 import EarnedCoinsModal from './earnedCoinsModal.jsx';
 import { BasicPageItem } from './trophy.jsx';
 
-export function playlistWithAward(awardId, items, activityStore, onDismiss, options) {
+interface PlaylistWithRewardOptions {
+	coins?: number
+	category?: string; // todo: used?
+}
+
+export function playlistWithAward(awardId: string, items: ModalItem[], activityStore: any, onDismiss: () => void, options: PlaylistWithRewardOptions | undefined) {
 	let {coins, category} = (options || {});
 	coins = coins || 5;
 	
@@ -12,7 +17,8 @@ export function playlistWithAward(awardId, items, activityStore, onDismiss, opti
 	let rewardCongrats = pick1(['Nice going!', 'Wow!', 'Keep it up!', 'You got it!', 'As promised!', 'Exceptional!', 'Wild!']);
 	if (!activityStore.hasAward(awardId)) {
 		let awardItem = new ModalItem(({full}) => {
-			if (!full) return;
+			if (!full) return null;
+			
 			if (!activityStore.hasAward(awardId)) {
 				// unlock in the next run loop:
 				setTimeout(() => {

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Arc Boosts</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+	body {
+		background-color: #111;
+		font-family: "Helvetica Neue", "Helvetica", sans-serif;
+		margin: 0;
+		color: white;
+	}
+    a {
+        color: white;
+    }
+	article {
+		max-width: 700px;
+		margin: auto;
+		font-size: large;
+		line-height: 1.5;
+        margin-bottom: 6em;
+	}
+	video, img {
+		width: 100%;
+	}
+    .hero {
+        width: 100%;
+        max-height: 80vh;
+    }
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 3em;
+		}
+	}
+    h1 {
+        margin-bottom: 0;
+    }
+	section {
+		margin-block-start: 3em;
+		margin-block-end: 3em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+	}
+	.images * {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+		margin-right: 1em;
+	}
+	.images *:last-child {
+		margin-right: 0;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+    <video class="hero" src="TRAILER.mp4" controls></video>
+	<article>
+        <h1>Arc Boosts</h1>
+		<p>
+			Throughout Arc's history, few things resonate with members more than <em>personalization.</em>
+			People aren't used to having a say in how their software feels, and it shows!
+		</p>
+		<p>
+			With <strong>Boosts</strong>, we took Arc's trademark <em>DIY theme-ability</em> and applied it to the whole internet. You could change fonts and colors on a website effortlessly, and even delete whole groups of elements from webpages.
+		</p>
+		<p>
+			Some day I'll write more about it. Until then, some scattered images:
+		</p>
+        <section>
+			<div class="images">
+				<img src="ZAP SLIDER.gif" />
+				<video controls src="ZAP.mp4"></video>
+			</div>
+			<figcaption>
+				Iterations of the zapper tool, which lets you click one element and block it, or block elements like it. I wrote the algorithm for generating CSS selectors with a range of specificities that all target the clicked element, and designed the interface for it.
+			</figcaption>
+		</section>
+		<section>
+			<div class="images">
+				<img src="COLOR PICKER.png" />
+			</div>
+			<figcaption>
+				Iterations of the color mapper, which let you re-theme an entire website by playing with knobs. I worked wih with Darin Fisher, one of the original creators of Chrome, to implement the chosen color schemes as color transformation matrices applied within the Chromium renderer.
+			</figcaption>
+		</section>
+	</article>
+</body>
+</html>

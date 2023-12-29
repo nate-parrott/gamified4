@@ -2,9 +2,15 @@ import React from 'react'
 import './modalPlayer.css';
 import { uuid } from './utils';
 
+type ModalItemRenderFn = (options: {full: boolean, onForward?: () => void}) => React.ReactElement | null;
+
 export class ModalItem {
-	constructor(render, itemClass) {
-		// render: ({ full: bool, onNext: () - () }) -> content
+	identifier: string;
+	render: ModalItemRenderFn;
+	itemClass: string; // TODO: Define types
+	borderless: boolean
+
+	constructor(render: ModalItemRenderFn, itemClass: string) {
 		this.identifier = uuid();
 		this.render = render;
 		this.itemClass = itemClass;
@@ -13,13 +19,22 @@ export class ModalItem {
 }
 
 export class ModalPlaylist {
-	constructor(items) {
+	identifier: string;
+	items: ModalItem[]
+	constructor(items: ModalItem[]) {
 		this.identifier = uuid();
 		this.items = items;
 	}
 }
 
-const ModalItemView = ({ item, onBack, onForward, onDismiss, offset }) => {
+interface ModalItemViewProps {
+	item: ModalItem;
+	onBack?: () => void;
+	onForward?: () => void;
+	offset: number;
+}
+
+const ModalItemView = ({ item, onBack, onForward, offset }: ModalItemViewProps) => {
 	let borderless = item.borderless;
 	let className = `ModalItemView offset_${offset} ${item.itemClass || ''}`;
 	if (borderless) className += ' borderless';
@@ -34,15 +49,24 @@ const ModalItemView = ({ item, onBack, onForward, onDismiss, offset }) => {
 	)
 }
 
-export default class ModalPlayer extends React.Component {
-	constructor(props) {
+interface ModalPlayerProps {
+	playlist?: ModalPlaylist;
+	onDone: () => void;
+}
+
+interface ModalPlayerState {
+	itemIndex: number
+}
+
+export default class ModalPlayer extends React.Component<ModalPlayerProps, ModalPlayerState> {
+	constructor(props: ModalPlayerProps) {
 		super(props);
 		this.state = { itemIndex: 0 };
 	}
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps: Readonly<ModalPlayerProps>, prevState: Readonly<ModalPlayerState>) {
 		let prevPlaylistId = prevProps.playlist ? prevProps.playlist.identifier : null;
 		let newPlaylistId = this.props.playlist ? this.props.playlist.identifier : null;
-		if (prevPlaylistId !== newPlaylistId && this.state.index !== 0) {
+		if (prevPlaylistId !== newPlaylistId && this.state.itemIndex !== 0) {
 			this.setState({ itemIndex: 0 });
 		}
 	}
@@ -66,10 +90,10 @@ export default class ModalPlayer extends React.Component {
 					onDismiss: this.dismiss.bind(this)
 				};
 			}
-			return <ModalItemView key={idx} className='ModalPlayer' item={items[idx]} offset={offset} {...actionProps} />;
+			return <ModalItemView key={idx} item={items[idx]} offset={offset} {...actionProps} />;
 		});
 		
-		let dismiss = (e) => {
+		let dismiss = (e: any) => {
 			if (e.currentTarget === e.target) {
 				this.dismiss();
 			}
@@ -82,7 +106,7 @@ export default class ModalPlayer extends React.Component {
 	forward() {
 		this.advance(1);
 	}
-	advance(i) {
+	advance(i: number) {
 		let {playlist} = this.props;
 		let {itemIndex} = this.state;
 		let items = playlist ? playlist.items : [];

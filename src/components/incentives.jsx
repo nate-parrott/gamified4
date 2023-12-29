@@ -1,4 +1,4 @@
-import { ModalItem, ModalPlaylist } from './modalPlayer.jsx';
+import { ModalItem, ModalPlaylist } from './modalPlayer.tsx';
 import { BasicPageItem } from './trophy.jsx';
 import HScroll from './hscroll.jsx';
 import React from 'react'

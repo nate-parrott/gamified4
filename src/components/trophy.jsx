@@ -1,14 +1,8 @@
 import React from 'react'
 import './trophy.css';
-import { ModalItem } from './modalPlayer.jsx';
+import { ModalItem } from './modalPlayer.tsx';
 import HScroll from './hscroll.jsx';
 import snapcodeBitmoji from '../images/snapcodeBitmoji.svg'
-
-let range = (x) => {
-	let numbers = [];
-	for (let i=0; i<x; i++) numbers.push(i);
-	return numbers;
-}
 
 const Trophy = ({ emoji, name, desc, value, action, unlocked }) => (
   <div className={`trophy ${unlocked ? 'unlocked' : 'locked'}`} onClick={action}>
