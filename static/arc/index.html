@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Arc and the Browser Company</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+	body {
+		background-color: #333;
+		font-family: "Helvetica Neue", "Helvetica", sans-serif;
+		margin: 0;
+		color: white;
+	}
+	.blue {
+		background-color: #234EF3;
+		color: white;
+		padding: 2em;
+		margin-block-start: 0;
+	}
+	article {
+		max-width: 700px;
+		margin: auto;
+		font-size: large;
+		line-height: 1.5;
+	}
+	video, img {
+		width: 100%;
+	}
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 2em;
+		}
+	}
+	h1 {
+		text-align: center;
+	}
+	section {
+		margin-block-start: 3em;
+		margin-block-end: 3em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+	}
+	.images * {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+		margin-right: 1em;
+	}
+	.images *:last-child {
+		margin-right: 0;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+	<section class="blue">
+		<article>
+			<div class="images">
+				<img src="arc.png" alt="Screenshot of the original Arc sidebar" />
+			</div>
+	
+			<h1>
+				Arc and the Browser Company
+			</h1>
+		</article>
+	</section>
+
+	<article>
+		<p>
+			I joined the Browser Company as founding designer in 2020, with nothing other than a vague idea that <em>browsing could be better than this.</em>
+			In the beginning, I worked with our founding engineers to rapidly prototype browser features, exploring the space and searching for product-market fit amongst ourselves.
+			In the time since, I've had the privilege of building and refining Arc with an incredible team of designers — Kristina Varshavskaya, Dustin Senos, Karla Cole, Omar Elfanek, Dara Oke, Peter Vidani and others.
+			Some day I'll write up the story of the product. Until then, here are some random artifacts.
+		</p>
+
+		<section>
+			<div class="images">
+				<img src="sidebar1.png" />
+			</div>
+			<figcaption>An early prototype of the Sidebar with Lists (now known as folders.)</figcaption>
+		</section>
+
+		<p>
+			Some parts of Arc I designed initial versions of, or worked closely on: 
+			Command Bar, Split View, Focus Mode (hidden sidebar), Little Arc, Notes, Easel, Previews, PIP, Mini Audio Player, Boosts, Arc Max, Arc for iOS.
+		</p>
+
+		<section>
+			<video src="WEBSITE.mp4" controls></video>
+			<figcaption>I designed and built the first version of the company's website</figcaption>
+		</section>
+
+		<section>
+			<video src="ZOOM.mp4" controls></video>
+			<figcaption>An early prototype of a zoomable tab overview, before we'd settled on vertical tabs</figcaption>
+		</section>
+
+		<section>
+			<video src="SERIESA.mp4" controls></video>
+			<figcaption>A fun website I made in Blender for our Series A</figcaption>
+		</section>
+
+		<section>
+			<div class="images">
+				<img src="SPACE.png"></video>
+				<video src="REFERRALS CARD.mp4" controls></video> <!-- TODO: set cover -->
+				<video src="mobile-share.mp4" controls></video>
+			</div>
+			<figcaption>Some of my favorite touches from our mobile app: Spaces view, referral ticket, and share sheet.</figcaption>
+		</section>
+	</article>
+</body>
+</html>
