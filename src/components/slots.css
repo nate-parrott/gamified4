@@ -1,0 +1,108 @@
+.slot-machine {
+    background: linear-gradient(#8059f7, #5423E2);
+    border-radius: 2px;
+    color: white;
+    padding: 1px;
+    text-align: center;
+}
+
+.slot-machine p {
+    margin-left: 3em;
+    margin-right: 3em;
+    margin-bottom: 1.5em;
+    line-height: 1.5;
+}
+
+.slot-wheels {
+    background-color: #ddd5f4;
+    height: 20em;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 2em;
+    margin-bottom: 1em;
+}
+
+.slot-wheels:before, .slot-wheels:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    opacity: 0.3;
+    z-index: 10;
+}
+
+.slot-wheel:not(:last-child) .slot-icon {
+    border-right: 2px solid #2a0d7e;
+}
+
+.slot-wheels:before {
+    top: 0;
+    background: linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.slot-wheels:after {
+    bottom: 0;
+    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
+}
+
+.slot-wheel, .slot-icon {
+    width: 8em;
+    height: 8em;
+}
+
+.slot-wheel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.slot-icon {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 0.5em;
+    width: 100%;
+}
+
+.slot-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.skeu-button-white {
+    font-weight: semibold;
+    background-color: white;
+    /* background: linear-gradient(#f6f5fa, #dddae6); */
+    color: #211c36;
+    padding: 0.3em 1.4em;
+    border-radius: 2em;
+    /* box-shadow: 0 0.2em 0 #9b99a0; */
+    display: inline-flex;
+    align-items: center;
+    font-size: large;
+    cursor: default;
+    /* box-shadow: 0 2px 6px rgba(0,0,0,0.1) 0 6px 16px rgba(0,0,0,0.1) ; */
+
+    border: 2px solid #080513;
+    box-shadow: 1.5px 3px 0 #080513;
+
+    position: relative;
+}
+.skeu-button-white img {
+    height: 2em;
+    margin-right: 0.3em;
+    margin-left: -0.3em;
+}
+.skeu-button-white:active {
+    left: 1.5px;
+    top: 3px;
+    box-shadow: 0 0 0 #080513;
+}

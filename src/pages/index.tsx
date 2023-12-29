@@ -24,6 +24,8 @@ import table from '../images/tiles/table.svg'
 import instagrade from '../images/tiles/instagrade.svg'
 import content from '../images/tiles/content.svg'
 import { withPrefix } from 'gatsby-link';
+import SlotMachine from "../components/slots";
+import TV from "../components/tv";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -103,6 +105,16 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<Tile src={flashlight} alt="A popular natural-language interface to Mac OS" onClick={ () => this.playWithRewards('flashlight', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
 							<Tile src={instagrade} alt="An app that grades paper quizzes instantly" onClick={ () => this.playWithRewards('instagrade', [ web(withPrefix('/instagrade/index.html')) ], {category: 'content'}) } />	
 							<Tile src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('http://zest.nateparrott.com/') ], {category: 'content'}) } />
+						</div>
+					</div>
+
+
+					<div className='readable-width section'>
+						<h3>Take a break!</h3>
+
+						<div className='side-by-side-or-stack'>
+							<SlotMachine />
+							<TV />
 						</div>
 					</div>
 

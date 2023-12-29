@@ -26,6 +26,12 @@ let questions = [
 		q: 'Where was I born?',
 		correct: 'Mt. Sinai Hospital',
 		incorrect: ['Methodist Hospital', 'The USS Intrepid', 'Berlin']
+	},
+	{
+		id: 'ssn',
+		q: 'What is my social security number?',
+		correct: '022-64-7550',
+		incorrect: ['161-32-0312', "475-06-1053"]
 	}
 ];
 
