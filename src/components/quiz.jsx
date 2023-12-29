@@ -16,6 +16,12 @@ let questions = [
 		incorrect: ['Squarespace', 'Square', 'Foursquare']
 	},
 	{
+		id: 'linkedin',
+		q: 'Why was I banned from LinkedIn?',
+		correct: 'I said I was CEO of LinkedIn',
+		incorrect: ['I said I was President', "Trick question, I'm not"]
+	},
+	{
 		id: 'born',
 		q: 'Where was I born?',
 		correct: 'Mt. Sinai Hospital',
