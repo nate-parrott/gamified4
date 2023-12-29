@@ -5,6 +5,7 @@
 	border-radius: 10px;
 	overflow: hidden;
 	box-shadow: 0 2px 40px rgba(84, 35, 226, 0.5);
+	z-index: 10;
 }
 .goldMode .activity {
 	background-color: #F7EFA1;
