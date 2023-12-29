@@ -79,12 +79,12 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 
 					<div className='readable-width section'>
-						<h3>Learn about <span className='nowrap'>things I’ve made! <div className='tooltip'>1 point per click</div></span></h3>
+						<h3>Recent work!<div className='tooltip'>1 point per click</div></h3>
 						<div className='content-tiles'>
-							<Tile src={hab} alt="Design and branding for a beginner-friendly hackathon" onClick={ () => this.playWithRewards('hab', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
-							<Tile src={flashlight} alt="A popular natural-language interface to Mac OS" onClick={ () => this.playWithRewards('flashlight', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
-							<Tile src={instagrade} alt="An app that grades paper quizzes instantly" onClick={ () => this.playWithRewards('instagrade', [ web(withPrefix('/instagrade/index.html')) ], {category: 'content'}) } />	
-							<Tile src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('http://zest.nateparrott.com/') ], {category: 'content'}) } />
+							<Tile src={zest} alt="Designing Arc" onClick={ () => this.playWithRewards('arc', [ web(withPrefix('/arc/index.html')) ], {category: 'content'}) } />
+							<Tile src={zest} alt="Arc Max: AI in Arc" onClick={ () => this.playWithRewards('max', [ web(withPrefix('/arc-max/index.html')) ], {category: 'content'}) } />
+							<Tile src={zest} alt="Arc Boosts: Edit the web" onClick={ () => this.playWithRewards('boosts', [ web(withPrefix('/arc-boosts/index.html')) ], {category: 'content'}) } />	
+							<Tile src={zest} alt="A more personal news feed" onClick={ () => this.playWithRewards('feeeed', [ web('https://feeeed.nateparrott.com/') ], {category: 'content'}) } />
 						</div>
 					</div>
 
@@ -95,6 +95,17 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<IncentivesSection activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
 						</div>
 					</div>
+
+					<div className='readable-width section'>
+						<h3>Learn about <span className='nowrap'>things I’ve made! <div className='tooltip'>1 point per click</div></span></h3>
+						<div className='content-tiles'>
+							<Tile src={hab} alt="Design and branding for a beginner-friendly hackathon" onClick={ () => this.playWithRewards('hab', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
+							<Tile src={flashlight} alt="A popular natural-language interface to Mac OS" onClick={ () => this.playWithRewards('flashlight', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
+							<Tile src={instagrade} alt="An app that grades paper quizzes instantly" onClick={ () => this.playWithRewards('instagrade', [ web(withPrefix('/instagrade/index.html')) ], {category: 'content'}) } />	
+							<Tile src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('http://zest.nateparrott.com/') ], {category: 'content'}) } />
+						</div>
+					</div>
+
 					<div className='readable-width section'>
 						<h3>Why not <span className='nowrap'>consume more content? <div className='tooltip'>5 coins per click</div></span></h3>
 							
@@ -103,7 +114,9 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<Tile src={subway} alt="An subway map that visualizes travel time" onClick={ () => this.playWithRewards('subway', [ web('http://subway.nateparrott.com/') ]) } />
 						</div>
 					</div>
-					<TradeNameDataSection activityStore={this.activityStore} />						
+
+					<TradeNameDataSection activityStore={this.activityStore} />	
+
 					<div className='trophies section'>
 						<div className='bg' />
 						<div className='readable-width'>
