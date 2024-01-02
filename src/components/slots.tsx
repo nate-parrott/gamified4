@@ -18,6 +18,7 @@ const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seed
 
 const slotIconSizeEm = 8; // 8em
 
+
 interface WheelProps {
     spinToIndex: number;
 }
