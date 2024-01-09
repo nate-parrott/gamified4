@@ -1,6 +1,6 @@
 import React from 'react'
-import {ModalItem, ModalPlaylist} from './modalPlayer.js';
-import './coinUnlockModalItem.css';
+import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
+import './bigEmojiModal.css';
 
 interface BigEmojiModalProps {
 	emoji: string;
@@ -42,12 +42,13 @@ class BigEmojiModal extends React.Component<BigEmojiModalPropsFull, BigEmojiModa
 		let rootClass = `BigEmojiModal stage-${stage}`;
 		return (
 			<div className={rootClass} onClick={onClick}>
-				<div className='inner'>
-					<div className='bigEmoji'>{this.props.emoji}</div>
-
+				<div />
+				<div>
+					<BigEmoji emoji={this.props.emoji} />
+				</div>
+				<div>
 					{this.props.message && <h2>{this.props.message}</h2>}
 					{this.props.subtext && <p className='subtext'>{this.props.subtext}</p>}
-
 					<div className='transparent-button' role='button'>{this.props.buttonLabel}</div>
 				</div>
 			</div>
@@ -55,6 +56,32 @@ class BigEmojiModal extends React.Component<BigEmojiModalPropsFull, BigEmojiModa
 	}
 }
 
+function BigEmoji({emoji}: {emoji: string}) {
+	const offsets = 5;
+	const offsetPer = 0.01;
+	const brightnessOffset = 0.1;
+	const offsetElements = [];
+	for (let i = 0; i < offsets; i++) {
+		const style: React.CSSProperties = {
+			left: `${i * offsetPer}em`,
+			top: `${i * offsetPer}em`,
+		};
+		if (i > 0 ) {
+			style.filter = `brightness(${1 - 0.4 - (i * brightnessOffset)})`;
+		}
+		offsetElements.push(<div key={i} style={style}>{emoji}</div>)
+	}
+	offsetElements.reverse();
+	return (
+		<div className='bigEmoji'>
+			<div className='glow'>{emoji}</div>
+			<div className='shadow'>
+				{offsetElements}
+			</div>
+			<div className='primary'>{emoji}</div>
+		</div>
+	)
+}
 
 export function bigEmojiModalItem(props: BigEmojiModalProps) {
 	let item = new ModalItem(({ full, onForward }) => {

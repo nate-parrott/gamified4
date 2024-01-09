@@ -13,8 +13,9 @@ import sushi from '../images/icons/SUSHI.png';
 import toast from '../images/icons/TOAST.png';
 
 import coin from '../images/coin.png';
-import { ModalPlaylist } from './modalPlayer';
+import { ModalPlaylist } from './modalPlayer.tsx';
 import ActivityStore, { GetGlobalActivityStore } from './activityStore';
+import { bigEmojiModalItem } from './bigEmojiModal';
 
 const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
 
@@ -69,6 +70,7 @@ function SlotMachine(props: SlotMachineProps) {
 
     const spin = useCallback(() => {
         activityStore.addMessage({ text: "slots", type: 'admin', coins: 1 });
+        playPlaylist(new ModalPlaylist([bigEmojiModalItem({ emoji: '🎰', message: 'Spinning...', buttonLabel: 'Stop!' })]));
     }, [playPlaylist, activityStore]);
 
     return (

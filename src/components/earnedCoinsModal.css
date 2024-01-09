@@ -60,6 +60,7 @@
 	color: #5423E2;
 	display: inline-block;
 	margin-top: 1em;
+	border-radius: 0.5em;;
 	cursor: default;
 }
 

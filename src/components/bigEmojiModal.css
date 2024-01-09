@@ -1,6 +1,18 @@
 
 .BigEmojiModal {
     color: white;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.BigEmojiModal > * {
+    flex-basis: 0;
+    flex-grow: 1;
 }
 
 .BigEmojiModal .transparent-button {
@@ -20,4 +32,34 @@
     font-size: 15px;
     font-style: normal;
     font-weight: 600;
+    cursor: default;
+}
+
+.BigEmojiModal.stage-preAppear, .BigEmojiModal.stage-disappear {
+	opacity: 0;
+	transform: scale(0.7, 0.7);
+}
+
+.bigEmoji {
+    font-size: 35vh;
+    position: relative;
+    transform: rotate(3deg);
+}
+
+.bigEmoji .shadow {
+    z-index: 100;
+}
+
+.bigEmoji .shadow > div {
+    position: absolute;
+}
+
+.bigEmoji .primary {
+    opacity: 0;
+}
+
+.bigEmoji .glow {
+    position: absolute;
+    /* blur and brighten and increase saturation and scale */
+    filter: blur(80px) saturate(200%);
 }
