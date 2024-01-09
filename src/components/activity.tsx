@@ -2,10 +2,11 @@ import React from 'react'
 import './activity.css';
 import coin from '../images/coin.png';
 import chevron from '../images/chevron.svg';
+import ActivityStore, { Award, Message } from './activityStore';
 
 const windowGlobal = typeof window !== 'undefined' && window;
 
-const ActivityMessage = ({ message, activityStore }) => {
+const ActivityMessage = ({ message, activityStore }: { message: Message, activityStore: ActivityStore }) => {
 	if (message.type === 'divider') {
 		return <div className='divider' />;
 	}
@@ -18,21 +19,33 @@ const ActivityMessage = ({ message, activityStore }) => {
 	);
 }
 
-export default class Activity extends React.Component {
-	constructor(props) {
+interface ActivityProps {
+	activityStore: ActivityStore;
+}
+
+interface ActivityState {
+	expanded: boolean;
+	messages: Message[];
+}
+
+export default class Activity extends React.Component<ActivityProps, ActivityState> {
+	coinImageRef: HTMLImageElement | undefined | null;
+	cancelChangeListener: (() => void) | undefined;
+	cancelNewAwardListener: (() => void) | undefined;
+
+	constructor(props: ActivityProps) {
 		super(props);
 		this.state = { messages: [], expanded: false };
-		this.coinImageRef = null;
 		// setTimeout(() => {
 		// 	this.playCoinAnimation(5);
 		// }, 500);
 	}
 	componentDidMount() {
 		let { activityStore } = this.props;
-		this.cancelChangeListener = activityStore.onChange(() => {
+		this.cancelChangeListener = activityStore.onChange((store: ActivityStore) => {
 			this.setState({ messages: activityStore.messages });
 		});
-		this.cancelNewAwardListener = activityStore.newAwardAnnouncer.listen((award) => {
+		this.cancelNewAwardListener = activityStore.newAwardAnnouncer.listen((award: Award) => {
 			if (award.suppressDefaultNotification) return;
 			this.playCoinAnimation(award.coins);
 		});
@@ -40,11 +53,11 @@ export default class Activity extends React.Component {
 	componentWillUnmount() {
 		if (this.cancelChangeListener) {
 			this.cancelChangeListener();
-			this.cancelChangeListener = null;
+			this.cancelChangeListener = undefined;
 		}
 		if (this.cancelNewAwardListener) {
 			this.cancelNewAwardListener();
-			this.cancelNewAwardListener = null;
+			this.cancelNewAwardListener = undefined;
 		}
 	}
 	toggleExpanded() {
@@ -55,14 +68,7 @@ export default class Activity extends React.Component {
 		let { expanded } = this.state;
 		let { messages } = activityStore;
 		let coins = activityStore.coinBalance();
-		// let coins = 0;
-		// let messages = [
-		// 	{id: 0, from: 'admin', content: <Bubble>👋 Hey! This is your <em>activity log</em>, where you’ll see all the data I’m relentlessly collecting about you!</Bubble>},
-		// 	{id: 1, from: 'admin', content: <Bubble>To fully experience this site, you’ll need to engage and interact to earn coins. But here’s a freebie!</Bubble>},
-		// 	{id: 2, from: 'admin', content: <Action onClick={this.giveFreebie.bind(this)}>Collect Coin!</Action>},
-		// 	{id: 3, from: 'system', content: <Bubble>Data collected!{'\n'}Browser: Chrome{'\n'}Approx. location: New York</Bubble>}
-		//
-		// ]
+
 		return (
 			<div className={ expanded ? 'activity expanded' : 'activity' }>
 				<div className='coin-count activity-header' onClick={() => this.toggleExpanded()}>
@@ -79,7 +85,7 @@ export default class Activity extends React.Component {
 			</div>
 		)
 	}
-	playCoinAnimation(coins) {
+	playCoinAnimation(coins: number) {
 		const imageNode = this.coinImageRef;
 		if (!imageNode) return;
 		
@@ -92,7 +98,7 @@ export default class Activity extends React.Component {
 	}
 }
 
-const playSingleCoinFlightAnimation = (targetCoinsImageNode, delay) => {
+const playSingleCoinFlightAnimation = (targetCoinsImageNode: HTMLImageElement, delay: number) => {
 	if (!windowGlobal) return;
 	let body = windowGlobal.document.body;
 	let targetRect = targetCoinsImageNode.getBoundingClientRect();

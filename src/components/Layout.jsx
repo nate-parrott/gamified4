@@ -2,7 +2,7 @@ import React from 'react'
 // import PropTypes from 'prop-types'
 // import Helmet from 'react-helmet'
 
-import Activity from './activity.jsx'
+import Activity from './activity.tsx'
 import './Layout.css'
 import { GetGlobalActivityStore } from './activityStore.tsx';
 import coin from '../images/coin.png';

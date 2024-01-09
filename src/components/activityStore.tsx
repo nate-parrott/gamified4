@@ -66,7 +66,7 @@ export class LocalActivityStorage<T> {
 	}
 }
 
-type CancelToken = () => void;
+export type CancelToken = () => void;
 
 export default class ActivityStore {
 	storage: LocalActivityStorage<PersistedData>;
@@ -139,7 +139,7 @@ export default class ActivityStore {
 		// 	coins: 11
 		// })
 	}
-	onChange(callback: (changed: ActivityStore) => CancelToken) {
+	onChange(callback: (changed: ActivityStore) => Void): CancelToken {
 		return this.changeAnnouncer.listen(callback);
 	}
 	hasAward(awardId: string) {
