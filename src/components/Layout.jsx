@@ -6,13 +6,14 @@ import Activity from './activity.jsx'
 import './Layout.css'
 import { GetGlobalActivityStore } from './activityStore.tsx';
 import coin from '../images/coin.png';
+import { Helmet } from 'react-helmet';
 
 class Layout extends React.Component {
 	render() {
 		let { children } = this.props;
 		return (
 		  <div>
-		    {/* <Helmet
+		    <Helmet
 		      title="Nate Parrott’s Nice and Engaging Website"
 		      meta={[
 		        { name: 'description', content: '' },
@@ -21,10 +22,10 @@ class Layout extends React.Component {
 		    />
 			<Helmet>
   				<link rel="icon" type="image/png" href={coin} />
-			</Helmet> */}
+			</Helmet>
 		    <div className='content'>
 		      {children}
-			<Activity activityStore={GetGlobalActivityStore()} />
+				<Activity activityStore={GetGlobalActivityStore()} />
 		    </div>
 		  </div>
 		)

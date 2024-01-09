@@ -1,5 +1,5 @@
 import * as React from "react"
-import intro from '../images/intro.svg'
+import intro from '../images/intro3.svg'
 import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
