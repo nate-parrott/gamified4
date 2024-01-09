@@ -70,7 +70,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 		}
 		this.setState({ playlist });
 	}
-	playPlaylist(playlist: any) {
+	playPlaylist(playlist: ModalPlaylist) {
 		this.setState({ playlist });
 	}
 	render() {
@@ -132,7 +132,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<h3>Take a break!</h3>
 
 							<div className='side-by-side-or-stack'>
-								<SlotMachine />
+								<SlotMachine activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
 								<TV />
 							</div>
 						</div>

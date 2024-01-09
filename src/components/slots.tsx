@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import "./slots.css";
 import aol from '../images/icons/AOL.png';
 import arcscape from '../images/icons/ARCSCAPE.png';
@@ -13,6 +13,8 @@ import sushi from '../images/icons/SUSHI.png';
 import toast from '../images/icons/TOAST.png';
 
 import coin from '../images/coin.png';
+import { ModalPlaylist } from './modalPlayer';
+import ActivityStore, { GetGlobalActivityStore } from './activityStore';
 
 const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
 
@@ -46,8 +48,29 @@ function Wheel({spinToIndex}: WheelProps) {
     )
 }
 
-function SlotMachine() {
+interface SlotMachineProps {
+    playPlaylist: (playlist: ModalPlaylist) => void;
+    activityStore: ActivityStore;
+}
+
+function SlotMachine(props: SlotMachineProps) {
+    const { playPlaylist, activityStore } = props;
     const [indices, setIndices] = useState([1,2,3]);
+
+
+    // interface MessageWithoutID {
+    //     text?: string;
+    //     type: 'admin' | 'system' | 'user' | 'divider';
+    //     specialType?: 'freeCoin'
+    //     coins?: number;
+    //     coinMultiplier?: number;
+    //     cssUnlock?: string;
+    // }
+
+    const spin = useCallback(() => {
+        activityStore.addMessage({ text: "slots", type: 'admin', coins: 1 });
+    }, [playPlaylist, activityStore]);
+
     return (
         <div className="slot-machine">
             <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
@@ -59,7 +82,7 @@ function SlotMachine() {
                 </div>
                 <div className='slot-cover'></div>
             </div>
-            <div className='skeu-button-inset'>
+            <div className='skeu-button-inset' onClick={spin}>
                 <img src={coin} />
                 <span>
                 Spin!
