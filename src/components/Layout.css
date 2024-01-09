@@ -174,6 +174,13 @@ body:not(.goldMode) .hover-offset:hover {
 	background-color: #BAFFF7;
 	padding-bottom: 1em;
 }
+.take-a-break {
+	border-top: 3px solid black;
+	border-bottom: 3px solid black;
+	background-color: rgb(234, 239, 244);
+	padding-bottom: -0.5em;
+	overflow: hidden;
+}
 .two-pane {
 	display: flex;
 }

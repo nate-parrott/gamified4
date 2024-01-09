@@ -127,12 +127,14 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 
 
-					<div className='readable-width section'>
-						<h3>Take a break!</h3>
+					<div className='take-a-break section'>
+						<div className='readable-width'>
+							<h3>Take a break!</h3>
 
-						<div className='side-by-side-or-stack'>
-							<SlotMachine />
-							<TV />
+							<div className='side-by-side-or-stack'>
+								<SlotMachine />
+								<TV />
+							</div>
 						</div>
 					</div>
 
