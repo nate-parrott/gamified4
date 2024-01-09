@@ -66,21 +66,14 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 	render() {
 		let { activityStore } = this.props;
 		let { expanded } = this.state;
-		let { messages } = activityStore;
 		let coins = activityStore.coinBalance();
 
 		return (
-			<div className={ expanded ? 'activity expanded' : 'activity' }>
-				<div className='coin-count activity-header' onClick={() => this.toggleExpanded()}>
+			<div className='activity-container'>
+				<div className='activity coin-count' onClick={() => this.toggleExpanded()}>
 					<img src={coin} className='coin' ref={(el) => {this.coinImageRef = el}} />
 					<label>{coins} coins</label>
 					<div className='flex-space' />
-					<img src={chevron} className='chevron' />
-				</div>
-				<div className='chat'>
-					{activityStore.mostRecentMessagesReversed().map((message) => (
-						<ActivityMessage key={message.id} message={message} activityStore={activityStore} />
-					))}
 				</div>
 			</div>
 		)
