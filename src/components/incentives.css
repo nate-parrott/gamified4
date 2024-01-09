@@ -1,12 +1,13 @@
 .IncentiveView {
-	border: 3px solid black;
+	border: 3px solid #000;
 	background-color: white;
 	padding: 10px;
 	width: 140px;
-	box-shadow: 4px 4px 0px rgba(0,0,0,1);
+	box-shadow: 4px 4px 0px #000;
 	margin-bottom: 10px;
 	text-align: center;
 	cursor: pointer;
+	border-radius: 1em;
 }
 .IncentiveView .lock {
 	width: 52px;

@@ -68,7 +68,8 @@ body {
 .boxed-content {
 	box-sizing: border-box;
 	padding: 1em;
-	border: 3px solid black;
+	border-radius: 1em;
+	border: 3px solid rgba(0,0,0,0.1);
 	position: relative;
 }
 .goldMode .boxed-content {
@@ -112,28 +113,30 @@ h3 {
 	background-size: 102%;
 	background-position: 49%;
 	box-sizing: border-box;
-	border: 3px solid black;
 	padding-bottom: 52%;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+	border: 1px solid rgba(0,0,0,0.1);
+	border-radius: 1em;
+	box-shadow: 0 2 7px rgba(0,0,0,0.07);
 }
 .goldMode .tile {
 	box-shadow: 0px 0px 14px #BCA900;
 	border: 3px solid #FFF8BD;
 }
 .hover-offset {
-	box-shadow: 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1);
-	transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+	/* box-shadow: 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1); */
+	transition: transform 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
 }
 body:not(.goldMode) .hover-offset:hover {
-	box-shadow: 1px 1px 0 rgba(0,0,0,1), 2px 2px 0 rgba(0,0,0,1), 3px 3px 0 rgba(0,0,0,1), 4px 4px 0 rgba(0,0,0,1), 5px 5px 0 rgba(0,0,0,1), 6px 6px 0 rgba(0,0,0,1);
-	transform: translate(-5px, -5px);
+	box-shadow: 0 6px 12px rgba(0,0,0,0.13);
+	transform: scale(1.02);
+	z-index: 10;
 }
 .cashcash {
 	position: relative;
 	overflow: hidden;
-	border-top: 3px solid black;
-	border-bottom: 3px solid black;
-	padding-bottom: 1em;
+	padding: 2em 0;
 }
 .cashcash:before {
 	background-color: #00FF9F;
@@ -169,17 +172,8 @@ body:not(.goldMode) .hover-offset:hover {
   }
 }
 .trophies {
-	border-top: 3px solid black;
-	border-bottom: 3px solid black;
+	padding: 2em 0;
 	background-color: #BAFFF7;
-	padding-bottom: 1em;
-}
-.take-a-break {
-	border-top: 3px solid black;
-	border-bottom: 3px solid black;
-	background-color: rgb(234, 239, 244);
-	padding-bottom: -0.5em;
-	overflow: hidden;
 }
 .two-pane {
 	display: flex;
