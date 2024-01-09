@@ -23,6 +23,14 @@ import babynames from '../images/tiles/babynames.svg'
 import table from '../images/tiles/table.svg'
 import instagrade from '../images/tiles/instagrade.svg'
 import content from '../images/tiles/content.svg'
+
+import web98 from '../images/tiles/web98.svg'
+import uhoh from '../images/tiles/uhoh.svg'
+import arc from '../images/tiles/arc.svg'
+import max from '../images/tiles/max.svg'
+import feeeed from '../images/tiles/feeeed.svg'
+import boosts from '../images/tiles/boosts.svg'
+
 import { withPrefix } from 'gatsby-link';
 import SlotMachine from "../components/slots";
 import TV from "../components/tv";
@@ -83,10 +91,10 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3>Recent work!<div className='tooltip'>1 point per click</div></h3>
 						<div className='content-tiles'>
-							<Tile src={zest} alt="Designing Arc" onClick={ () => this.playWithRewards('arc', [ web(withPrefix('/arc/index.html')) ], {category: 'content'}) } />
-							<Tile src={zest} alt="Arc Max: AI in Arc" onClick={ () => this.playWithRewards('max', [ web(withPrefix('/arc-max/index.html')) ], {category: 'content'}) } />
-							<Tile src={zest} alt="Arc Boosts: Edit the web" onClick={ () => this.playWithRewards('boosts', [ web(withPrefix('/arc-boosts/index.html')) ], {category: 'content'}) } />	
-							<Tile src={zest} alt="A more personal news feed" onClick={ () => this.playWithRewards('feeeed', [ web('https://feeeed.nateparrott.com/') ], {category: 'content'}) } />
+							<Tile src={arc} alt="Designing Arc" onClick={ () => this.playWithRewards('arc', [ web(withPrefix('/arc/index.html')) ], {category: 'content'}) } />
+							<Tile src={feeeed} alt="A more personal news feed" onClick={ () => this.playWithRewards('feeeed', [ web('https://feeeed.nateparrott.com/') ], {category: 'content'}) } />
+							<Tile src={max} alt="Arc Max: AI in Arc" onClick={ () => this.playWithRewards('max', [ web(withPrefix('/arc-max/index.html')) ], {category: 'content'}) } />
+							<Tile src={boosts} alt="Arc Boosts: Edit the web" onClick={ () => this.playWithRewards('boosts', [ web(withPrefix('/arc-boosts/index.html')) ], {category: 'content'}) } />	
 						</div>
 					</div>
 
@@ -101,8 +109,8 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3><span className='nowrap'>Fun stuff! <div className='tooltip'>1 point per click</div></span></h3>
 						<div className='content-tiles'>
-							<Tile src={zest} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/uhoh/index.html')) ], {category: 'content'}) } />
-							<Tile src={zest} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/web98/index.html')) ], {category: 'content'}) } />
+							<Tile src={uhoh} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/uhoh/index.html')) ], {category: 'content'}) } />
+							<Tile src={web98} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/web98/index.html')) ], {category: 'content'}) } />
 						</div>
 					</div>
 

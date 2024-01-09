@@ -1,9 +1,14 @@
 body {
 	font-family: "Helvetica Neue", "Helvetica", sans-serif;
 	line-height: 1.5;
-	margin: 3em;
 	font-size: 18px;
 	color: #778;
+	margin: 0;
+	padding: 0;
+}
+
+img.header {
+	width: 100%
 }
 
 @media screen and (min-width: 700px) {
@@ -13,6 +18,7 @@ body {
 }
 
 article {
+	padding: 3em;
 	max-width: 600px;
 	margin: auto;
 }
@@ -21,7 +27,7 @@ article > img {
 	width: 100%;
 }
 
-a:link {
-	color: #113;
+a {
+	color: #111;
 }
 

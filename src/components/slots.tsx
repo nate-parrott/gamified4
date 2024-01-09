@@ -50,14 +50,20 @@ function SlotMachine() {
     const [indices, setIndices] = useState([1,2,3]);
     return (
         <div className="slot-machine">
-            <div className='slot-wheels'>
-                <Wheel spinToIndex={indices[0]} />
-                <Wheel spinToIndex={indices[1]} />
-                <Wheel spinToIndex={indices[2]} />
+            <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
+            <div className='slot-box'>
+                <div className='slot-wheels'>
+                    <Wheel spinToIndex={indices[0]} />
+                    <Wheel spinToIndex={indices[1]} />
+                    <Wheel spinToIndex={indices[2]} />
+                </div>
+                <div className='slot-cover'></div>
             </div>
-            <div className='skeu-button-white'>
+            <div className='skeu-button-inset'>
                 <img src={coin} />
+                <span>
                 Spin!
+                </span>
             </div>
             <p>
                 I made these icons, mainly in Blender. Roll 3 of the same to win big!
