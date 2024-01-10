@@ -31,6 +31,15 @@ export function shuffle(a) {
     return a;
 }
 
+export function clamp(val, min, max) {
+  return Math.min(Math.max(val, min), max);
+}
+
+export function remap(val, min1, max1, min2, max2) {
+  const t = clamp((val - min1) / (max1 - min1), 0, 1);
+  return min2 + t * (max2 - min2);
+}
+
 // export function withPrefix(name) {
 //   return 'static' + name
 // }

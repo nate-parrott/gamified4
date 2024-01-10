@@ -16,11 +16,12 @@ import coin from '../images/coin.png';
 import { ModalPlaylist } from './modalPlayer.tsx';
 import ActivityStore, { GetGlobalActivityStore } from './activityStore';
 import { bigEmojiModalItem } from './bigEmojiModal';
+import { remap } from './utils.js';
 
-const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
+// const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
+const images = [chef, minion, burger, feeeed, arcscape, weasel, sushi];
 
 const slotIconSizeEm = 8; // 8em
-
 
 interface WheelProps {
     spinToIndex: number;
@@ -28,18 +29,27 @@ interface WheelProps {
 
 function Wheel({spinToIndex}: WheelProps) {
     const ref = useRef<HTMLDivElement | null>();
+
+    // Snap index within images.length * 0.5 ... images.length * 1.5
+    let snappedIndex = spinToIndex % images.length; // (spinToIndex + images.length * 0.5) % images.length;
+    if (snappedIndex < images.length * 0.5) {
+        snappedIndex += images.length;
+    }
+
     useEffect(() => {
         if (ref.current) {
-            ref.current.style.top = `${-spinToIndex * slotIconSizeEm}em`
+            ref.current.style.top = `${-snappedIndex * slotIconSizeEm}em`
         }
-    }, [ref, spinToIndex]);
+    }, [ref, snappedIndex]);
+
+    const repeatedImages = images.concat(images);
 
     return (
         <div className='slot-wheel' ref={(el) => ref.current = el}>
             {
-                images.map((img, i) => {
+                repeatedImages.map((img, i) => {
                     return (
-                        <div className='slot-icon'>
+                        <div className='slot-icon' key={i}>
                             <img src={img} key={i} />
                         </div>
                     )
@@ -54,33 +64,90 @@ interface SlotMachineProps {
     activityStore: ActivityStore;
 }
 
+interface WheelSimulation {
+    x: number;
+    v?: number; // velocity
+    // timeUntilHardStop?: number; // we increase forces when this happens
+}
+
+const epsilon = 0.1;
+const kFriction = 2; // per second
+// const snappingForce = 5; // per second
+const mass = 1;
+
+// dt: seconds
+function advanceWheelSimulation(sim: WheelSimulation, dt: number) {
+    if (sim.v === undefined) {
+        return sim;
+    }
+
+    // This math does not make sense in any way physically but that is ok
+
+    const friction = -kFriction * sim.v;
+    // Snapping force snaps towards the nearest slot ahead of the current one, or very close to it
+    const snapTarget = Math.round(sim.x); // sim.v < 0 ? Math.floor(sim.x + 0.1) : Math.ceil(sim.x - 0.1);
+    const snapAmt = remap(sim.v, 10, 5, 0, 1);
+    // const snapping = -snappingForce * (sim.x - snapTarget);
+    const force = friction;
+    const a = force / mass;
+    const v = sim.v + a * dt;
+    let x = sim.x + v * dt;
+    x = remap(snapAmt, 0, 1, x, snapTarget);
+
+    if (Math.abs(x - Math.round(x)) < epsilon && Math.abs(v) < 5) {
+        return { x: Math.round(x) };
+    }
+    return { x, v };
+}
+
 function SlotMachine(props: SlotMachineProps) {
     const { playPlaylist, activityStore } = props;
-    const [indices, setIndices] = useState([1,2,3]);
+    const initialState: WheelSimulation[] = [0,0,0].map((x) => ({ x }));
+    const [wheels, setWheels] = useState(initialState);
 
+    const requestAnimationFrameIdRef = useRef<number | undefined>(undefined);
 
-    // interface MessageWithoutID {
-    //     text?: string;
-    //     type: 'admin' | 'system' | 'user' | 'divider';
-    //     specialType?: 'freeCoin'
-    //     coins?: number;
-    //     coinMultiplier?: number;
-    //     cssUnlock?: string;
-    // }
+    function scheduleSpinStep() {
+        if (window === undefined) { return }
+        requestAnimationFrameIdRef.current = requestAnimationFrame(() => {
+            setWheels((wheels) => {
+                const newWheels = wheels.map((wheel) => advanceWheelSimulation(wheel, 1/60));
+                const allStopped = newWheels.every((wheel) => wheel.v === undefined);
+                if (allStopped) {
+                    requestAnimationFrameIdRef.current = undefined;
+                } else {
+                    scheduleSpinStep();
+                }
+                return newWheels;
+            });
+        });
+    }
 
     const spin = useCallback(() => {
-        activityStore.addMessage({ text: "slots", type: 'admin', coins: 1 });
-        playPlaylist(new ModalPlaylist([bigEmojiModalItem({ emoji: '🎰', message: 'Spinning...', buttonLabel: 'Stop!' })]));
-    }, [playPlaylist, activityStore]);
+        if (requestAnimationFrameIdRef.current !== undefined) {
+            return;
+        }
+        // Apply initial impulse
+        setWheels((wheels) => {
+            return wheels.map((wheel, i) => {
+                const x = wheel.x;
+                const v = 20 + Math.random() * 10 + i * 40;
+                return { x, v };
+            });
+        });
+        scheduleSpinStep();
+        // activityStore.addMessage({ text: "slots", type: 'admin', coins: 1 });
+        // playPlaylist(new ModalPlaylist([bigEmojiModalItem({ emoji: '🎰', message: 'Spinning...', buttonLabel: 'Stop!' })]));
+    }, [playPlaylist, activityStore, requestAnimationFrameIdRef]);
 
     return (
         <div className="slot-machine">
             <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
             <div className='slot-box'>
                 <div className='slot-wheels'>
-                    <Wheel spinToIndex={indices[0]} />
-                    <Wheel spinToIndex={indices[1]} />
-                    <Wheel spinToIndex={indices[2]} />
+                    <Wheel spinToIndex={wheels[0].x} />
+                    <Wheel spinToIndex={wheels[1].x} />
+                    <Wheel spinToIndex={wheels[2].x} />
                 </div>
                 <div className='slot-cover'></div>
             </div>
