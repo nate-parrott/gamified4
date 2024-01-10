@@ -63,6 +63,7 @@ function Wheel({spinToIndex}: WheelProps) {
 interface SlotMachineProps {
     playPlaylist: (playlist: ModalPlaylist) => void;
     activityStore: ActivityStore;
+    coins: number;
 }
 
 interface WheelSimulation {
@@ -116,6 +117,8 @@ function SlotMachine(props: SlotMachineProps) {
                 const allStopped = newWheels.every((wheel) => wheel.v === undefined);
                 if (allStopped) {
                     requestAnimationFrameIdRef.current = undefined;
+                    // did we win?
+                    
                 } else {
                     scheduleSpinStep();
                 }
@@ -128,6 +131,9 @@ function SlotMachine(props: SlotMachineProps) {
         if (requestAnimationFrameIdRef.current !== undefined) {
             return;
         }
+
+        activityStore.addMessage({ text: "You spun the wheel...", type: 'admin', coins: -1 });
+
         // Apply initial impulse
         setWheels((wheels) => {
             return wheels.map((wheel, i) => {
@@ -155,12 +161,7 @@ function SlotMachine(props: SlotMachineProps) {
                         <div className='slot-cover'></div>
                     </div>
                     <div className='slot-footer'>
-                        <div className='skeu-button-inset' onClick={spin}>
-                            <img src={coin} />
-                            <span>
-                            Spin!
-                            </span>
-                        </div>
+                        <SpinButton onClick={spin} hasCoins={props.coins > 0} />
                         <p>
                             I made these icons, mainly in Blender. Roll 3 of the same to win big!
                         </p>
@@ -173,15 +174,22 @@ function SlotMachine(props: SlotMachineProps) {
 
 export default SlotMachine;
 
-// export default class SlotMachine extends React.Component {
-// 	render() {
-// 		let { activityStore } = this.props;
-// 		return (
-// 			<div className='readable-width boxed-content section'>
-// 				<h3>Quiz!</h3>
-// 				<QuizContent activityStore={activityStore} />
-// 			</div>
-// 		)
-// 	}
-// }
-// src/images/icons/WEASEL.png src/images/icons/AOL.png src/images/icons/ARCSCAPE.png src/images/icons/BURGER.png src/images/icons/CHEF.png src/images/icons/COVIDTEST.png src/images/icons/FEEEED.png src/images/icons/MINION.png src/images/icons/SEEDS.png src/images/icons/SOUP.png src/images/icons/SUSHI.png src/images/icons/TOAST.png
+// Can be enabled, or disabled if no coins
+interface SpinButtonProps {
+    onClick: () => void;
+    hasCoins: boolean;
+}
+
+function SpinButton(props: SpinButtonProps) {
+    const { onClick, hasCoins } = props;
+    const className = `skeu-button-inset ${hasCoins ? '' : 'disabled'}`
+    return (
+        <div className={className} onClick={ hasCoins ? onClick : undefined } role='button'>
+            <img src={coin} alt="" />
+            <span>
+                { hasCoins ? 'Spin!' : 'No Coins' }
+            </span>
+        </div>
+    )
+}
+

@@ -12,7 +12,7 @@ export let TradeNameDataSection = ({activityStore}) => {
 	return <TradeDataSection formFieldType="text" awardId="tradeNameData" placeholder="What’s your name?" activityTextGenerator={activityTextGenerator} activityStore={activityStore} valueKey="name" />;
 }
 
-let TradeDataSection = ({activityStore, header, placeholder, formFieldType, activityTextGenerator, awardId, valueKey}) => {
+let TradeDataSection = ({activityStore, placeholder, formFieldType, activityTextGenerator, awardId, valueKey}) => {
 	let form = null;
 	if (activityStore.hasAward(awardId)) {
 		// form has already been filled out:

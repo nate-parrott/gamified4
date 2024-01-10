@@ -168,6 +168,12 @@
     opacity: 0.5;
 }
 
+@media screen and (max-width: 500px) {
+    .slot-machine p {
+        font-size: 13px;
+    }
+}
+
 .skeu-button-inset {
     font-weight: semibold;
     color: white;
@@ -184,6 +190,13 @@
     background: linear-gradient(rgba(0,0,0,0.5), rgba(255,255,255,0.3));
 
     position: relative;
+}
+
+.skeu-button-inset.disabled {
+    /* desat */
+    filter: saturate(0);
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .skeu-button-inset:after {
@@ -211,4 +224,26 @@
 .skeu-button-inset:active {
     /* filter darken */
     filter: brightness(0.8);
+}
+
+@keyframes slotShakeNO {
+    10%, 90% {
+        transform: translate3d(-1vw, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2vw, 0, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4pvw, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4pvw, 0, 0);
+    }
+}
+
+.slot-machine.shakeNO {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
 }

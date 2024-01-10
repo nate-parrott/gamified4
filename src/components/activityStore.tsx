@@ -34,7 +34,7 @@ export interface Award {
 	category: string; // content? any others?
 }
 
-export function GetGlobalActivityStore(): LocalActivityStorage<PersistedData> {
+export function GetGlobalActivityStore(): ActivityStore {
 	let existing = windowGlobal ? windowGlobal.activityStore : null;
 	if (!existing) {
 		existing = new ActivityStore(new LocalActivityStorage('activity'));
@@ -78,7 +78,6 @@ export default class ActivityStore {
 	newAwardAnnouncer: Announcer;
 	trophyLogicTracker: TrophyLogicTracker;
 
-
 	constructor(storage: LocalActivityStorage<PersistedData>) {
 		this.storage = storage;
 		
@@ -108,7 +107,7 @@ export default class ActivityStore {
 	unsave() {
 		this.storage.write({});
 	}
-	coinBalance() {
+	coinBalance(): number {
 		let coins = STARTING_COINS;
 		let multiplier = 1;
 		for (let message of this.messages) {
@@ -139,7 +138,7 @@ export default class ActivityStore {
 		// 	coins: 11
 		// })
 	}
-	onChange(callback: (changed: ActivityStore) => Void): CancelToken {
+	onChange(callback: (changed: ActivityStore) => void): CancelToken {
 		return this.changeAnnouncer.listen(callback);
 	}
 	hasAward(awardId: string) {

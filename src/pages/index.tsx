@@ -4,7 +4,7 @@ import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
 import { web } from '../components/playlistHelpers.tsx';
-import { GetGlobalActivityStore } from '../components/activityStore.tsx';
+import ActivityStore, { GetGlobalActivityStore } from '../components/activityStore.tsx';
 import { playlistWithAward, comingSoonPage } from '../components/awardUtils.tsx';
 import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeDataSection.jsx';
 import IncentivesSection from '../components/incentives.tsx';
@@ -37,21 +37,24 @@ import TV from "../components/tv";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
+	coins: number;
 }
 
 export default class IndexPage extends React.Component<{}, IndexState> {
-  activityStore: any;
+  activityStore: ActivityStore;
   cancelActivityStoreListener?: () => void;
 
 	constructor(props: any) {
 		super(props);
 		this.activityStore = GetGlobalActivityStore();
-		this.state = {};
+		this.state = { coins: this.activityStore.coinBalance() };
 	}
 	componentDidMount() {
 		this.cancelActivityStoreListener = this.activityStore.changeAnnouncer.listen(() => {
 			this.forceUpdate();
+			this.setState({ coins: this.activityStore.coinBalance() });
 		});
+
 	}
 	componentWillUnmount() {
 		if (this.cancelActivityStoreListener) {
@@ -127,7 +130,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 
 
-					<SlotMachine activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
+					<SlotMachine activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} coins={this.state.coins} />
 
 					<div className='readable-width section'>
 						<h3>Why not <span className='nowrap'>consume more content? <div className='tooltip'>5 coins per click</div></span></h3>
