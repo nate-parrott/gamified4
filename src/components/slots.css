@@ -31,25 +31,6 @@
     transform-origin: top left;
 }
 
-.slot-machine p {
-    margin-left: 3em;
-    margin-right: 3em;
-    margin-bottom: 2em;
-    line-height: 1.5;
-    opacity: 0.5;
-}
-
-.slot-box {
-    position: relative;
-    background-color: #ddd5f4;
-    overflow: hidden;
-    margin-bottom: 1em;
-    padding-left: 3em;
-    padding-right: 3em;
-    margin-right: 2em;
-    margin-left: 2em;
-}
-
 .slot-header {
     /* bg gradient from 764EE8 to 5829E3 */
     height: 5em;
@@ -70,14 +51,37 @@
     background-position: center;
 }
 
+.slot-box {
+    position: relative;
+    background-color: #ddd5f4;
+    overflow: hidden;
+    margin-right: 10%;
+    margin-left: 10%;
+    padding-bottom: 50%;
+}
+
 .slot-wheels {
-    height: 20em;
+    position: absolute;
+    left: 3em;
+    right: 3em;
+    top: 0;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    position: relative;
 }
+
+/* @media screen and (max-width: 600px) {
+    .slot-box {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+    .slot-wheels {
+        height: 10em;
+    }
+} */
+
 /* 
 .slot-wheels:before, .slot-wheels:after {
     content: "";
@@ -98,6 +102,12 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+}
+
+@media screen and (max-width: 700px) {
+    .slot-wheels {
+        font-size: 2vw; /* reduces size of content within */
+    }
 }
 
 .slot-wheel:not(:last-child) .slot-icon {
@@ -126,6 +136,7 @@
     position: relative;
     flex-basis: 0;
     flex-grow: 1;
+    will-change: transform;
 }
 
 .slot-icon {
@@ -141,32 +152,19 @@
     object-fit: contain;
 }
 
-/* .skeu-button-white {
-    font-weight: semibold;
-    background-color: white;
-    color: #211c36;
-    padding: 0.3em 1.4em;
-    border-radius: 2em;
-    display: inline-flex;
-    align-items: center;
-    font-size: large;
-    cursor: default;
+/* Footer */
 
-    border: 2px solid #080513;
-    box-shadow: 1.5px 3px 0 #080513;
+.slot-footer {
+    margin: 1em;
+    margin-left: 10%;
+    margin-right: 10%;
+}
 
-    position: relative;
+.slot-machine p {
+    margin-bottom: 2em;
+    line-height: 1.5;
+    opacity: 0.5;
 }
-.skeu-button-white img {
-    height: 2em;
-    margin-right: 0.3em;
-    margin-left: -0.3em;
-}
-.skeu-button-white:active {
-    left: 1.5px;
-    top: 3px;
-    box-shadow: 0 0 0 #080513;
-} */
 
 .skeu-button-inset {
     font-weight: semibold;

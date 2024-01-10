@@ -38,7 +38,7 @@ function Wheel({spinToIndex}: WheelProps) {
 
     useEffect(() => {
         if (ref.current) {
-            ref.current.style.top = `${-snappedIndex * slotIconSizeEm}em`
+            ref.current.style.top = `${-snappedIndex *slotIconSizeEm }em`
         }
     }, [ref, snappedIndex]);
 
@@ -152,15 +152,17 @@ function SlotMachine(props: SlotMachineProps) {
                     </div>
                     <div className='slot-cover'></div>
                 </div>
-                <div className='skeu-button-inset' onClick={spin}>
-                    <img src={coin} />
-                    <span>
-                    Spin!
-                    </span>
+                <div className='slot-footer'>
+                    <div className='skeu-button-inset' onClick={spin}>
+                        <img src={coin} />
+                        <span>
+                        Spin!
+                        </span>
+                    </div>
+                    <p>
+                        I made these icons, mainly in Blender. Roll 3 of the same to win big!
+                    </p>
                 </div>
-                <p>
-                    I made these icons, mainly in Blender. Roll 3 of the same to win big!
-                </p>
             </div>
         </div>
     )
