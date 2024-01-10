@@ -141,25 +141,27 @@ function SlotMachine(props: SlotMachineProps) {
     }, [playPlaylist, activityStore, requestAnimationFrameIdRef]);
 
     return (
-        <div className="slot-machine">
-            <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
-            <div className='slot-box'>
-                <div className='slot-wheels'>
-                    <Wheel spinToIndex={wheels[0].x} />
-                    <Wheel spinToIndex={wheels[1].x} />
-                    <Wheel spinToIndex={wheels[2].x} />
+        <div className='slot-machine-container'>
+            <div className="slot-machine">
+                <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
+                <div className='slot-box'>
+                    <div className='slot-wheels'>
+                        <Wheel spinToIndex={wheels[0].x} />
+                        <Wheel spinToIndex={wheels[1].x} />
+                        <Wheel spinToIndex={wheels[2].x} />
+                    </div>
+                    <div className='slot-cover'></div>
                 </div>
-                <div className='slot-cover'></div>
+                <div className='skeu-button-inset' onClick={spin}>
+                    <img src={coin} />
+                    <span>
+                    Spin!
+                    </span>
+                </div>
+                <p>
+                    I made these icons, mainly in Blender. Roll 3 of the same to win big!
+                </p>
             </div>
-            <div className='skeu-button-inset' onClick={spin}>
-                <img src={coin} />
-                <span>
-                Spin!
-                </span>
-            </div>
-            <p>
-                I made these icons, mainly in Blender. Roll 3 of the same to win big!
-            </p>
         </div>
     )
 }

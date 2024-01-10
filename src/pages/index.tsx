@@ -127,16 +127,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					</div>
 
 
-					<div className='take-a-break section'>
-						<div className='readable-width'>
-							<h3>Take a break!</h3>
-
-							<div className='side-by-side-or-stack'>
-								<SlotMachine activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
-								<TV />
-							</div>
-						</div>
-					</div>
+					<SlotMachine activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
 
 					<div className='readable-width section'>
 						<h3>Why not <span className='nowrap'>consume more content? <div className='tooltip'>5 coins per click</div></span></h3>

@@ -1,16 +1,42 @@
+.slot-machine-container {
+    /* dark grad bg */
+    background: linear-gradient(#211c36, #1a172c);
+    padding-top: 5em;
+    overflow: hidden;
+}
+
 .slot-machine {
+    position: relative;
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
     background: linear-gradient(#8059f7, #5423E2);
-    border-radius: 2px;
+    border-radius: 4px;
     color: white;
     padding: 1px;
     text-align: center;
 }
 
+/* use :after: to draw a skewed rectangle to represent the side of the slot machine */
+.slot-machine:after {
+    content: "";
+    background-color: #2f108a;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    height: 100%;
+    width: 2em;
+    /* skew vert w/ origin top left */
+    transform: skewY(45deg);
+    transform-origin: top left;
+}
+
 .slot-machine p {
     margin-left: 3em;
     margin-right: 3em;
-    margin-bottom: 1.5em;
+    margin-bottom: 2em;
     line-height: 1.5;
+    opacity: 0.5;
 }
 
 .slot-box {
@@ -20,12 +46,14 @@
     margin-bottom: 1em;
     padding-left: 3em;
     padding-right: 3em;
+    margin-right: 2em;
+    margin-left: 2em;
 }
 
 .slot-header {
     /* bg gradient from 764EE8 to 5829E3 */
     height: 5em;
-    background: linear-gradient(#764EE8, #5829E3);
+    /* background: linear-gradient(#764EE8, #5829E3); */
     position: relative;
 }
 
