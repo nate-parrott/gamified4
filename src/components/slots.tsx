@@ -17,6 +17,7 @@ import { ModalPlaylist } from './modalPlayer.tsx';
 import ActivityStore, { GetGlobalActivityStore } from './activityStore';
 import { bigEmojiModalItem } from './bigEmojiModal';
 import { remap } from './utils.js';
+import { Parallax } from 'react-scroll-parallax';
 
 // const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
 const images = [chef, minion, burger, feeeed, arcscape, weasel, sushi];
@@ -142,28 +143,30 @@ function SlotMachine(props: SlotMachineProps) {
 
     return (
         <div className='slot-machine-container'>
-            <div className="slot-machine">
-                <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
-                <div className='slot-box'>
-                    <div className='slot-wheels'>
-                        <Wheel spinToIndex={wheels[0].x} />
-                        <Wheel spinToIndex={wheels[1].x} />
-                        <Wheel spinToIndex={wheels[2].x} />
+            <Parallax speed={10}>
+                <div className="slot-machine">
+                    <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
+                    <div className='slot-box'>
+                        <div className='slot-wheels'>
+                            <Wheel spinToIndex={wheels[0].x} />
+                            <Wheel spinToIndex={wheels[1].x} />
+                            <Wheel spinToIndex={wheels[2].x} />
+                        </div>
+                        <div className='slot-cover'></div>
                     </div>
-                    <div className='slot-cover'></div>
-                </div>
-                <div className='slot-footer'>
-                    <div className='skeu-button-inset' onClick={spin}>
-                        <img src={coin} />
-                        <span>
-                        Spin!
-                        </span>
+                    <div className='slot-footer'>
+                        <div className='skeu-button-inset' onClick={spin}>
+                            <img src={coin} />
+                            <span>
+                            Spin!
+                            </span>
+                        </div>
+                        <p>
+                            I made these icons, mainly in Blender. Roll 3 of the same to win big!
+                        </p>
                     </div>
-                    <p>
-                        I made these icons, mainly in Blender. Roll 3 of the same to win big!
-                    </p>
                 </div>
-            </div>
+            </Parallax>
         </div>
     )
 }

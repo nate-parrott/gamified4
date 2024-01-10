@@ -7,12 +7,13 @@ import './Layout.css'
 import { GetGlobalActivityStore } from './activityStore.tsx';
 import coin from '../images/coin.png';
 import { Helmet } from 'react-helmet';
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 class Layout extends React.Component {
 	render() {
 		let { children } = this.props;
 		return (
-		  <div>
+		  <ParallaxProvider>
 		    <Helmet
 		      title="Nate Parrott’s Nice and Engaging Website"
 		      meta={[
@@ -27,7 +28,7 @@ class Layout extends React.Component {
 		      {children}
 				<Activity activityStore={GetGlobalActivityStore()} />
 		    </div>
-		  </div>
+		  </ParallaxProvider>
 		)
 	}
 }
