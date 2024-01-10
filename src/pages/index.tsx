@@ -40,6 +40,14 @@ interface IndexState {
 	coins: number;
 }
 
+/*
+To fix before release:
+- badge unlock modal
+
+Features:
+- NPTV
+*/
+
 export default class IndexPage extends React.Component<{}, IndexState> {
   activityStore: ActivityStore;
   cancelActivityStoreListener?: () => void;

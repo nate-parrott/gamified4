@@ -8,9 +8,11 @@ import { GetGlobalActivityStore } from './activityStore.tsx';
 import coin from '../images/coin.png';
 import { Helmet } from 'react-helmet';
 import { ParallaxProvider } from 'react-scroll-parallax';
+import {isMobile} from 'react-device-detect';
 
 class Layout extends React.Component {
 	render() {
+		const classNames = `content ${isMobile ? 'mobile' : 'desktop'}`;
 		let { children } = this.props;
 		return (
 		  <ParallaxProvider>
@@ -24,7 +26,7 @@ class Layout extends React.Component {
 			<Helmet>
   				<link rel="icon" type="image/png" href={coin} />
 			</Helmet>
-		    <div className='content'>
+		    <div className={ classNames }>
 		      {children}
 				<Activity activityStore={GetGlobalActivityStore()} />
 		    </div>
