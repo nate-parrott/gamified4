@@ -16,7 +16,7 @@ import coin from '../images/coin.png';
 import { ModalPlaylist } from './modalPlayer.tsx';
 import ActivityStore, { GetGlobalActivityStore } from './activityStore';
 import { bigEmojiModalItem } from './bigEmojiModal';
-import { remap } from './utils.js';
+import { remap, uuid } from './utils.js';
 import { Parallax } from 'react-scroll-parallax';
 
 // const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
@@ -106,6 +106,7 @@ function SlotMachine(props: SlotMachineProps) {
     const { playPlaylist, activityStore } = props;
     const initialState: WheelSimulation[] = [0,0,0].map((x) => ({ x }));
     const [wheels, setWheels] = useState(initialState);
+    const [anim, setAnim] = useState<'' | 'shakeNO' | 'shakeYES'>('');
 
     const requestAnimationFrameIdRef = useRef<number | undefined>(undefined);
 
@@ -119,6 +120,21 @@ function SlotMachine(props: SlotMachineProps) {
                     requestAnimationFrameIdRef.current = undefined;
                     // did we win?
                     
+                    // match param type of `anim`
+                    function playAnimation(name: typeof anim) {
+                        setAnim(name);
+                        setTimeout(() => setAnim(''), 2000);
+                    }
+
+                    playAnimation('shakeYES');
+                    activityStore.unlockAward({
+                        id: `slots-${uuid()}`,
+                        name: '3 in a row!',
+                        coins: 50,
+                        activityText: 'You won 50 coins at the slot machine!',
+                        category: 'slot-win',
+                    })
+
                 } else {
                     scheduleSpinStep();
                 }
@@ -148,9 +164,9 @@ function SlotMachine(props: SlotMachineProps) {
     }, [playPlaylist, activityStore, requestAnimationFrameIdRef]);
 
     return (
-        <div className='slot-machine-container'>
+        <div className={`slot-machine-container ${anim}`}>
             <Parallax speed={10}>
-                <div className="slot-machine">
+                <div className='slot-machine'>
                     <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />
                     <div className='slot-box'>
                         <div className='slot-wheels'>
@@ -163,7 +179,7 @@ function SlotMachine(props: SlotMachineProps) {
                     <div className='slot-footer'>
                         <SpinButton onClick={spin} hasCoins={props.coins > 0} />
                         <p>
-                            I made these icons, mainly in Blender. Roll 3 of the same to win big!
+                            I made these icons, mainly in Blender. Pay one coin to spin. Win up to 50!
                         </p>
                     </div>
                 </div>

@@ -24,7 +24,8 @@
 	font-weight: 500;
 	padding: 0.6em;
 	padding-left: 0.8em;
-	padding-right: 1em;
+	padding-right: 0.5em;
+	width: 8em;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 
 	border-radius: 0.7em;
@@ -54,8 +55,9 @@
 	background: linear-gradient(45deg, rgba(215,195,12,1) 0%,rgba(245,239,201,1) 50%,rgba(215,195,12,1) 100%);
 	color: #665C00;
 }
-.activity .flex-space {
+.activity label {
 	flex-grow: 1;
+	text-align: center;
 }
 .activity .chevron {
 	width: 1.4em;
@@ -65,7 +67,6 @@
 }
 .activity .coin {
 	width: 2em;
-	margin-right: 10px;
 }
 .message .bubble, .message .action {
 	border-radius: 17px;

@@ -73,7 +73,6 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 				<div className='activity coin-count' onClick={() => this.toggleExpanded()}>
 					<img src={coin} className='coin' ref={(el) => {this.coinImageRef = el}} />
 					<label>{coins} coins</label>
-					<div className='flex-space' />
 				</div>
 			</div>
 		)

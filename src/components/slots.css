@@ -3,6 +3,7 @@
     background: linear-gradient(#211c36, #1a172c);
     padding-top: 5em;
     overflow: hidden;
+    position: relative;
 }
 
 .slot-machine {
@@ -17,6 +18,7 @@
     text-align: center;
     padding-bottom: 6em;
     margin-bottom: -6em;
+    z-index: 1;
 }
 
 /* use :after: to draw a skewed rectangle to represent the side of the slot machine */
@@ -228,22 +230,106 @@
 
 @keyframes slotShakeNO {
     10%, 90% {
-        transform: translate3d(-1vw, 0, 0);
+        transform: translate3d(-1px, 0, 0);
     }
 
     20%, 80% {
-        transform: translate3d(2vw, 0, 0);
+        transform: translate3d(1px, 0, 0);
     }
 
     30%, 50%, 70% {
-        transform: translate3d(-4pvw, 0, 0);
+        transform: translate3d(-4px, 0, 0);
     }
 
     40%, 60% {
-        transform: translate3d(4pvw, 0, 0);
+        transform: translate3d(4px, 0, 0);
     }
 }
 
-.slot-machine.shakeNO {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+.shakeNO .slot-machine {
+    animation: slotShakeNO 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+
+@keyframes slotShakeYES {
+    20% {
+        transform: rotate(-10deg);
+    }
+    50% {
+        transform: rotate(10deg);
+    }
+    80% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.shakeYES .slot-machine {
+    transform-origin: 50% 70%;
+    animation: slotShakeYES 1s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes slotsRotateForever {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.slot-machine-container.shakeYES:before {
+    position: absolute;
+    content: "";
+    left: 50%;
+    top: 50%;
+    width: 200vw;
+    height: 200vw;
+    margin-left: -100vw;
+    margin-top: -100vw;
+    background-size: cover;
+    background-position: center;
+    background-image: url(../images/sunburst-white.svg);
+    z-index: 0.5;
+    opacity: 0.5;
+    animation: slotsRotateForever 10s linear infinite, fadeInOut 2s linear infinite;
+}
+
+.slot-machine-container.shakeYES {
+    animation: wildlyFlashColors 2s linear infinite;
+}
+
+@keyframes wildlyFlashColors {
+    0% {
+        background: #211c36;
+    }
+    20% {
+        background: #00FFE0;
+    }
+    40% {
+        background: #5423E2;
+    }
+    60% {
+        background: #FF006F;
+    }
+    80% {
+        background: #FFE817;
+    }
+    100% {
+        background: #211c36;
+    }
 }

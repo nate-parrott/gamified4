@@ -30,8 +30,8 @@ export interface Award {
 	name: string;
 	coins: number;
 	activityText: string;
-	suppressDefaultNotification: boolean;
-	category: string; // content? any others?
+	suppressDefaultNotification?: boolean;
+	category: string; // content? any others? Used for 'category awards'
 }
 
 export function GetGlobalActivityStore(): ActivityStore {
@@ -76,6 +76,7 @@ export default class ActivityStore {
 	unlockedIncentives: {[id: string]: number};
 	changeAnnouncer: Announcer;
 	newAwardAnnouncer: Announcer;
+	coinAnimationAnnouncer: Announcer;
 	trophyLogicTracker: TrophyLogicTracker;
 
 	constructor(storage: LocalActivityStorage<PersistedData>) {
