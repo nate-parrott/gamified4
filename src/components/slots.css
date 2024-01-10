@@ -252,23 +252,26 @@
 
 
 @keyframes slotShakeYES {
-    20% {
+    16% {
+        transform: rotate(-5deg);
+    }
+    32% {
+        transform: rotate(7deg);
+    }
+    48% {
         transform: rotate(-10deg);
     }
-    50% {
-        transform: rotate(10deg);
-    }
-    80% {
-        transform: rotate(-10deg);
+    64% {
+        transform: rotate(7deg);
     }
     100% {
         transform: rotate(0deg);
     }
 }
 
-.shakeYES .slot-machine {
+.shakeYES .slot-machine, .shakeYES_XL .slot-machine {
     transform-origin: 50% 70%;
-    animation: slotShakeYES 1s cubic-bezier(.36,.07,.19,.97) both;
+    animation: slotShakeYES 2s cubic-bezier(.36,.07,.19,.97) both;
 }
 
 @keyframes slotsRotateForever {
@@ -292,7 +295,19 @@
     }
 }
 
-.slot-machine-container.shakeYES:before {
+@keyframes fadeInOutHalfOpacity {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.slot-machine-container.shakeYES:before, .slot-machine-container.shakeYES_XL:before {
     position: absolute;
     content: "";
     left: 50%;
@@ -305,11 +320,14 @@
     background-position: center;
     background-image: url(../images/sunburst-white.svg);
     z-index: 0.5;
-    opacity: 0.5;
+    animation: slotsRotateForever 10s linear infinite, fadeInOutHalfOpacity 2s linear infinite;
+}
+
+.slot-machine-container.shakeYES_XL:before {
     animation: slotsRotateForever 10s linear infinite, fadeInOut 2s linear infinite;
 }
 
-.slot-machine-container.shakeYES {
+.slot-machine-container.shakeYES_XL {
     animation: wildlyFlashColors 2s linear infinite;
 }
 

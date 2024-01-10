@@ -1,5 +1,5 @@
 import React from 'react'
-import { shuffle } from './utils.js';
+import { shuffle } from './utils.ts';
 import './quiz.css';
 
 let questions = [

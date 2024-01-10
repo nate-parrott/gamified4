@@ -1,5 +1,5 @@
 import Announcer from './announcer.jsx';
-import { uuid } from './utils.js';
+import { uuid } from './utils.ts';
 import TrophyLogicTracker from './trophyLogic.jsx';
 import { Incentive } from './incentives.js';
 

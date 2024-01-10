@@ -11,18 +11,22 @@ import minion from '../images/icons/MINION.png';
 import seeds from '../images/icons/SEEDS.png';
 import sushi from '../images/icons/SUSHI.png';
 import toast from '../images/icons/TOAST.png';
+import flower from '../images/icons/FLOWER.png';
+import soup from '../images/icons/SOUP.png';
 
 import coin from '../images/coin.png';
 import { ModalPlaylist } from './modalPlayer.tsx';
 import ActivityStore, { GetGlobalActivityStore } from './activityStore';
 import { bigEmojiModalItem } from './bigEmojiModal';
-import { remap, uuid } from './utils.js';
+import { mostRepeats, remap, uuid } from './utils.ts';
 import { Parallax } from 'react-scroll-parallax';
 
 // const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
-const images = [chef, minion, burger, feeeed, arcscape, weasel, sushi];
+const images = [flower, chef, minion, burger, feeeed, arcscape, weasel, sushi, arcscape, covid, soup];
 
 const slotIconSizeEm = 8; // 8em
+const kCoinsFor2Match = 3;
+const kCoinsFor3Match = 50;
 
 interface WheelProps {
     spinToIndex: number;
@@ -106,7 +110,7 @@ function SlotMachine(props: SlotMachineProps) {
     const { playPlaylist, activityStore } = props;
     const initialState: WheelSimulation[] = [0,0,0].map((x) => ({ x }));
     const [wheels, setWheels] = useState(initialState);
-    const [anim, setAnim] = useState<'' | 'shakeNO' | 'shakeYES'>('');
+    const [anim, setAnim] = useState<'' | 'shakeNO' | 'shakeYES' | 'shakeYES_XL'>('');
 
     const requestAnimationFrameIdRef = useRef<number | undefined>(undefined);
 
@@ -118,22 +122,48 @@ function SlotMachine(props: SlotMachineProps) {
                 const allStopped = newWheels.every((wheel) => wheel.v === undefined);
                 if (allStopped) {
                     requestAnimationFrameIdRef.current = undefined;
-                    // did we win?
                     
                     // match param type of `anim`
                     function playAnimation(name: typeof anim) {
                         setAnim(name);
-                        setTimeout(() => setAnim(''), 2000);
+                        // Unset after 2s
+                        setTimeout(() => {
+                            setAnim((a) => a === name ? '' : a);
+                        }, 2000);
                     }
 
-                    playAnimation('shakeYES');
-                    activityStore.unlockAward({
-                        id: `slots-${uuid()}`,
-                        name: '3 in a row!',
-                        coins: 50,
-                        activityText: 'You won 50 coins at the slot machine!',
-                        category: 'slot-win',
-                    })
+                    // did we win?
+                    // if there are 7 images
+                    // the prob of drawing 3 unique items (losing)
+                    // is 1.0 * 6/7 * 5/7 = 0.612
+                    // so the prob of winning is 1 - 0.612 = 0.388
+                    // If you get 2 coins per win, that's an expected value
+                    // of 0.388 * 2 = 0.776 coins per spin
+
+                    const indices = newWheels.map((wheel) => Math.round(wheel.x) % images.length);
+                    const matchCount = mostRepeats(indices);
+                    
+                    if (matchCount === 3) {
+                        playAnimation('shakeYES_XL');
+                        activityStore.unlockAward({
+                            id: `slots-${uuid()}`,
+                            name: '3 in a row!',
+                            coins: kCoinsFor3Match,
+                            activityText: `You won ${kCoinsFor3Match} coins at the slot machine!`,
+                            category: 'slot-win',
+                        })    
+                    } else if (matchCount === 2) {
+                        playAnimation('shakeYES');
+                        activityStore.unlockAward({
+                            id: `slots-${uuid()}`,
+                            name: '2 in a row!',
+                            coins: kCoinsFor2Match,
+                            activityText: `You won ${kCoinsFor2Match} coins at the slot machine!`,
+                            category: 'slot-win',
+                        })    
+                    } else {
+                        playAnimation('shakeNO');
+                    }
 
                 } else {
                     scheduleSpinStep();
@@ -154,7 +184,7 @@ function SlotMachine(props: SlotMachineProps) {
         setWheels((wheels) => {
             return wheels.map((wheel, i) => {
                 const x = wheel.x;
-                const v = 20 + Math.random() * 10 + i * 40;
+                const v = 20 + Math.random() * 13 + i * 47;
                 return { x, v };
             });
         });
@@ -179,7 +209,8 @@ function SlotMachine(props: SlotMachineProps) {
                     <div className='slot-footer'>
                         <SpinButton onClick={spin} hasCoins={props.coins > 0} />
                         <p>
-                            I made these icons, mainly in Blender. Pay one coin to spin. Win up to 50!
+                            I made these icons, mainly in Blender. 
+                            Pay 1 coin to spin. Get {kCoinsFor2Match} coins if 2 match and {kCoinsFor3Match} coins if 3 match!
                         </p>
                     </div>
                 </div>

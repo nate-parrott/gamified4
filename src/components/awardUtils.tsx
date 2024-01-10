@@ -1,4 +1,4 @@
-import { pick1 } from './utils.js';
+import { pick1 } from './utils.ts';
 import React from 'react'
 import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
 import EarnedCoinsModal from './earnedCoinsModal.jsx';

@@ -4,7 +4,7 @@ import HScroll from './hscroll.jsx';
 import React from 'react'
 import './incentives.css';
 import { coinUnlockModalItem } from './coinUnlockModalItem.jsx';
-import { withPrefix } from './utils.js';
+import { withPrefix } from './utils.ts';
 import ActivityStore from './activityStore.js';
 
 export interface Incentive {
