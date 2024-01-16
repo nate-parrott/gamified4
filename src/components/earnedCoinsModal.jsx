@@ -12,14 +12,14 @@ export default class EarnedCoinsModal extends React.Component {
 				<img src={ sunburst } className='sunburst' />
 				<div className='blurb'>
 					<div className='dummy'>
-					<div className='title'>{ title }</div>
-					<div className='subtitle'>{ subtitle }</div>
-						<div className='doneButton' onClick={onDismiss}>Let’s get more!</div>
+						<div className='title'>{ title }</div>
+						<div className='subtitle'>{ subtitle }</div>
+						{/* <div className='doneButton' onClick={onDismiss}>Let’s get more!</div> */}
 					</div>
 					<div className='count'>{ coins } coins!</div>
 					<div className='title'>{ title }</div>
 					<div className='subtitle'>{ subtitle }</div>
-					<div className='doneButton' onClick={onDismiss}>Let’s get more!</div>
+					{/* <div className='doneButton' onClick={onDismiss}>Let’s get more!</div> */}
 				</div>
 			</div>
 		)

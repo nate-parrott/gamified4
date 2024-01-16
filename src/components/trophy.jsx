@@ -35,8 +35,8 @@ export let BasicPageItem = ({ bigText, bigTextUrl, bigImage, title, subtitle, ne
 					nextButtonTitle ? <div key='nextButton' className='nextButton' onClick={ onForward }>{nextButtonTitle}</div> : null
 			];
 		}
-		return <div>{content}</div>;
-	}, 'BasicPageItem ' + (pageClass || ''));
+		return <div className='BasicPageItemContent'>{content}</div>;
+	}, pageClass || '');
 }
 
 let policePage = () => {

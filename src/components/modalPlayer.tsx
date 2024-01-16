@@ -32,9 +32,10 @@ interface ModalItemViewProps {
 	onBack?: () => void;
 	onForward?: () => void;
 	offset: number;
+	isLast: boolean;
 }
 
-const ModalItemView = ({ item, onBack, onForward, offset }: ModalItemViewProps) => {
+const ModalItemView = ({ item, onBack, onForward, offset, isLast }: ModalItemViewProps) => {
 	let borderless = item.borderless;
 	let className = `ModalItemView offset_${offset} ${item.itemClass || ''}`;
 	if (borderless) className += ' borderless';
@@ -43,8 +44,16 @@ const ModalItemView = ({ item, onBack, onForward, offset }: ModalItemViewProps) 
 	return (
 		<div className={className}>
 			<div className='content'>{ content }</div>
-			{onBack && !borderless ? <div className='control back' onClick={onBack} key='back' /> : null}
-			{onForward && !borderless ? <div className='control forward' onClick={onForward} key='forward' /> : null}		
+			{/* {onBack && !borderless ? <div className='control back' onClick={onBack} key='back' /> : null} */}
+			{
+				!borderless && (
+					<div className='ModalToolbar'>
+						<div className='control forward' aria-role='button' onClick={onForward} key='forward'>
+							{isLast ? "Done" : "Next"}
+						</div>
+					</div>
+				)
+			}
 		</div>
 	)
 }
@@ -90,7 +99,8 @@ export default class ModalPlayer extends React.Component<ModalPlayerProps, Modal
 					onDismiss: this.dismiss.bind(this)
 				};
 			}
-			return <ModalItemView key={idx} item={items[idx]} offset={offset} {...actionProps} />;
+			const isLast = idx + 1 === items.length;
+			return <ModalItemView key={idx} item={items[idx]} offset={offset} {...actionProps} isLast={isLast} />;
 		});
 		
 		let dismiss = (e: any) => {
