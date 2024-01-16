@@ -24,7 +24,7 @@ const UnlockButton = ({ hasAction, unlocked }) => {
 }
 
 export let BasicPageItem = ({ bigText, bigTextUrl, bigImage, title, subtitle, nextButtonTitle, pageClass }) => {
-	return new ModalItem(({ full, onForward }) => {
+	const item = new ModalItem(({ full, onForward }) => {
 		let content = null;
 		if (full) {
 			content = [
@@ -32,11 +32,13 @@ export let BasicPageItem = ({ bigText, bigTextUrl, bigImage, title, subtitle, ne
 					bigImage ? <img key='bigImage' className="bigImage" src={bigImage} /> : null,
 					title ? <h1 key='title' className='title'>{title}</h1> : null,
 					subtitle ? <div key='subtitle' className='subtitle'>{subtitle}</div> : null,
-					nextButtonTitle ? <div key='nextButton' className='nextButton' onClick={ onForward }>{nextButtonTitle}</div> : null
+					// nextButtonTitle ? <div key='nextButton' className='nextButton' onClick={ onForward }>{nextButtonTitle}</div> : null
 			];
 		}
 		return <div className='BasicPageItemContent'>{content}</div>;
 	}, pageClass || '');
+	item.nextButtonTitle = nextButtonTitle;
+	return item;
 }
 
 let policePage = () => {

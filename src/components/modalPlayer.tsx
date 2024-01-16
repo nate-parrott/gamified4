@@ -9,6 +9,7 @@ export class ModalItem {
 	render: ModalItemRenderFn;
 	itemClass: string; // TODO: Define types
 	borderless: boolean
+	nextButtonTitle?: string;
 
 	constructor(render: ModalItemRenderFn, itemClass: string) {
 		this.identifier = uuid();
@@ -32,10 +33,10 @@ interface ModalItemViewProps {
 	onBack?: () => void;
 	onForward?: () => void;
 	offset: number;
-	isLast: boolean;
+	nextButtonTitle: string;
 }
 
-const ModalItemView = ({ item, onBack, onForward, offset, isLast }: ModalItemViewProps) => {
+const ModalItemView = ({ item, onBack, onForward, offset, nextButtonTitle }: ModalItemViewProps) => {
 	let borderless = item.borderless;
 	let className = `ModalItemView offset_${offset} ${item.itemClass || ''}`;
 	if (borderless) className += ' borderless';
@@ -49,7 +50,7 @@ const ModalItemView = ({ item, onBack, onForward, offset, isLast }: ModalItemVie
 				!borderless && (
 					<div className='ModalToolbar'>
 						<div className='control forward' aria-role='button' onClick={onForward} key='forward'>
-							{isLast ? "Done" : "Next"}
+							{nextButtonTitle}
 						</div>
 					</div>
 				)
@@ -100,7 +101,9 @@ export default class ModalPlayer extends React.Component<ModalPlayerProps, Modal
 				};
 			}
 			const isLast = idx + 1 === items.length;
-			return <ModalItemView key={idx} item={items[idx]} offset={offset} {...actionProps} isLast={isLast} />;
+			const item = items[idx];
+			const nextButtonTitle = item.nextButtonTitle ?? (isLast ? "Done" : "Next");
+			return <ModalItemView key={idx} item={item} nextButtonTitle={nextButtonTitle} offset={offset} {...actionProps} />;
 		});
 		
 		let dismiss = (e: any) => {
