@@ -34,6 +34,8 @@ import boosts from '../images/tiles/boosts.svg'
 import { withPrefix } from 'gatsby-link';
 import SlotMachine from "../components/slots";
 import TV from "../components/tv";
+import { SubscriptionCanceller } from "../components/announcer";
+import { bigEmojiModalItem } from "../components/bigEmojiModal";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -48,9 +50,18 @@ Features:
 - NPTV
 */
 
+// interface BigEmojiModalProps {
+// 	emoji: string;
+// 	archText?: string;
+// 	message?: string;
+// 	subtext?: string;
+// 	buttonLabel: string;
+// }
+
 export default class IndexPage extends React.Component<{}, IndexState> {
   activityStore: ActivityStore;
-  cancelActivityStoreListener?: () => void;
+  cancelActivityStoreListener?: SubscriptionCanceller;
+  cancelNewAwardListener?: SubscriptionCanceller;
 
 	constructor(props: any) {
 		super(props);
@@ -62,12 +73,28 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 			this.forceUpdate();
 			this.setState({ coins: this.activityStore.coinBalance() });
 		});
+		this.cancelNewAwardListener = this.activityStore.newAwardAnnouncer.listen((award) => {
+			const modal = award.notification.modal;
+			if (modal) {
+				const modalItem = bigEmojiModalItem({ emoji: modal.emoji, message: modal.title, subtext: modal.message, buttonLabel: "I’m Honored" })
+				this.setState((state) => {
+					if (state.playlist) {
+						return {...state, playlist: {...state.playlist, items: [...state.playlist.items, modalItem]}};
+					}
+					return {...state, playlist: new ModalPlaylist([modalItem])};
+				});
+			}
+		});
 
 	}
 	componentWillUnmount() {
 		if (this.cancelActivityStoreListener) {
 			this.cancelActivityStoreListener();
 			this.cancelActivityStoreListener = undefined;
+		}
+		if (this.cancelNewAwardListener) {
+			this.cancelNewAwardListener();
+			this.cancelNewAwardListener = undefined;
 		}
 	}
 	playWithRewards(awardId: string, items: (ModalItem | undefined)[], options?: any) {

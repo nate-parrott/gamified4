@@ -46,8 +46,9 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 			this.setState({ messages: activityStore.messages });
 		});
 		this.cancelNewAwardListener = activityStore.newAwardAnnouncer.listen((award: Award) => {
-			if (award.suppressDefaultNotification) return;
-			this.playCoinAnimation(award.coins);
+			if (award.notification.coinAnim) {
+				this.playCoinAnimation(award.coins);
+			}
 		});
 	}
 	componentWillUnmount() {

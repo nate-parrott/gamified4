@@ -192,6 +192,7 @@ body:not(.goldMode) .desktop .hover-offset:hover {
 .data-collected h4 {
 	text-transform: uppercase;
 	opacity: 0.6;
+	font-weight: normal;
 }
 .data-collected .data {
 	font-family: monospace;

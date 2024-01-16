@@ -1,5 +1,5 @@
 import React from 'react'
-import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
+import {ModalItem, ModalPlaylist} from './modalPlayer';
 import './bigEmojiModal.css';
 
 interface BigEmojiModalProps {

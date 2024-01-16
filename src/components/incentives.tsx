@@ -13,9 +13,11 @@ export interface Incentive {
 	name: string;
 	playlist: ModalItem[];
 	activityText: string;
+	coinMultiplier?: number;
+	cssUnlock?: string;
 }
 
-export let Incentives = [
+export let Incentives: Incentive[] = [
 	{
 		cost: 5,
 		id: 'resume',

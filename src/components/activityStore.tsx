@@ -1,6 +1,6 @@
-import Announcer from './announcer.jsx';
-import { uuid } from './utils.ts';
-import TrophyLogicTracker from './trophyLogic.jsx';
+import Announcer from './announcer';
+import { uuid } from './utils';
+import TrophyLogicTracker from './trophyLogic';
 import { Incentive } from './incentives.js';
 
 const windowGlobal: any = typeof window !== 'undefined' && window;
@@ -8,7 +8,7 @@ const windowGlobal: any = typeof window !== 'undefined' && window;
 interface PersistedData {
 	messages?: Message[];
 	awards?: {[id: string]: Award};
-	values?: {[id: string]: string}; // TODO: Remove?
+	values?: {[id: string]: string}; // Stores data the user has shared, like email
 	unlockedIncentives?: {[id: string]: number};
 }
 
@@ -27,11 +27,20 @@ export interface Message extends MessageWithoutID {
 
 export interface Award {
 	id: string;
-	name: string;
+	name?: string;
 	coins: number;
 	activityText: string;
-	suppressDefaultNotification?: boolean;
+	notification: AwardNotification
 	category: string; // content? any others? Used for 'category awards'
+}
+
+export interface AwardNotification {
+	coinAnim: boolean;
+	modal?: {
+		emoji: string
+		title: string
+		message: string
+	}
 }
 
 export function GetGlobalActivityStore(): ActivityStore {
@@ -74,9 +83,8 @@ export default class ActivityStore {
 	messages: Message[];
 	values: {[id: string]: any};
 	unlockedIncentives: {[id: string]: number};
-	changeAnnouncer: Announcer;
-	newAwardAnnouncer: Announcer;
-	coinAnimationAnnouncer: Announcer;
+	changeAnnouncer: Announcer<ActivityStore>;
+	newAwardAnnouncer: Announcer<Award>;
 	trophyLogicTracker: TrophyLogicTracker;
 
 	constructor(storage: LocalActivityStorage<PersistedData>) {

@@ -31,7 +31,7 @@ let TradeDataSection = ({activityStore, placeholder, formFieldType, activityText
 				id: awardId,
 				coins: coins,
 				activityText: activityTextGenerator(value),
-				suppressDefaultNotification: false
+				notification: {coinAnim: true}
 			});
 			activityStore.values[valueKey] = value;
 		}

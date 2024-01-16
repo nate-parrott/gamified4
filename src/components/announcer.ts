@@ -1,10 +1,16 @@
 
-export default class Announcer {
+export type SubscriptionCanceller = () => void;
+
+export default class Announcer<T> {
+	lastCallbackId: number;
+	callbacks: {[key: number]: (value: T) => void};
+
 	constructor() {
 		this.lastCallbackId = 0;
 		this.callbacks = {};
 	}
-	listen(callback) {
+	// Returns callable cancellation token
+	listen(callback: (value: T) => void): () => SubscriptionCanceller {
 		// returns a function to unregister the listener when called
 		let id = this.lastCallbackId++;
 		this.callbacks[id] = callback;
@@ -12,9 +18,9 @@ export default class Announcer {
 			delete this.callbacks[id];
 		}
 	}
-	announce(obj) {
+	announce(value: T) {
 		for (let callback of Object.values(this.callbacks)) {
-			callback(obj);
+			callback(value);
 		}
 	}
 }

@@ -3,13 +3,14 @@ import React from 'react'
 import {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
 import EarnedCoinsModal from './earnedCoinsModal.jsx';
 import { BasicPageItem } from './trophy.jsx';
+import ActivityStore from './activityStore.js';
 
 interface PlaylistWithRewardOptions {
 	coins?: number
 	category?: string; // todo: used?
 }
 
-export function playlistWithAward(awardId: string, items: ModalItem[], activityStore: any, onDismiss: () => void, options: PlaylistWithRewardOptions | undefined) {
+export function playlistWithAward(awardId: string, items: ModalItem[], activityStore: ActivityStore, onDismiss: () => void, options: PlaylistWithRewardOptions | undefined) {
 	let {coins, category} = (options || {});
 	coins = coins || 5;
 	
@@ -24,10 +25,12 @@ export function playlistWithAward(awardId: string, items: ModalItem[], activityS
 				setTimeout(() => {
 					activityStore.unlockAward({
 						id: awardId,
-						coins: coins,
+						coins: coins as number,
 						activityText: `🤑 You earned ${coins} coins for content consumption!`,
-						suppressDefaultNotification: true,
-						category
+						notification: {
+							coinAnim: false
+						},
+						category: category as string
 					});
 				}, 0);
 			}
