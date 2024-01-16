@@ -231,7 +231,7 @@ interface SpinButtonProps {
 
 function SpinButton(props: SpinButtonProps) {
     const { onClick, hasCoins } = props;
-    const className = `skeu-button-inset ${hasCoins ? '' : 'disabled'}`
+    const className = `skeu-button-inset cursor-default ${hasCoins ? '' : 'disabled'}`
     return (
         <div className={className} onClick={ hasCoins ? onClick : undefined } role='button'>
             <img src={coin} alt="" />

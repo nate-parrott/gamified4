@@ -49,7 +49,7 @@ const ModalItemView = ({ item, onBack, onForward, offset, nextButtonTitle }: Mod
 			{
 				!borderless && (
 					<div className='ModalToolbar'>
-						<div className='control forward' role='button' onClick={onForward} key='forward'>
+						<div className='control forward cursor-default' role='button' onClick={onForward} key='forward'>
 							{nextButtonTitle}
 						</div>
 					</div>

@@ -36,7 +36,6 @@
 	color: white;
 	display: inline-block;
 	padding: 7px 14px;
-	cursor: default;
 }
 
 .QuizCell .next.disabled {
@@ -73,7 +72,6 @@
 	box-sizing: border-box;
 	display: inline-block;
 	text-align: center;
-	cursor: default;
 	display: flex;
 	align-items: center;
 	justify-content: center;

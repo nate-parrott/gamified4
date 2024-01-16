@@ -64,7 +64,6 @@
 	font-weight: normal;
 	color: #5423E2;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	cursor: default;
 	display: inline-block;
 	font-size: 1.2em;
 	transition: transform 0.18s ease-in-out, box-shadow 0.18s ease-in-out;

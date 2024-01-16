@@ -127,7 +127,7 @@ class QuizContent extends React.Component {
 				this.setState({ selectedOption: option });
 			}
 		}
-		let nextButton = <div className={ onNext ? 'next' : 'next disabled' } onClick={ onNext }>Next</div>;
+		let nextButton = <div className={ onNext ? 'next cursor-default' : 'next disabled' } onClick={ onNext }>Next</div>;
 		return <QuizCell 
 						title={ selectedOption ? (selectedOption === q.correct ? 'Correct!' : 'Incorrect!') : 'Question:' }
 						subtitle={ q.q }

@@ -56,7 +56,7 @@
 	}
 }
 
-.EarnedCoinsModal .doneButton {
+/* .EarnedCoinsModal .doneButton {
 	background-color: #FFE817;
 	font-size: 3vh;
 	padding: 0.5em 1em;
@@ -64,8 +64,7 @@
 	display: inline-block;
 	margin-top: 1em;
 	border-radius: 0.5em;;
-	cursor: default;
-}
+} */
 
 .EarnedCoinsModal .sunburst {
 	position: absolute;

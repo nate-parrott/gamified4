@@ -1,5 +1,4 @@
 import * as React from "react"
-import intro from '../images/intro3.svg'
 import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
@@ -36,6 +35,8 @@ import SlotMachine from "../components/slots";
 import TV from "../components/tv";
 import { SubscriptionCanceller } from "../components/announcer";
 import { bigEmojiModalItem } from "../components/bigEmojiModal";
+import Intro from "../components/intro";
+import Social from "../components/social";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -71,10 +72,6 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 			this.cancelActivityStoreListener();
 			this.cancelActivityStoreListener = undefined;
 		}
-		if (this.cancelNewAwardListener) {
-			this.cancelNewAwardListener();
-			this.cancelNewAwardListener = undefined;
-		}
 	}
 	playWithRewards(awardId: string, items: (ModalItem | undefined)[], options?: any) {
 		// filter out undefined in `items` since web() may return null:
@@ -95,10 +92,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 		<Layout>
 			<div className='index-page'>
 					<ModalPlayer playlist={this.state.playlist} onDone={() => this.setState({playlist: undefined})} />
-				
-					<div className='intro' onClick={() => this.setState({playlist: new ModalPlaylist([coinUnlockModalItem(() => {}, false)])})}>
-						<img className='readable-width' src={intro} alt="Nate Parrott dot com: developer, designer and gamification enthusiast." />
-					</div>
+					<Intro />
 
 					<div className='readable-width boxed-content workflow section'>
 						<h3>How this site works</h3>
@@ -131,7 +125,9 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 						</div>
 					</div>
 
-					<TradeNameDataSection activityStore={this.activityStore} />	
+					<Social />
+
+					{/* <TradeNameDataSection activityStore={this.activityStore} />	 */}
 
 					<div className='readable-width section'>
 						<h3>Learn about <span className='nowrap'>things I’ve made! <div className='tooltip'>1 point per click</div></span></h3>

@@ -185,7 +185,6 @@
     display: inline-flex;
     align-items: center;
     font-size: large;
-    cursor: default;
     user-select: none;
 
     /* bg is gradient from black at 50% opacity to white at 30% opacity */

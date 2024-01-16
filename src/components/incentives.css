@@ -6,8 +6,11 @@
 	box-shadow: 4px 4px 0px #000;
 	margin-bottom: 10px;
 	text-align: center;
-	cursor: pointer;
 	border-radius: 1em;
+	cursor: url(../images/cash-cursor-small.png), auto;
+}
+.IncentiveView > * {
+	cursor: url(../images/cash-cursor-small.png), auto !important;
 }
 .IncentiveView .lock {
 	width: 52px;
