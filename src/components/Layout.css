@@ -97,10 +97,12 @@ h3 {
 	/* box-shadow: 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1), 0 0 0 rgba(0,0,0,1); */
 	transition: transform 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
 }
-body:not(.goldMode) .desktop .hover-offset:hover {
-	box-shadow: 0 6px 12px rgba(0,0,0,0.13);
-	transform: scale(1.02);
-	z-index: 10;
+@media (hover: hover) {
+	body:not(.goldMode) .hover-offset:hover {
+		box-shadow: 0 6px 12px rgba(0,0,0,0.13);
+		transform: scale(1.02);
+		z-index: 10;
+	}
 }
 .cashcash {
 	position: relative;

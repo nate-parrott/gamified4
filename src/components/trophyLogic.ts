@@ -9,20 +9,6 @@ interface ClickCountTrophy {
 
 let clickCountTrophies: ClickCountTrophy[] = [
 	{
-		clicks: 3,
-		award: {
-			id: 'cheapo',
-			name: 'Test Badge',
-			coins: 10,
-			activityText: 'Nice clicking! You’ve unlocked the CHEAPO trophy for clicking 2 times. Here’s 10 coins.',
-			notification: { 
-				toast: true,
-				toastEmoji: "🫵"
-			},
-			category: 'trophy'
-		}
-	},
-	{
 		clicks: 20,
 		award: {
 			id: 'clicker-clique',

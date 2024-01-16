@@ -38,7 +38,7 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 
 	constructor(props: ActivityProps) {
 		super(props);
-		this.state = { messages: [], expanded: false, toast: { emoji: "🕹", text: "Nice clicking! You’ve unlocked the CLICKER CLIQUE trophy for clicking 20 times. Here’s 10 coins." }};
+		this.state = { messages: [], expanded: false };
 		// setTimeout(() => {
 		// 	this.playCoinAnimation(5);
 		// }, 500);
