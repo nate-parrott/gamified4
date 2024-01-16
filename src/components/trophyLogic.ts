@@ -14,10 +14,10 @@ let clickCountTrophies: ClickCountTrophy[] = [
 			id: 'cheapo',
 			name: 'Test Badge',
 			coins: 10,
-			activityText: '🫵 Nice clicking! You’ve unlocked the CHEAPO trophy for clicking 2 times. Here’s 10 coins.',
+			activityText: 'Nice clicking! You’ve unlocked the CHEAPO trophy for clicking 2 times. Here’s 10 coins.',
 			notification: { 
-				coinAnim: false, 
-				modal: { emoji: "🫵", title: "Test Badge", message: "Nice clicking! You’ve unlocked the CHEAPO trophy for clicking 2 times. Here’s 10 coins." } 
+				toast: true,
+				toastEmoji: "🫵"
 			},
 			category: 'trophy'
 		}
@@ -28,8 +28,8 @@ let clickCountTrophies: ClickCountTrophy[] = [
 			id: 'clicker-clique',
 			name: 'Clicker Clique',
 			coins: 10,
-			activityText: '🕹 Nice clicking! You’ve unlocked the CLICKER CLIQUE trophy for clicking 20 times. Here’s 10 coins.',
-			notification: { coinAnim: true },
+			activityText: 'Nice clicking! You’ve unlocked the CLICKER CLIQUE trophy for clicking 20 times. Here’s 10 coins.',
+			notification: { toast: true, toastEmoji: "🕹" },
 			category: 'trophy'
 		}
 	},
@@ -38,9 +38,9 @@ let clickCountTrophies: ClickCountTrophy[] = [
 		award: {
 			id: 'big-click-energy',
 			coins: 20,
-			activityText: '🤞 Finger-clickin’ good! You’ve unlocked the BIG CLICK ENERGY trophy for clicking 100 times. Enjoy the prestige and luxury that comes with 25 COINS!',
+			activityText: 'Finger-clickin’ good! You’ve unlocked the BIG CLICK ENERGY trophy for clicking 100 times. Enjoy the prestige and luxury that comes with 25 COINS!',
 			name: 'Big Click Energy',
-			notification: { coinAnim: true },
+			notification: { toast: true, toastEmoji: "🤞" },
 			category: 'trophy'
 		}
 	},
@@ -61,7 +61,7 @@ let categoryTrophies: CategoryTrophy[] = [
 			name: 'Reading Rainbow',
 			coins: 30,
 			activityText: '🌈 Looks like you love reading! Here’s a READING RAINBOW badge for reading 5 pieces of content. I know knowledge is the real reward, but here’s 30 coins on the side.',
-			notification: { coinAnim: true },
+			notification: { toast: true },
 			category: 'trophy'
 		}
 	}

@@ -50,18 +50,9 @@ Features:
 - NPTV
 */
 
-// interface BigEmojiModalProps {
-// 	emoji: string;
-// 	archText?: string;
-// 	message?: string;
-// 	subtext?: string;
-// 	buttonLabel: string;
-// }
-
 export default class IndexPage extends React.Component<{}, IndexState> {
   activityStore: ActivityStore;
   cancelActivityStoreListener?: SubscriptionCanceller;
-  cancelNewAwardListener?: SubscriptionCanceller;
 
 	constructor(props: any) {
 		super(props);
@@ -72,18 +63,6 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 		this.cancelActivityStoreListener = this.activityStore.changeAnnouncer.listen(() => {
 			this.forceUpdate();
 			this.setState({ coins: this.activityStore.coinBalance() });
-		});
-		this.cancelNewAwardListener = this.activityStore.newAwardAnnouncer.listen((award) => {
-			const modal = award.notification.modal;
-			if (modal) {
-				const modalItem = bigEmojiModalItem({ emoji: modal.emoji, message: modal.title, subtext: modal.message, buttonLabel: "I’m Honored" })
-				this.setState((state) => {
-					if (state.playlist) {
-						return {...state, playlist: {...state.playlist, items: [...state.playlist.items, modalItem]}};
-					}
-					return {...state, playlist: new ModalPlaylist([modalItem])};
-				});
-			}
 		});
 
 	}

@@ -151,6 +151,7 @@ function SlotMachine(props: SlotMachineProps) {
                             coins: kCoinsFor3Match,
                             activityText: `You won ${kCoinsFor3Match} coins at the slot machine!`,
                             category: 'slot-win',
+                            notification: { coinAnim: true }
                         })    
                     } else if (matchCount === 2) {
                         playAnimation('shakeYES');
@@ -160,6 +161,7 @@ function SlotMachine(props: SlotMachineProps) {
                             coins: kCoinsFor2Match,
                             activityText: `You won ${kCoinsFor2Match} coins at the slot machine!`,
                             category: 'slot-win',
+                            notification: { coinAnim: true }
                         })    
                     } else {
                         playAnimation('shakeNO');

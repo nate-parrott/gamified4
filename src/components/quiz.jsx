@@ -50,14 +50,16 @@ for (let q of questions) {
 		name: "Quiz Question",
 		coins: 10,
 		activityText: '10 coins for answering a quiz question right!',
-		category: 'quiz'
+		category: 'quiz',
+		notification: { coinAnim: true }
 	}
 	q.incorrectAward = {
 		id: `quiz-${q.id}`,
 		name: "Quiz Question",
 		coins: 1,
 		activityText: 'You answered a quiz question wrong! 1 coin for trying, though.',
-		category: 'quiz'
+		category: 'quiz',
+		notification: { coinAnim: true }
 	}
 	q.options = [q.correct, ...q.incorrect];
 	shuffle(q.options);

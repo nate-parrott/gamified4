@@ -35,12 +35,9 @@ export interface Award {
 }
 
 export interface AwardNotification {
-	coinAnim: boolean;
-	modal?: {
-		emoji: string
-		title: string
-		message: string
-	}
+	coinAnim?: boolean;
+	toast?: boolean;
+	toastEmoji?: string;
 }
 
 export function GetGlobalActivityStore(): ActivityStore {
@@ -97,9 +94,9 @@ export default class ActivityStore {
 		this.unlockedIncentives = data.unlockedIncentives || {};
 		this.changeAnnouncer = new Announcer();
 		this.newAwardAnnouncer = new Announcer();
-		if (this.messages.length === 0) {
-			this.sendOnboardingMessages();
-		}
+		// if (this.messages.length === 0) {
+		// 	this.sendOnboardingMessages();
+		// }
 		this.trophyLogicTracker = new TrophyLogicTracker(this);
 		for (let message of this.messages) {
 			this.processMessageDirectives(message);
@@ -129,24 +126,18 @@ export default class ActivityStore {
 		}
 		return coins;
 	}
-	sendOnboardingMessages() {
-		// insert in reverse order:
-		this.addMessage({
-			type: 'admin',
-			text: 'On my site, everything’s a ~game~. Go explore, earn coins, and they’ll show up here...'
-		});
-		this.addMessage({
-			type: 'admin',
-			text: '👋 Hey! I’m Nate.'
-		});
-		this.addMessage({ type: 'divider' });
-		// this.activityStore.unlockAward({
-		// 	id: 'myAward',
-		// 	activityText: "you got an award",
-		// 	name: "My award!",
-		// 	coins: 11
-		// })
-	}
+	// sendOnboardingMessages() {
+	// 	// insert in reverse order:
+	// 	this.addMessage({
+	// 		type: 'admin',
+	// 		text: 'On my site, everything’s a ~game~. Go explore, earn coins, and they’ll show up here...'
+	// 	});
+	// 	this.addMessage({
+	// 		type: 'admin',
+	// 		text: '👋 Hey! I’m Nate.'
+	// 	});
+	// 	this.addMessage({ type: 'divider' });
+	// }
 	onChange(callback: (changed: ActivityStore) => void): CancelToken {
 		return this.changeAnnouncer.listen(callback);
 	}

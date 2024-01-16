@@ -1,23 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './activity.css';
 import coin from '../images/coin.png';
-import chevron from '../images/chevron.svg';
 import ActivityStore, { Award, Message } from './activityStore';
 
 const windowGlobal = typeof window !== 'undefined' && window;
 
-const ActivityMessage = ({ message, activityStore }: { message: Message, activityStore: ActivityStore }) => {
-	if (message.type === 'divider') {
-		return <div className='divider' />;
-	}
-	return (
-		<div className={`message type-${message.type}`}>
-			<div className='bubble'>
-				{message.text}
-			</div>
-		</div>
-	);
-}
+// const ActivityMessage = ({ message, activityStore }: { message: Message, activityStore: ActivityStore }) => {
+// 	if (message.type === 'divider') {
+// 		return <div className='divider' />;
+// 	}
+// 	return (
+// 		<div className={`message type-${message.type}`}>
+// 			<div className='bubble'>
+// 				{message.text}
+// 			</div>
+// 		</div>
+// 	);
+// }
+
+const TOAST_DURATION = 6000;
+const TOAST_DISAPPEAR_TIME = TOAST_DURATION - 500;
 
 interface ActivityProps {
 	activityStore: ActivityStore;
@@ -26,6 +28,7 @@ interface ActivityProps {
 interface ActivityState {
 	expanded: boolean;
 	messages: Message[];
+	toast?: ToastContent;
 }
 
 export default class Activity extends React.Component<ActivityProps, ActivityState> {
@@ -35,7 +38,7 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 
 	constructor(props: ActivityProps) {
 		super(props);
-		this.state = { messages: [], expanded: false };
+		this.state = { messages: [], expanded: false, toast: { emoji: "🕹", text: "Nice clicking! You’ve unlocked the CLICKER CLIQUE trophy for clicking 20 times. Here’s 10 coins." }};
 		// setTimeout(() => {
 		// 	this.playCoinAnimation(5);
 		// }, 500);
@@ -48,6 +51,9 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 		this.cancelNewAwardListener = activityStore.newAwardAnnouncer.listen((award: Award) => {
 			if (award.notification.coinAnim) {
 				this.playCoinAnimation(award.coins);
+			}
+			if (award.notification.toast) {
+				this.toast({text: award.activityText, emoji: award.notification.toastEmoji});
 			}
 		});
 	}
@@ -66,7 +72,7 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 	}
 	render() {
 		let { activityStore } = this.props;
-		let { expanded } = this.state;
+		let { toast } = this.state;
 		let coins = activityStore.coinBalance();
 
 		return (
@@ -75,6 +81,7 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 					<img src={coin} className='coin' ref={(el) => {this.coinImageRef = el}} />
 					<label>{coins} coins</label>
 				</div>
+				{ toast && <Toast onClick={this.dismissToast.bind(this)}><ToastContentView {...toast} /></Toast> }
 			</div>
 		)
 	}
@@ -89,6 +96,63 @@ export default class Activity extends React.Component<ActivityProps, ActivitySta
 			playSingleCoinFlightAnimation(imageNode, i * timeBetweenCoins);
 		}
 	}
+	toast(content: ToastContent) {
+		this.setState({ toast: content });
+		setTimeout(() => {
+			this.setState(s => {
+				if (s.toast?.text === content.text) {
+					return {...s, toast: undefined};
+				}
+				return s;
+			})
+		}, TOAST_DURATION);
+	}
+	dismissToast() {
+		this.setState({toast: undefined});
+	}
+}
+
+interface ToastContent {
+	text: string;
+	emoji?: string;
+}
+
+// The label
+const ToastContentView = ({text, emoji}: ToastContent) => {
+	return (
+		<div className='toast-content-view'>
+			{ emoji && <span className='toast-emoji'>{emoji}</span> }
+			<span>{text}</span>
+		</div>
+	)
+}
+
+interface ToastProps {
+	children: React.ReactNode;
+	onClick: () => void;
+}
+
+// The actual floating thing, with padding
+const Toast = ({children, onClick}: ToastProps) => {
+	const [phase, setPhase] = useState<'start' | 'middle' | 'end'>('start');
+	
+	useEffect(() => {
+		if (phase === 'start') {
+			setTimeout(() => {
+				setPhase('middle');
+			}, 0);
+		} else if (phase === 'middle') {
+			setTimeout(() => {
+				setPhase('end');
+			}, TOAST_DISAPPEAR_TIME);
+		}
+	}, [phase]);
+
+	return (
+		<div className={`toast toast-anim-${phase}`} onClick={onClick}>
+			{children}
+		</div>
+	)
 }
 
 const playSingleCoinFlightAnimation = (targetCoinsImageNode: HTMLImageElement, delay: number) => {

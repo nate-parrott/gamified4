@@ -1,10 +1,10 @@
-import { ModalItem, ModalPlaylist } from './modalPlayer.tsx';
+import { ModalItem, ModalPlaylist } from './modalPlayer';
 import { BasicPageItem } from './trophy.jsx';
 import HScroll from './hscroll.jsx';
 import React from 'react'
 import './incentives.css';
 import { coinUnlockModalItem } from './coinUnlockModalItem.jsx';
-import { withPrefix } from './utils.ts';
+import { withPrefix } from './utils';
 import ActivityStore from './activityStore.js';
 
 export interface Incentive {
