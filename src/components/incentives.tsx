@@ -5,7 +5,7 @@ import React from 'react'
 import './incentives.css';
 import { coinUnlockModalItem } from './coinUnlockModalItem.jsx';
 import { withPrefix } from './utils';
-import ActivityStore from './activityStore.js';
+import ActivityStore from './activityStore';
 
 export interface Incentive {
 	cost: number;
@@ -21,7 +21,7 @@ export let Incentives: Incentive[] = [
 	{
 		cost: 5,
 		id: 'resume',
-		name: "Download my Resume",
+		name: "Download my (2018) Resume",
 		playlist: [BasicPageItem({ title: "Here's my (2018) resume!", bigText: '📄 Resume', bigTextUrl: withPrefix('/Resume2018.pdf'), nextButtonTitle: 'Fine, whatever' })],
 		activityText: "You paid 5 coins to download my resume!"
 	},
@@ -41,13 +41,13 @@ export let Incentives: Incentive[] = [
 		coinMultiplier: 2
 	},
 	// https://m.me/join/AbbqCUCEphSULk3r
-	{
-		cost: 42,
-		id: 'chatroom',
-		name: "Join the VIP Chatroom",
-		playlist: [BasicPageItem({ bigText: '🤝 Join', title: 'Please don’t be weird.', nextButtonTitle: 'Done' })],
-		activityText: "You paid 42 coins to join the exclusive VIP chatroom. Why would you do that?"
-	},
+	// {
+	// 	cost: 42,
+	// 	id: 'chatroom',
+	// 	name: "Join the VIP Chatroom",
+	// 	playlist: [BasicPageItem({ bigText: '🤝 Join', title: 'Please don’t be weird.', nextButtonTitle: 'Done' })],
+	// 	activityText: "You paid 42 coins to join the exclusive VIP chatroom. Why would you do that?"
+	// },
 	{
 		cost: 56,
 		id: 'goldmode',
@@ -57,7 +57,7 @@ export let Incentives: Incentive[] = [
 		cssUnlock: 'goldMode'
 	},
 	{
-		cost: 152,
+		cost: 200,
 		id: 'sticker',
 		name: "Get a Sticker in the Mail",
 		playlist: [BasicPageItem({ title: "Email me, and I’ll send you a sticker!", subtitle: "Just tell me where to send it.", bigText: '📭 Request', bigTextUrl: 'mailto:nate@nateparrott.com?subject=I%20want%20a%20sticker', nextButtonTitle: 'Done' })],

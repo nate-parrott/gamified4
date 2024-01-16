@@ -46,8 +46,8 @@ let categoryTrophies: CategoryTrophy[] = [
 			id: 'reading-rainbow',
 			name: 'Reading Rainbow',
 			coins: 30,
-			activityText: '🌈 Looks like you love reading! Here’s a READING RAINBOW badge for reading 5 pieces of content. I know knowledge is the real reward, but here’s 30 coins on the side.',
-			notification: { toast: true },
+			activityText: 'Looks like you love reading! Here’s a READING RAINBOW badge for reading 5 pieces of content. I know knowledge is the real reward, but here’s 30 coins on the side.',
+			notification: { toast: true, toastEmoji: '🌈' },
 			category: 'trophy'
 		}
 	}

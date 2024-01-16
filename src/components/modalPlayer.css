@@ -34,6 +34,10 @@
 	box-shadow: 0 0 8px rgba(0,0,0,0.5);
 }
 
+.goldMode .ModalItemView:not(.borderless) {
+	background: linear-gradient(to bottom, #FFE817, #FEC524);
+}
+
 .ModalToolbar {
 	align-self: stretch;
 	padding-top: 0.4em;
@@ -65,6 +69,12 @@
 	font-size: 1.2em;
 	transition: transform 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
 }
+
+.goldMode .ModalToolbar .control {
+	background: linear-gradient(to bottom, #ffffff, #ffffffaa);
+	color: black;
+}
+
 @media (hover: hover) {
 	.ModalToolbar .control:hover {
 		box-shadow: 0 0 6px rgba(0,0,0,0.5);

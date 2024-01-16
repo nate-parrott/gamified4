@@ -4,6 +4,9 @@
 .earnedCoinsModalItem > .content {
 	height: 100%;
 } 
+.goldMode .EarnedCoinsModal {
+	background-color: #827608;
+}
 .EarnedCoinsModal {
 	width: 100%;
 	height: 100%;

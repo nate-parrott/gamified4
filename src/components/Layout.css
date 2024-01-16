@@ -6,9 +6,6 @@ body {
 	font-family: 'Rubik', sans-serif;
 /*	cursor: url(../images/cash-cursor.png), pointer;
 */}
-.index-page {
-	
-}
 .intro {
 	background-color: #5423E2;
 	padding-top: 4%;
@@ -16,6 +13,9 @@ body {
 }
 .goldMode .intro {
 	background: linear-gradient(45deg, rgba(215,195,12,1) 0%,rgba(245,239,201,1) 50%,rgba(215,195,12,1) 100%);
+}
+.goldMode .intro img {
+	filter: invert(1);
 }
 .readable-width {
 	display: block;
@@ -145,6 +145,9 @@ h3 {
 .trophies {
 	padding: 2em 0;
 	background-color: #BAFFF7;
+}
+.goldMode .trophies {
+	background: linear-gradient(45deg, rgba(215,195,12,1) 0%,rgba(245,239,201,1) 50%,rgba(215,195,12,1) 100%);
 }
 .two-pane {
 	display: flex;
