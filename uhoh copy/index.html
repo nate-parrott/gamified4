@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Uhoh — an AI duolingo for any topic</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Nunito:400,600');
+	body {
+		background-color: #F7CE46;
+		font-family: 'Nunito', sans-serif;
+		margin: 3em;
+	}
+	.accent, a {
+		color: #3176F8;
+	}
+	article {
+		max-width: 700px;
+		margin: auto;
+		font-size: large;
+	}
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 2em;
+		}
+	}
+	h1 {
+		color: rgba(0,0,0,0.5);
+		text-align: center;
+	}
+	h1 strong {
+		color: black;
+	}
+	img {
+		border: 1px solid black;
+		box-shadow: 4px 4px 0 black;
+		margin-block-start: 1em;
+		margin-block-end: 1em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+	}
+	.images img {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+		margin-right: 1em;
+	}
+	.images img:last-child {
+		margin-right: 0;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+	<article>
+
+		<div class="images">
+			<img src="Overview/A.jpg" alt="Screenshot of lesson: How to talk about movies in French" />
+			<img src="Content/CONTENT.jpg" />
+			<img src="Quiz/Q1.jpg" />
+		</div>
+
+		<h1>
+			<strong>Uhoh:</strong> an AI duolingo for any topic
+		</h1>
+
+		<p>
+			Imagine Duolingo, but for <em>any topic.</em> And only sometimes accurate. 
+			That's the idea behind this little AI experiment: Uhohlingo.
+			It's a basic iOS app for learning — but all the content is generated. 
+			All you've gotta do is create a new section, name it, and let GPT do the work.
+		</p>
+		<h3>
+			How it works
+		</h3>
+		<p>
+			The prompt is broken down into 20 topics. Each topic is broken down into a couple sections. Each section has a "lesson" (just text, usually pretty dull!) and one or two quiz questions (usually way too easy!). There's also a chat function so you can ask your teacher as much as you want.
+		</p>
+		<div class="images">
+			<img src="Overview/B.jpg" alt="Screenshot of lesson: History of Rats in NYC" />
+			<img src="Overview/C.jpg" alt="Screenshot of lesson: What the heck is an interest rate?" />
+			<img src="Chat/CHAT.jpg" alt="The AI explains an answer" />	
+		</div>
+		<figcaption>
+			One cool thing Duolingo can't do yet: patiently explain why your answer was wrong.
+		</figcaption>
+		<p>
+			Due to the... lying... it's not a practical way to learn many things.
+			Maybe if you're looking to learn something hyper-specific and low-stakes.
+			Either way, it was fun to build!
+		</p>
+		<section>
+			<a href="https://github.com/nate-parrott/uhohlingo" class="button">View on Github</a>
+		</section>
+	</article>
+</body>
+</html>

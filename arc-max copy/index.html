@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Arc Max</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+	body {
+		background-color: #111;
+		font-family: "Helvetica Neue", "Helvetica", sans-serif;
+		margin: 0;
+		color: white;
+	}
+    a {
+        color: white;
+    }
+	.blue {
+		background-color: #234EF3;
+		color: white;
+		padding: 2em;
+		margin-block-start: 0;
+	}
+	article {
+		max-width: 700px;
+		margin: auto;
+		font-size: large;
+		line-height: 1.5;
+        margin-bottom: 6em;
+	}
+	video, img {
+		width: 100%;
+	}
+    .hero {
+        width: 100%;
+        max-height: 80vh;
+    }
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 3em;
+		}
+	}
+    h1 {
+        margin-bottom: 0;
+    }
+	section {
+		margin-block-start: 3em;
+		margin-block-end: 3em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+	}
+	.images * {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+		margin-right: 1em;
+	}
+	.images *:last-child {
+		margin-right: 0;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+    <video class="hero" src="Reel.mp4" controls></video>
+	<article>
+        <h1>Arc Max</h1>
+		<p>
+            Arc Max is Arc's first bundle of AI features. We prioritized building <em>useful AI</em> that made people's browsing subtly better without asking them to learn anything new.
+		</p>
+        <p>
+            I got to work with an extraordinary team of engineers — Rosey Eisenbrand and Nathan Tannar — and had the pleasure of working closely with Patrick Moberg to prototype <em>so many</em> more things than we eventually launched. Karla Cole came up with a fantastic brand, and designed the settings screen.
+        </p>
+        <p>
+            Some day I'll write more about it. For now, you can hear about it from <a href="https://www.theverge.com/2023/10/3/23898907/arc-max-ai-browser-mac-ios">The Verge</a> or <a href="https://techcrunch.com/2023/10/03/arc-browsers-new-ai-powered-features-combine-openai-and-anthropics-models/">Techcrunch</a>.
+        </p>
+	</article>
+</body>
+</html>
