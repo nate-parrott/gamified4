@@ -45,13 +45,6 @@ const links: SocialLink[] = [
     },
 ];
 
-// id: string;
-// name?: string;
-// coins: number;
-// activityText: string;
-// notification: AwardNotification
-// category: string; // content? any others? Used for 'category awards'
-
 function awardFromSocialLink(link: SocialLink): Award {
     return {
         id: `social-${link.name.toLowerCase()}-click`,
@@ -64,9 +57,10 @@ function awardFromSocialLink(link: SocialLink): Award {
 }
 
 export default function Social() {
+    // Don't call it `social` because it's blocked by some ad blockers 
     const unlocked = useUnlockedAwards()
     return (
-        <div className='section social'>
+        <div className='section on-other-websites'>
             <div className='readable-width'>
                 <h3>Hate this website?</h3>
                 <p>

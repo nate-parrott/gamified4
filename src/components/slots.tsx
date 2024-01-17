@@ -112,16 +112,20 @@ function SlotMachine(props: SlotMachineProps) {
     const [wheels, setWheels] = useState(initialState);
     const [anim, setAnim] = useState<'' | 'shakeNO' | 'shakeYES' | 'shakeYES_XL'>('');
 
+    const lastAnimTimestamp = useRef<number | undefined>(undefined);
     const requestAnimationFrameIdRef = useRef<number | undefined>(undefined);
 
     function scheduleSpinStep() {
         if (window === undefined) { return }
-        requestAnimationFrameIdRef.current = requestAnimationFrame(() => {
+        requestAnimationFrameIdRef.current = requestAnimationFrame((ts) => {
+            const delta = Math.min(1.0 / 10, lastAnimTimestamp.current === undefined ? 1.0 / 60 : (ts - lastAnimTimestamp.current) / 1000);
+            lastAnimTimestamp.current = ts;
             setWheels((wheels) => {
-                const newWheels = wheels.map((wheel) => advanceWheelSimulation(wheel, 1/60));
+                const newWheels = wheels.map((wheel) => advanceWheelSimulation(wheel, delta));
                 const allStopped = newWheels.every((wheel) => wheel.v === undefined);
                 if (allStopped) {
                     requestAnimationFrameIdRef.current = undefined;
+                    lastAnimTimestamp.current = undefined;
                     
                     // match param type of `anim`
                     function playAnimation(name: typeof anim) {

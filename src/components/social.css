@@ -1,17 +1,17 @@
-.social {
+.on-other-websites {
     padding: 2em 0;
 	background-color: #F3339733;
 }
 
-.social p {
+.on-other-websites p {
 	margin-bottom: 0;
 }
 
-.goldMode .social {
+.goldMode .on-other-websites {
 	background: linear-gradient(45deg, rgba(215,195,12,1) 0%,rgba(245,239,201,1) 50%,rgba(215,195,12,1) 100%);
 }
 
-.social .hscroll {
+.on-other-websites .hscroll {
 	padding-top: 1.5em;
 }
 
