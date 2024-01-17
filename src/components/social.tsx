@@ -1,6 +1,7 @@
 import './social.css'
 import React, { useCallback } from 'react'
 import instagram from '../images/social/instagram.svg';
+import instagram2 from '../images/social/instagram2.svg';
 import twitter from '../images/social/twitter.svg';
 import threads from '../images/social/threads.svg';
 import mastodon from '../images/social/mastodon.svg';
@@ -33,10 +34,15 @@ const links: SocialLink[] = [
         url: "https://www.instagram.com/nate_loved_an_image/"
     },
     {
+        name: "3D Instagram",
+        image: instagram2,
+        url: "https://www.instagram.com/nate_loved_a_movie/"
+    },
+    {
         name: "Mastodon",
         image: mastodon,
         url: "https://mstdn.social/@nate"
-    }
+    },
 ];
 
 // id: string;

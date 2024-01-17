@@ -12,7 +12,7 @@
 }
 
 .social .hscroll {
-	padding-top: 1em;
+	padding-top: 1.5em;
 }
 
 .socialLink {
@@ -33,12 +33,13 @@
 .socialLink img {
 	width: 5em;
 	height: 5em;
-	border-radius: 12%;
+	border-radius: 1.5em;
 	overflow: hidden;
 }
 .socialLink .name {
 	font-weight: 500;
 	margin-bottom: 6px;
+	margin-top: 6px;
 }
 .socialLink .subtitle {
 	opacity: 0.5;
@@ -51,11 +52,12 @@
 .socialLink:not(.unlocked):before {
 	content: "";
 	background-image: url('../images/coin-small.png');
-	width: 2em;
-	height: 2em;
+	width: 3em;
+	height: 3em;
 	position: absolute;
-	top: -1em;
-	right: -1em;
+	top: -1.5em;
+	right: -1.5em;
 	background-size: contain;
 	background-repeat: no-repeat;
+	z-index: 10;
 }
