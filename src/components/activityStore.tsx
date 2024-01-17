@@ -2,6 +2,7 @@ import Announcer from './announcer';
 import { uuid } from './utils';
 import TrophyLogicTracker from './trophyLogic';
 import { Incentive } from './incentives.js';
+import { useEffect, useState } from 'react';
 
 const windowGlobal: any = typeof window !== 'undefined' && window;
 
@@ -191,4 +192,16 @@ export default class ActivityStore {
 			windowGlobal.document.body.classList.add(message.cssUnlock);
 		}
 	}
+}
+
+export function useUnlockedAwards(): {[id: string]: Award} {
+	const store = GetGlobalActivityStore();
+	const [awards, setAwards] = useState(store.awards);
+	useEffect(() => {
+		const cancel = store.onChange(() => {
+			setAwards(store.awards);
+		});
+		return cancel;
+	}, [store]);
+	return awards;
 }

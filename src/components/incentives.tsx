@@ -35,7 +35,7 @@ export let Incentives: Incentive[] = [
 	{
 		cost: 20,
 		id: 'premiumCursor',
-		name: "Unlock Premium Cursor",
+		name: "Unlock a Premium Cursor",
 		playlist: [BasicPageItem({ title: "Premium cursor unlocked", subtitle: "This premium cursor is larger and more powerful.", nextButtonTitle: 'See how it feels' })],
 		activityText: "You paid 15 coins to send me an email!",
 		cssUnlock: 'premiumCursor',

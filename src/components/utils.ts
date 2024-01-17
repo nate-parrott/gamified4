@@ -50,3 +50,17 @@ export function mostRepeats<T>(of: T[]): number {
   }
   return Math.max(...counts.values());
 }
+
+
+export function runWhenTabVisible(fn: () => void) {
+  if (document.visibilityState === 'visible') {
+    fn();
+  } else {
+    document.addEventListener('visibilitychange', function handler() {
+      if (document.visibilityState === 'visible') {
+        fn();
+        document.removeEventListener('visibilitychange', handler);
+      }
+    });
+  }
+}

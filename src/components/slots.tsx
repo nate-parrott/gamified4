@@ -22,7 +22,7 @@ import { mostRepeats, remap, uuid } from './utils.ts';
 import { Parallax } from 'react-scroll-parallax';
 
 // const images = [aol, arcscape, burger, chef, covid, feeeed, weasel, minion, seeds, sushi, toast];
-const images = [flower, chef, minion, burger, feeeed, arcscape, weasel, sushi, arcscape, covid, soup];
+const images = [flower, chef, minion, burger, feeeed, weasel, sushi, arcscape, covid, soup];
 
 const slotIconSizeEm = 8; // 8em
 const kCoinsFor2Match = 3;
