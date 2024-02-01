@@ -135,7 +135,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<Tile altLink={withPrefix('/hab/index.html')} src={hab} alt="Design and branding for a beginner-friendly hackathon" onClick={ () => this.playWithRewards('hab', [ web(withPrefix('/hab/index.html')) ], {category: 'content'}) } />
 							<Tile altLink={withPrefix('/flashlight/index.html')} src={flashlight} alt="A popular natural-language interface to Mac OS" onClick={ () => this.playWithRewards('flashlight', [ web(withPrefix('/flashlight/index.html')) ], {category: 'content'}) } />
 							<Tile altLink={withPrefix('/instagrade/index.html')} src={instagrade} alt="An app that grades paper quizzes instantly" onClick={ () => this.playWithRewards('instagrade', [ web(withPrefix('/instagrade/index.html')) ], {category: 'content'}) } />	
-							<Tile altLink={withPrefix('/zest/index.html')} src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('http://zest.nateparrott.com/') ], {category: 'content'}) } />
+							<Tile altLink={withPrefix('/zest/index.html')} src={zest} alt="A spice rack powered by computer vision" onClick={ () => this.playWithRewards('zest', [ web('https://zest.nateparrott.com/') ], {category: 'content'}) } />
 						</div>
 					</div>
 
@@ -146,8 +146,8 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 						<h3>Why not <span className='nowrap'>consume more content? <div className='tooltip'>5 coins per click</div></span></h3>
 							
 						<div className='content-tiles'>
-							<Tile altLink={'https://table.nateparrott.com'} src={table} alt="An augmented-reality table prototype" onClick={ () => this.playWithRewards('table', [ web('http://table.nateparrott.com/') ]) } />
-							<Tile altLink="https://subway.nateparrott.com" src={subway} alt="An subway map that visualizes travel time" onClick={ () => this.playWithRewards('subway', [ web('http://subway.nateparrott.com/') ]) } />
+							<Tile altLink={'https://table.nateparrott.com'} src={table} alt="An augmented-reality table prototype" onClick={ () => this.playWithRewards('table', [ web('https://table.nateparrott.com/') ]) } />
+							<Tile altLink="https://subway.nateparrott.com" src={subway} alt="An subway map that visualizes travel time" onClick={ () => this.playWithRewards('subway', [ web('https://subway.nateparrott.com/') ]) } />
 						</div>
 					</div>
 
@@ -161,7 +161,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3>There’s so <span className='nowrap'>much rewarding content!<div className='tooltip'>5 coins per click</div></span></h3>
 						<div className='content-tiles'>
-							<Tile altLink="https://content.nateparrott.com" src={content} alt="An app for creating exciting animations" onClick={ () => this.playWithRewards('content', [ web('http://content.nateparrott.com/') ], {category: 'content'}) } />
+							<Tile altLink="https://content.nateparrott.com" src={content} alt="An app for creating exciting animations" onClick={ () => this.playWithRewards('content', [ web('https://content.nateparrott.com/') ], {category: 'content'}) } />
 							<Tile altLink={withPrefix('/stacks/index.html')} src={stacks} alt="An app for making your own social network" onClick={ () => this.playWithRewards('stacks', [ web(withPrefix('/stacks/index.html')) ], {category: 'content'}) } />
 						</div>
 					</div>
