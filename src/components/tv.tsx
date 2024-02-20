@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import "./tv.css";
 import { withPrefix } from 'gatsby';
+import ArrowUp from '../images/tv/TriangleUp.svg';
 
 interface Channel {
     folder: string;
@@ -93,22 +94,22 @@ function TV() {
                         <div className='tv-screen'>
                             <video src={withPrefix('nptv/static.mp4')} muted autoPlay loop disablePictureInPicture />
 
-                            <video key={videoIdx} src={vidSrc(curVid, channel)} muted={muted} autoPlay onEnded={showNextVid} disablePictureInPicture style={{ opacity: showStatic ? 0 : 1 }} />
+                            <video key={videoIdx} src={vidSrc(curVid, channel)} muted={muted} autoPlay onEnded={showNextVid} disablePictureInPicture style={{ opacity: showStatic ? 0 : 1 }} playsInline />
 
                             {/* Preload next*/}
                             {
                                 nextVid &&
-                                <video ref={preloadedVideoRef} key={videoIdx + 1} src={vidSrc(nextVid, channel)} muted={true} preload="auto" style={{opacity: '0'}} disablePictureInPicture />
+                                <video ref={preloadedVideoRef} key={videoIdx + 1} src={vidSrc(nextVid, channel)} muted={true} preload="auto" style={{opacity: '0'}} disablePictureInPicture playsInline />
                             }
 
                             <img className='tv-logo' src={logoSrc} alt={`Current channel: ${channel.folder}`} style={{opacity: showStatic ? 0 : 1}} />
                         </div>
                         <div className='tv-controls'>
-                            <div className='tv-channel up' onClick={() => advanceChannel(-1)}>
-                                <span>⬆</span>
+                            <div className='tv-channel up' onClick={() => advanceChannel(-1)} role='button' aria-label='Previous Channel'>
+                                <img src={ArrowUp} alt='Previous Channel' />
                             </div>
-                            <div className='tv-channel down' onClick={() => advanceChannel(1)}>
-                                <span>⬇</span>
+                            <div className='tv-channel down' onClick={() => advanceChannel(1)} role='button' aria-label='Next Channel'>
+                                <img src={ArrowUp} alt='Next Channel' />
                             </div>
                         </div>
                     </div>

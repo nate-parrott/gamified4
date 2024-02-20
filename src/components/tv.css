@@ -108,7 +108,7 @@
 .tv-screen:after {
     position: absolute;
     content: "";
-    background-image: url(../images/tv/Frame.svg);
+    background-image: url(../images/tv/Frame.png);
     top: 0;
     left: 0;
     width: 100%;
@@ -154,7 +154,16 @@
     transform: translateY(0.3em);
 }
 
-.tv-channel span {
+.tv-channel img {
+    height: 4em;
+    object-fit: contain;
+}
+
+.tv-channel.down img {
+    transform: rotate(180deg);
+}
+
+/* .tv-channel span {
     font-size: 4em;
     color: #969490;
-}
+} */
