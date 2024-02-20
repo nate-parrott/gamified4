@@ -1,91 +1,160 @@
 
 .nptv {
-    background: linear-gradient(#8059f7, #5423E2);
-    border-radius: 2px;
-    color: white;
-    padding: 1px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
+    background-color: #F7F4FF;
+    border: 1px solid transparent;
+    font-size: 1vw;
 }
 
-.nptv-player {
-    flex-grow: 1;
-    height: 0;
+.tv-container {
+    width: 92em;
+    height: 54em;
+    margin: 20em auto;
+    margin-top: 16em;
     position: relative;
 }
 
-.nptv-player div {
-    position: absolute;
-    top: 0.5em;
-    right: 0.5em;
-    background-color: red;
-    padding: 0.3em 0.5em;
-    color: white;
-    font-size: small;
-    border-radius: 0.2em;
-    font-weight: bold;
+@media screen and (min-width: 600px) {
+    .nptv {
+        font-size: 0.6vw;
+    }
 }
 
-.nptv-player video {
+@media screen and (min-width: 1200px) {
+    .nptv {
+        font-size: 8px;
+    }
+}
+
+.tv-body {
     width: 100%;
     height: 100%;
-}
-
-.nptv-toolbar {
-    display: flex;
-    flex-direction: row;
-    padding: 1em;
-    align-items: center;
-}
-.nptv-metadata {
-    flex-grow: 1;
-    text-align: left;
-}
-.nptv-metadata div:first-child {
-    margin: 0;
-    margin-bottom: 0.3em;
-    font-size: small;
-    font-weight: bold;
-    opacity: 0.5;
-}
-
-.nptv-channel-buttons {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 0;
-}
-.nptv-channel-buttons > div:first-child {
-    border-radius: 0.6em 0 0 0.6em;
-}
-.nptv-channel-buttons > div:last-child {
-    border-radius: 0 0.6em 0.6em 0;
-    z-index: 2;
-}
-.nptv-channel-buttons > div {
     box-sizing: border-box;
-    text-align: center;
-    width: 3em;
-    height: 3em;
-    font-weight: semibold;
-    background-color: white;
-    /* background: linear-gradient(#f6f5fa, #dddae6); */
-    color: #211c36;
-    /* box-shadow: 0 0.2em 0 #9b99a0; */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: large;
-    cursor: default;
-    /* box-shadow: 0 2px 6px rgba(0,0,0,0.1) 0 6px 16px rgba(0,0,0,0.1) ; */
-
-    border: 2px solid #080513;
-    box-shadow: 1.5px 3px 0 #080513;
-
+    background: linear-gradient(#DAA070, #7B3D1D);
+    border-radius: 1em;
     position: relative;
+
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    z-index: 1;
 }
-.skeu-button-white:active {
-    left: 1.5px;
-    top: 3px;
-    box-shadow: 0 0 0 #080513;
+
+
+/* TV antenna */
+.tv-antenna {
+    position: absolute;
+    content: "";
+    background-image: url(../images/tv/Antenna.svg);
+    bottom: 90%;
+    width: 30%;
+    left: 60%;
+    height: 50%;
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+/* TV Base */
+.tv-body:after {
+    position: absolute;
+    content: "";
+    background-image: url(../images/tv/Base.svg);
+    top: 100%;
+    width: 130%;
+    left: -15%;
+    height: 100%;
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.tv-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.tv-screen {
+    flex-grow: 1;
+    position: relative;
+    margin: 1.4em;
+    margin-right: 0;
+    box-sizing: border-box;
+    padding: 5em;
+}
+
+.tv-screen video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tv-logo {
+    position: absolute;
+    width: 12em;
+    height: 12em;
+    object-fit: contain;
+    right: 8em;
+    bottom: 7em;
+}
+
+.tv-screen:after {
+    position: absolute;
+    content: "";
+    background-image: url(../images/tv/Frame.svg);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.tv-controls {
+    width: 17.6em;
+    flex-shrink: 0;
+    background-image: url(../images/tv/Sidebar.svg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-top: 4em;
+    align-items: center;
+}
+
+.tv-channel {
+    width: 10em;
+    height: 10em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.5);
+    margin-bottom: 2em;
+    border-radius: 50%;
+    box-shadow: 0 0.5em 0 rgba(0,0,0,0.2);
+    cursor: default;
+}
+
+.tv-channel:hover {
+    background-color: rgba(255,255,255,0.7);
+}
+
+.tv-channel:active {
+    background-color: rgba(215, 215, 215, 0.95);
+    box-shadow: 0 0.2em 0 rgba(0,0,0,0.2);
+    transform: translateY(0.3em);
+}
+
+.tv-channel span {
+    font-size: 4em;
+    color: #969490;
 }

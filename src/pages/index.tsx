@@ -173,6 +173,9 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 							<Tile altLink={withPrefix('/names/index.html')} src={babynames} alt="A neural network for generating new baby names" onClick={ () => this.playWithRewards('names', [ web(withPrefix('/names/index.html')) ], {category: 'content'}) } />
 						</div>
 					</div>
+
+					<TV />
+
 					<TradeEmailDataSection activityStore={this.activityStore} />
 					<div className='readable-width section footer'>
 							2024. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
