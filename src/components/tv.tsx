@@ -73,6 +73,7 @@ function TV() {
         setTimeout(() => {
             setShowStatic(false);
             setChannelIdx((channelIdx + delta + channels.length) % channels.length);
+            setVideoIdx(videoIdx + 1);
         }, 200);
     }
 
