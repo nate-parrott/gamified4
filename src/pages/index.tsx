@@ -1,13 +1,12 @@
 import * as React from "react"
 import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy.jsx';
-import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer.tsx';
-import { web } from '../components/playlistHelpers.tsx';
-import ActivityStore, { GetGlobalActivityStore } from '../components/activityStore.tsx';
-import { playlistWithAward, comingSoonPage } from '../components/awardUtils.tsx';
+import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer';
+import { web } from '../components/playlistHelpers';
+import ActivityStore, { GetGlobalActivityStore } from '../components/activityStore';
+import { playlistWithAward, comingSoonPage } from '../components/awardUtils';
 import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeDataSection.jsx';
-import IncentivesSection from '../components/incentives.tsx';
-import { coinUnlockModalItem } from '../components/coinUnlockModalItem.jsx';
+import IncentivesSection from '../components/incentives';
 import QuizSection from '../components/quiz.jsx';
 import Layout from '../components/Layout.jsx';
 
