@@ -6,12 +6,13 @@ import './incentives.css';
 import { coinUnlockModalItem } from './coinUnlockModalItem.jsx';
 import { withPrefix } from './utils';
 import ActivityStore from './activityStore';
+import { web } from './playlistHelpers';
 
 export interface Incentive {
 	cost: number;
 	id: string;
 	name: string;
-	playlist: ModalItem[];
+	playlist: ModalItem[] | (() => ModalItem[]);
 	activityText: string;
 	coinMultiplier?: number;
 	cssUnlock?: string;
@@ -52,7 +53,10 @@ export let Incentives: Incentive[] = [
 		cost: 1,
 		id: 'exclusiveLounge',
 		name: "Visit the Exclusive Lounge",
-		playlist: [BasicPageItem({ title: "Visit the Exclusive Lounge", bigText: 'Enter', bigTextUrl: '/exclusiveLounge', nextButtonTitle: 'Cheers' })],
+		playlist: () => {
+			const item = web('/lounge');
+			return item ? [item] : [];
+		},
 		activityText: "You paid 50 coins to visit the Exclusive Lounge!"
 	},
 	// https://m.me/join/AbbqCUCEphSULk3r
@@ -66,7 +70,7 @@ export let Incentives: Incentive[] = [
 	{
 		cost: 56,
 		id: 'goldmode',
-		name: "Unlock 🏆Gold Mode🏆",
+		name: "Unlock GOLD MODE",
 		playlist: [BasicPageItem({ bigText: '🏆 Gold Mode 🏆', title: 'You’ve unlocked gold mode.', subtitle: 'This is what the kids would call a "weird flex."', nextButtonTitle: 'Swoosh' })],
 		activityText: "You paid 56 coins to unlock 🏆 Gold Mode 🏆!",
 		cssUnlock: 'goldMode'
@@ -109,7 +113,16 @@ const IncentivesSection = ({ playPlaylist, activityStore }: IncentivesSectionPro
 				let unlocked = activityStore.hasIncentive(incentive.id);
 				let onClick = () => {
 					let showIncentiveContent = () => {
-						playPlaylist(new ModalPlaylist(incentive.playlist));
+						console.log(incentive.playlist);
+						if (typeof incentive.playlist === 'function') {
+							const playlist = incentive.playlist();
+							if (playlist.length === 0) {
+								return;
+							}
+							playPlaylist(new ModalPlaylist(playlist));
+						} else {
+							playPlaylist(new ModalPlaylist(incentive.playlist));
+						}
 					};
 					if (activityStore.hasIncentive(incentive.id)) {
 						showIncentiveContent();
