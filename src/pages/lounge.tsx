@@ -2,7 +2,7 @@ import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
 import AspectFill from "../components/AspectFill";
 import { withPrefix } from "../components/utils";
-import { isSafari } from "react-device-detect";
+import '../components/lounge.css';
 
 /**
  * Helper function to safely use speech synthesis
@@ -143,6 +143,7 @@ const Artboard = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> })
   - 17 seconds: pause video, use speech synth to read user's name, then resume video
   */
   
+  const isSafari = typeof window !== 'undefined' && window.navigator.userAgent.includes('Safari');
   const videoUrl = isSafari ? withPrefix('/hello.mov') : withPrefix('/hello.webm');
   return (
     <div style={{background: "rgba(223, 196, 138, 1)", width: "574px", height: "447px", overflow: "hidden", position: "relative"}}>
@@ -171,23 +172,28 @@ const Artboard = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> })
         width="900" 
         playsInline 
         muted // Initially muted, unmuted when started
-        preload="auto"
+        preload="metadata" // Use metadata preload for better iOS compatibility
         onLoadedData={() => {
           console.log("Video loaded data event triggered");
-          // This will be handled at the parent component level
           if (typeof window !== 'undefined') {
             document.dispatchEvent(new Event('videoLoaded'));
           }
         }}
-        // Add multiple event handlers for different loading stages
-        onLoadStart={() => console.log("Video load started")}
-        onCanPlay={() => {
-          console.log("Video can play event triggered");
-          // Also mark as loaded on canplay event
+        onProgress={() => {
+          // The progress event is more reliable on iOS Safari
+          console.log("Video progress event triggered");
           if (typeof window !== 'undefined') {
             document.dispatchEvent(new Event('videoLoaded'));
           }
         }}
+        onLoadedMetadata={() => {
+          // This event also works well with preload="metadata"
+          console.log("Video metadata loaded");
+          if (typeof window !== 'undefined') {
+            document.dispatchEvent(new Event('videoLoaded'));
+          }
+        }}
+        onCanPlay={() => console.log("Video can play event triggered")}
         onError={(e) => console.error("Video loading error:", e)}
         src={videoUrl} 
         style={{width: "600px", height: "350px", left: "0", top: "80px", position: "absolute"}} 
@@ -203,6 +209,10 @@ const pageStyles = {
 }
 
 const ExclusiveLoungeModal: React.FC<PageProps> = () => {
+  const [mount, setMount] = React.useState(false);
+  React.useEffect(() => {
+    setMount(true);
+  }, []);
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = React.useState(false);
   const [videoStarted, setVideoStarted] = React.useState(false);
@@ -296,6 +306,8 @@ const ExclusiveLoungeModal: React.FC<PageProps> = () => {
       setVideoStarted(true);
     }
   };
+
+  if (!mount) return <main style={{...pageStyles, backgroundColor: 'black'}} />
 
   return (
     <main style={pageStyles}>

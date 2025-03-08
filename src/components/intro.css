@@ -16,34 +16,3 @@
 .goldMode .intro img {
 	filter: invert(1);
 }
-/* 
-.intro .social {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-.socialIcon {
-    width: 36px;
-    height: 36px;
-    margin-left: 22px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-
-@media screen and (min-width: 600px) {
-    .intro .social {
-        position: absolute;
-        top: 0;
-        right: 0; 
-        margin: 0;   
-    }
-    .socialIcon {
-        width: 3vw;
-        height: 3vw;
-        margin-left: 1.5vw;
-    }
-} */

@@ -3,6 +3,7 @@
     background-color: #F7F4FF;
     border: 1px solid transparent;
     font-size: 1vw;
+    overflow-x: hidden;
 }
 
 .tv-container {
