@@ -5,6 +5,8 @@ import instagram2 from '../images/social/instagram2.svg';
 import twitter from '../images/social/twitter.svg';
 import threads from '../images/social/threads.svg';
 import mastodon from '../images/social/mastodon.svg';
+import github from '../images/social/github.svg';
+import bluesky from '../images/social/bluesky.svg';
 import { Award, GetGlobalActivityStore, useUnlockedAwards } from './activityStore';
 import HScroll from './hscroll.jsx';
 import { runWhenTabVisible } from './utils';
@@ -19,11 +21,6 @@ interface SocialLink {
 
 const links: SocialLink[] = [
     {
-        name: "Threads",
-        image: threads,
-        url: "https://www.threads.net/@nate_loved_an_image"
-    },
-    {
         name: "Twitter",
         image: twitter,
         url: "https://twitter.com/nateparrott"
@@ -34,9 +31,24 @@ const links: SocialLink[] = [
         url: "https://www.instagram.com/nate_loved_an_image/"
     },
     {
+        name: "GitHub",
+        image: github,
+        url: "https://github.com/nate-parrott"
+    },
+    {
+        name: "Bluesky",
+        image: bluesky,
+        url: "https://bsky.app/profile/nateparrott.bsky.social"
+    },
+    {
         name: "3D Instagram",
         image: instagram2,
         url: "https://www.instagram.com/nate_loved_a_movie/"
+    },
+    {
+        name: "Threads",
+        image: threads,
+        url: "https://www.threads.net/@nate_loved_an_image"
     },
     {
         name: "Mastodon",
