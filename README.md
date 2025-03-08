@@ -38,7 +38,7 @@ Then copy `public` dir into the root of the `public` branch (use a worktree to m
   - ID, name, coin amount, activity text, notification type, category
   - Awarded for viewing content, clicking milestones, etc.
 
-- **Trophies** (`src/components/trophy.jsx`, `src/components/trophyLogic.ts`): Special achievements
+- **Trophies** (`src/components/trophy.tsx`, `src/components/trophyLogic.ts`): Special achievements
   - Visible badges with emoji, name, and description
   - Examples: Reading Rainbow (read 5 pieces of content), Clicker Clique (click 20 times)
   - Some can be self-claimed (social media follows)

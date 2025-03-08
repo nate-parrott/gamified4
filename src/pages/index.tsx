@@ -1,6 +1,6 @@
 import * as React from "react"
 import workflow from '../images/workflow.svg'
-import { Trophies } from '../components/trophy.jsx';
+import { Trophies } from '../components/trophy';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer';
 import { web } from '../components/playlistHelpers';
 import ActivityStore, { GetGlobalActivityStore } from '../components/activityStore';

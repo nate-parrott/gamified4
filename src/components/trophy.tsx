@@ -1,10 +1,19 @@
 import React from 'react'
 import './trophy.css';
-import { ModalItem } from './modalPlayer.tsx';
+import { ModalItem } from './modalPlayer';
 import HScroll from './hscroll.jsx';
 import snapcodeBitmoji from '../images/snapcodeBitmoji.svg'
+import ActivityStore from './activityStore';
 
-const Trophy = ({ emoji, name, desc, value, action, unlocked }) => (
+interface TrophyProps {
+	emoji: string;
+	name: string;
+	desc: string;
+	value: number;
+	action?: () => void;
+	unlocked: boolean;
+}
+const Trophy = ({ emoji, name, desc, value, action, unlocked }: TrophyProps) => (
   <div className={`trophy ${unlocked ? 'unlocked' : 'locked'}`} onClick={action}>
 		<div className='emoji'><span>{emoji}</span></div>
 		<div className='name'>{name}</div>
@@ -13,7 +22,11 @@ const Trophy = ({ emoji, name, desc, value, action, unlocked }) => (
 	</div>
 )
 
-const UnlockButton = ({ hasAction, unlocked }) => {
+interface UnlockButtonProps {
+	hasAction: boolean;
+	unlocked: boolean;
+}
+const UnlockButton = ({ hasAction, unlocked }: UnlockButtonProps) => {
 	if (unlocked) {
 		return <div className='unlocked'>Unlocked!</div>
 	}
@@ -23,7 +36,17 @@ const UnlockButton = ({ hasAction, unlocked }) => {
 	return <div className='not-unlocked'>Not unlocked</div>
 }
 
-export let BasicPageItem = ({ bigText, bigTextUrl, bigImage, title, subtitle, nextButtonTitle, pageClass }) => {
+interface BasicPageItemProps {
+	bigText?: string;
+	bigTextUrl?: string;
+	bigImage?: string;
+	title?: string;
+	subtitle?: string;
+	nextButtonTitle?: string;
+	pageClass?: string;
+}
+
+export let BasicPageItem = ({ bigText, bigTextUrl, bigImage, title, subtitle, nextButtonTitle, pageClass }: BasicPageItemProps) => {
 	const item = new ModalItem(({ full, onForward }) => {
 		let content = null;
 		if (full) {
@@ -80,7 +103,12 @@ let cashAppPage = () => {
 	})
 }
 
-export let Trophies = ({ activityStore, playWithRewards }) => {
+
+interface TrophiesProps {
+	activityStore: ActivityStore;
+	playWithRewards: (id: string, playlist: ModalItem[], activity: any) => void;
+}
+export let Trophies = ({ activityStore, playWithRewards }: TrophiesProps) => {
 	
 	return (
 		<HScroll>

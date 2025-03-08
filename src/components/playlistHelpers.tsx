@@ -1,5 +1,5 @@
 import React from 'react'
-import ModalPlayer, {ModalItem, ModalPlaylist} from './modalPlayer.tsx';
+import ModalPlayer, {ModalItem, ModalPlaylist} from './modalPlayer';
 
 const windowGlobal: any = typeof window !== 'undefined' && window;
 

@@ -1,5 +1,5 @@
 import { ModalItem, ModalPlaylist } from './modalPlayer';
-import { BasicPageItem } from './trophy.jsx';
+import { BasicPageItem } from './trophy';
 import HScroll from './hscroll.jsx';
 import React from 'react'
 import './incentives.css';
@@ -21,8 +21,8 @@ export let Incentives: Incentive[] = [
 	{
 		cost: 5,
 		id: 'resume',
-		name: "Download my (2018) Resume",
-		playlist: [BasicPageItem({ title: "Here's my (2018) resume!", bigText: '📄 Resume', bigTextUrl: withPrefix('/Resume2018.pdf'), nextButtonTitle: 'Fine, whatever' })],
+		name: "Download my (2024) Resume",
+		playlist: [BasicPageItem({ title: "Here's my (2024) resume!", bigText: '📄 Resume', bigTextUrl: withPrefix('/Resume24.pdf'), nextButtonTitle: 'Fine, whatever' })],
 		activityText: "You paid 5 coins to download my resume!"
 	},
 	{
@@ -47,6 +47,13 @@ export let Incentives: Incentive[] = [
 		playlist: [BasicPageItem({ title: "Double coins bonus unlocked!", subtitle: "Move over, Mr. Moneybags.", bigText: '🤑🤑🤑', nextButtonTitle: 'Take advantage!' })],
 		activityText: "Paid 24 coins to unlock 💰 DOUBLE COINS 💰 going forward",
 		coinMultiplier: 2
+	},
+	{
+		cost: 1,
+		id: 'exclusiveLounge',
+		name: "Visit the Exclusive Lounge",
+		playlist: [BasicPageItem({ title: "Visit the Exclusive Lounge", bigText: 'Enter', bigTextUrl: '/exclusiveLounge', nextButtonTitle: 'Cheers' })],
+		activityText: "You paid 50 coins to visit the Exclusive Lounge!"
 	},
 	// https://m.me/join/AbbqCUCEphSULk3r
 	// {
