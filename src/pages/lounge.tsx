@@ -4,6 +4,54 @@ import AspectFill from "../components/AspectFill";
 import { withPrefix } from "../components/utils";
 import { isSafari } from "react-device-detect";
 
+/**
+ * Helper function to safely use speech synthesis
+ * @param text - The text to speak 
+ * @param onSpeechEnd - Callback for when speech ends or fails
+ */
+const speakText = (text: string, onSpeechEnd: () => void) => {
+  if (!window.speechSynthesis) {
+    console.log("Speech synthesis not available");
+    onSpeechEnd();
+    return;
+  }
+  
+  try {
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Handle speech end
+    utterance.onend = () => {
+      console.log("Speech synthesis completed");
+      onSpeechEnd();
+    };
+    
+    // Handle speech errors
+    utterance.onerror = (event) => {
+      console.error("Speech synthesis error:", event);
+      onSpeechEnd();
+    };
+    
+    // For iOS, we need to ensure this happens in response to user interaction
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+      
+      // Add a safety timeout in case onend doesn't fire
+      setTimeout(() => {
+        if (window.speechSynthesis.speaking) {
+          console.log("Speech synthesis safety timeout triggered");
+          onSpeechEnd();
+        }
+      }, 5000);
+    }, 100);
+  } catch (error) {
+    console.error("Speech synthesis exception:", error);
+    onSpeechEnd();
+  }
+};
+
 /*
 ffmpeg -i Video.mp4 -vf 'colorkey=0x00FF1C:similarity=0.2:blend=0.3' -c copy -c:v vp9 -f webm hello.webm
 
@@ -34,9 +82,67 @@ https://css-tricks.com/overlaying-video-with-transparency-while-wrangling-cross-
 Video is 900x496
 */
 
-const Artboard = () => {
-  // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  // const videoSrc = isSafari ? <source src={withPrefix('/hello.mov')} type="video/quicktime" /> : <source src={withPrefix('/hello.webm')} type="video/webm" />;
+/**
+ * VideoInterstitial component for loading screen and start button
+ */
+const VideoInterstitial = ({ isLoading, onStart }: { isLoading: boolean; onStart: () => void }) => {
+  return (
+    <div style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "black",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 100
+    }}>
+      {isLoading ? (
+        <div style={{
+          color: "white",
+          fontSize: "24px",
+          fontFamily: "Arial, sans-serif",
+          textAlign: "center",
+          padding: "20px"
+        }}>
+          One moment...
+        </div>
+      ) : (
+        <button 
+          onClick={onStart}
+          style={{
+            background: "none",
+            color: "white",
+            padding: "15px 30px",
+            fontSize: "20px",
+            fontFamily: "Helvetica, Arial, sans-serif",
+            cursor: "pointer",
+            border: 'none',
+            transition: "all 0.3s ease"
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+          }}
+        >
+          Tap to Start
+        </button>
+      )}
+    </div>
+  );
+};
+
+const Artboard = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> }) => {
+  /*
+  - 14.5 seconds: pause to alert "What's your name?"
+  - 17 seconds: pause video, use speech synth to read user's name, then resume video
+  */
+  
   const videoUrl = isSafari ? withPrefix('/hello.mov') : withPrefix('/hello.webm');
   return (
     <div style={{background: "rgba(223, 196, 138, 1)", width: "574px", height: "447px", overflow: "hidden", position: "relative"}}>
@@ -60,7 +166,32 @@ const Artboard = () => {
       <div style={{backgroundImage: "url(https://media.tenor.com/OOH12fSHuREAAAAi/plant-plants.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "104px", height: "142px", left: "12.297678445192027px", top: "288px", position: "absolute"}}></div>
       {/* <div style={{backgroundImage: "url(https://rmmhpcnrqakmcbvlcerx.supabase.co/storage/v1/object/sign/doc_uploads/920c01fb-b57c-4517-a9bd-14591cb14145/71c7db71-a4eb-43dd-9e2f-c371cdffc3f4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkb2NfdXBsb2Fkcy85MjBjMDFmYi1iNTdjLTQ1MTctYTliZC0xNDU5MWNiMTQxNDUvNzFjN2RiNzEtYTRlYi00M2RkLTllMmYtYzM3MWNkZmZjM2Y0IiwiaWF0IjoxNzQxNDExODg5LCJleHAiOjMzMTgyMTE4ODl9.G6Wvau-pnFm04r6k4nF_gShAkb0-Es8SMTjBj0oYn8w)", backgroundSize: "cover", backgroundPosition: "center", width: "247px", height: "286px", left: "183.23357188125146px", top: "163.62784673121655px", position: "absolute"}}></div> */}
       <div style={{backgroundImage: "url(https://media.tenor.com/Cvo4AhntshAAAAAi/sabrina-carpenter-lights.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "144px", height: "150px", left: "228.78159423979906px", top: "-51.094934787072994px", position: "absolute"}}></div>
-      <video width="900" autoPlay loop playsInline muted src={videoUrl} style={{width: "600px", height: "350px", left: "0", top: "80px", position: "absolute"}} />
+      <video 
+        ref={videoRef}
+        width="900" 
+        playsInline 
+        muted // Initially muted, unmuted when started
+        preload="auto"
+        onLoadedData={() => {
+          console.log("Video loaded data event triggered");
+          // This will be handled at the parent component level
+          if (typeof window !== 'undefined') {
+            document.dispatchEvent(new Event('videoLoaded'));
+          }
+        }}
+        // Add multiple event handlers for different loading stages
+        onLoadStart={() => console.log("Video load started")}
+        onCanPlay={() => {
+          console.log("Video can play event triggered");
+          // Also mark as loaded on canplay event
+          if (typeof window !== 'undefined') {
+            document.dispatchEvent(new Event('videoLoaded'));
+          }
+        }}
+        onError={(e) => console.error("Video loading error:", e)}
+        src={videoUrl} 
+        style={{width: "600px", height: "350px", left: "0", top: "80px", position: "absolute"}} 
+      />
     </div>
   );
 };
@@ -72,10 +203,113 @@ const pageStyles = {
 }
 
 const ExclusiveLoungeModal: React.FC<PageProps> = () => {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = React.useState(false);
+  const [videoStarted, setVideoStarted] = React.useState(false);
+  const userNameRef = React.useRef("");
+  
+  // Use refs instead of state for tracking one-time events
+  const askedForNameRef = React.useRef(false);
+  const spokeNameRef = React.useRef(false);
+  
+  // Add event listener for video loaded event
+  React.useEffect(() => {
+    const handleVideoLoadedEvent = () => {
+      setVideoLoaded(true);
+    };
+    
+    if (typeof window !== 'undefined') {
+      document.addEventListener('videoLoaded', handleVideoLoadedEvent);
+      
+      // Clean up event listener on component unmount
+      return () => {
+        document.removeEventListener('videoLoaded', handleVideoLoadedEvent);
+      };
+    }
+  }, []);
+  
+  // Handle time-based events in the video
+  React.useEffect(() => {
+    if (!videoStarted || !videoRef.current) return;
+    
+    console.log("Setting up video time-based event handlers");
+    
+    // Create timeupdate event listener for the video
+    const handleTimeUpdate = () => {
+      const currentTime = videoRef.current?.currentTime || 0;
+
+      const DEBUG = false;
+      const namePromptTime = DEBUG ? 2 : 14.5;
+      const nameSpeechTime = DEBUG ? 4 : 17;
+      
+      // At 14.5 seconds, show the name prompt using alert
+      if (currentTime >= namePromptTime && currentTime < namePromptTime + 0.5 && !askedForNameRef.current) {
+        console.log("Triggering name prompt at time:", currentTime);
+        videoRef.current?.pause();
+        askedForNameRef.current = true;
+        
+        // Use browser alert to get name
+        const name = window.prompt("What's your name?", "");
+        console.log("User entered name:", name || "(empty)");
+        userNameRef.current = name || "";
+        
+        // Resume video after getting name
+        if (videoRef.current) {
+          videoRef.current.play();
+        }
+      }
+      
+      // At 17 seconds, speak the name and pause temporarily
+      if (currentTime >= nameSpeechTime && currentTime < nameSpeechTime + 0.5) {
+        console.log("Name speech time")
+      }
+      if (currentTime >= nameSpeechTime && currentTime < nameSpeechTime + 0.5 && userNameRef.current !== "" && !spokeNameRef.current) {
+        console.log("Triggering name speech at time:", currentTime);
+        spokeNameRef.current = true;
+        videoRef.current?.pause();
+        
+        // Use our helper function to speak the name
+        speakText(userNameRef.current, () => {
+          console.log("Speech completed or failed, resuming video");
+          if (videoRef.current) {
+            videoRef.current.play();
+          }
+        });
+      }
+    };
+    
+    const videoElement = videoRef.current;
+    videoElement.addEventListener('timeupdate', handleTimeUpdate);
+    
+    return () => {
+      console.log("Cleaning up video time-based event handlers");
+      videoElement.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+  }, [videoStarted, videoRef, userNameRef]);
+  
+  // Handle start button click - starts video with sound
+  const handleStartVideo = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false; // Enable sound
+      videoRef.current.currentTime = 0; // Reset to beginning
+      videoRef.current.play(); // Start playing
+      setVideoStarted(true);
+    }
+  };
+
   return (
     <main style={pageStyles}>
       <AspectFill childWidth={574} childHeight={445} style={{width: '100%', height: '100%'}}>
-        <Artboard />
+        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+          <Artboard videoRef={videoRef} />
+          {/* Show interstitial only when video hasn't started */}
+          {!videoStarted && (
+            <VideoInterstitial 
+              isLoading={!videoLoaded} 
+              onStart={handleStartVideo} 
+            />
+          )}
+        </div>
       </AspectFill>
     </main>
   )

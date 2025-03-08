@@ -50,7 +50,7 @@ export let Incentives: Incentive[] = [
 		coinMultiplier: 2
 	},
 	{
-		cost: 1,
+		cost: 25,
 		id: 'exclusiveLounge',
 		name: "Visit the Exclusive Lounge",
 		playlist: () => {
