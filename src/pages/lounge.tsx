@@ -1,8 +1,43 @@
 import * as React from "react"
 import { HeadFC, PageProps } from "gatsby"
 import AspectFill from "../components/AspectFill";
+import { withPrefix } from "../components/utils";
+import { isSafari } from "react-device-detect";
+
+/*
+ffmpeg -i Video.mp4 -vf 'colorkey=0x00FF1C:similarity=0.2:blend=0.3' -c copy -c:v vp9 -f webm hello.webm
+
+
+# WebM for Chrome
+ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.3:blend=0.2,scale=900:-1" -c:v vp9 -b:v 800k -crf 31 -deadline good hello.webm
+
+
+
+
+// ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.4:blend=0.2,scale=900:-1" -c:v qtrle -c:a aac -b:a 128k hello.mov
+
+// ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.3:blend=0.2,scale=900:-1" -c:v hevc -tag:v hvc1 -pix_fmt yuva420p -crf 23 -c:a aac -b:a 128k hello.mp4
+
+// ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.3:blend=0.2,format=yuva420p,scale=900:-1" -c:v hevc -tag:v hvc1 -pix_fmt yuva420p -crf 23 -c:a aac -b:a 128k hello.mp4
+
+
+// ffmpeg -framerate 25 -i unscreen-%3d.png -c:v prores_ks -pix_fmt yuva444p10le -alpha_bits 16 -profile:v 4444 -f mov -vframes 150 output.mov
+
+
+ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.3:blend=0.2,format=yuva420p,scale=900
+
+PRORES:
+ffmpeg -i Video.mp4 -vf "colorkey=0x00FF1C:similarity=0.3:blend=0.2,scale=900:-1" -c:v prores_ks -profile:v 4444 -alpha_bits 16 -c:a aac -b:a 128k hello.mov
+
+https://css-tricks.com/overlaying-video-with-transparency-while-wrangling-cross-browser-support/
+
+Video is 900x496
+*/
 
 const Artboard = () => {
+  // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  // const videoSrc = isSafari ? <source src={withPrefix('/hello.mov')} type="video/quicktime" /> : <source src={withPrefix('/hello.webm')} type="video/webm" />;
+  const videoUrl = isSafari ? withPrefix('/hello.mov') : withPrefix('/hello.webm');
   return (
     <div style={{background: "rgba(223, 196, 138, 1)", width: "574px", height: "447px", overflow: "hidden", position: "relative"}}>
       <div style={{backgroundImage: "url(https://media.tenor.com/vw57lq4GUHYAAAAC/starry-night-van-gogh.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "84px", height: "111px", left: "176px", top: "111px", position: "absolute"}}></div>
@@ -23,8 +58,9 @@ const Artboard = () => {
       <div style={{backgroundImage: "url(https://media.tenor.com/29mROjd-PXoAAAAi/moontrip.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "94px", height: "122px", left: "367px", top: "102px", position: "absolute"}}></div>
       <div style={{backgroundImage: "url(https://media.tenor.com/OOH12fSHuREAAAAi/plant-plants.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "104px", height: "142px", left: "527.46330227795px", top: "333.0761355603127px", position: "absolute"}}></div>
       <div style={{backgroundImage: "url(https://media.tenor.com/OOH12fSHuREAAAAi/plant-plants.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "104px", height: "142px", left: "12.297678445192027px", top: "288px", position: "absolute"}}></div>
-      <div style={{backgroundImage: "url(https://rmmhpcnrqakmcbvlcerx.supabase.co/storage/v1/object/sign/doc_uploads/920c01fb-b57c-4517-a9bd-14591cb14145/71c7db71-a4eb-43dd-9e2f-c371cdffc3f4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkb2NfdXBsb2Fkcy85MjBjMDFmYi1iNTdjLTQ1MTctYTliZC0xNDU5MWNiMTQxNDUvNzFjN2RiNzEtYTRlYi00M2RkLTllMmYtYzM3MWNkZmZjM2Y0IiwiaWF0IjoxNzQxNDExODg5LCJleHAiOjMzMTgyMTE4ODl9.G6Wvau-pnFm04r6k4nF_gShAkb0-Es8SMTjBj0oYn8w)", backgroundSize: "cover", backgroundPosition: "center", width: "247px", height: "286px", left: "183.23357188125146px", top: "163.62784673121655px", position: "absolute"}}></div>
+      {/* <div style={{backgroundImage: "url(https://rmmhpcnrqakmcbvlcerx.supabase.co/storage/v1/object/sign/doc_uploads/920c01fb-b57c-4517-a9bd-14591cb14145/71c7db71-a4eb-43dd-9e2f-c371cdffc3f4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkb2NfdXBsb2Fkcy85MjBjMDFmYi1iNTdjLTQ1MTctYTliZC0xNDU5MWNiMTQxNDUvNzFjN2RiNzEtYTRlYi00M2RkLTllMmYtYzM3MWNkZmZjM2Y0IiwiaWF0IjoxNzQxNDExODg5LCJleHAiOjMzMTgyMTE4ODl9.G6Wvau-pnFm04r6k4nF_gShAkb0-Es8SMTjBj0oYn8w)", backgroundSize: "cover", backgroundPosition: "center", width: "247px", height: "286px", left: "183.23357188125146px", top: "163.62784673121655px", position: "absolute"}}></div> */}
       <div style={{backgroundImage: "url(https://media.tenor.com/Cvo4AhntshAAAAAi/sabrina-carpenter-lights.gif)", backgroundSize: "cover", backgroundPosition: "center", width: "144px", height: "150px", left: "228.78159423979906px", top: "-51.094934787072994px", position: "absolute"}}></div>
+      <video width="900" autoPlay loop playsInline muted src={videoUrl} style={{width: "600px", height: "350px", left: "0", top: "80px", position: "absolute"}} />
     </div>
   );
 };
