@@ -17,7 +17,7 @@ class Layout extends React.Component {
 		return (
 		  <ParallaxProvider>
 		    <Helmet
-		      title="Nate Parrott’s Nice and Engaging Website"
+		      title="Nathaniel Parrott's Nice and Engaging Website"
 		      meta={[
 		        { name: 'description', content: '' },
 		        { name: 'keywords', content: '' },
