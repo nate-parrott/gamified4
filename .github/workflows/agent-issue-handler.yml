@@ -1,30 +1,108 @@
-- name: Run agent CLI tool
-  env:
-    ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-  run: |
-    # Create a prompt that includes the context and best practices
-    cat > agent_prompt.txt << 'EOL'
-    GitHub Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+name: Agent Issue Handler
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  process-issue:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.title, 'AGENT') # This is your special keyword trigger
     
-    ISSUE DESCRIPTION:
-    ${{ github.event.issue.body }}
-    
-    REPOSITORY CONTEXT:
-    This is running in a GitHub Action triggered by an issue. 
-    Repository: ${{ github.repository }}
-    
-    BEST PRACTICES:
-    - Try to get as far as you can agentically with the task
-    - Read the project README and find out how to execute tests
-    - Do TDD if possible
-    - No need to push changes, just make them locally
-    - Make sure to understand the codebase structure before making changes
-    - Run tests after making changes to verify functionality
-    - Follow the project's coding style guidelines
-    
-    INSTRUCTIONS:
-    Please implement the requested changes based on the issue description.
-    EOL
-    
-    # Run Claude Code with the prepared prompt (with verbose flag)
-    claude -p "$(cat agent_prompt.txt)" --verbose
+    # Prevent concurrent execution
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: false
+      
+    steps:
+      - name: Initial comment
+        id: initial-comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: "🔄 I'm working on implementing your request. I'll update this comment when I'm done!"
+      
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install Claude Code
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          
+      - name: Create new branch
+        run: |
+          BRANCH_NAME="agent/issue-${{ github.event.issue.number }}"
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "action@github.com"
+          git checkout -b $BRANCH_NAME
+      
+      - name: Extract issue description
+        id: extract
+        run: |
+          DESCRIPTION="${{ github.event.issue.body }}"
+          echo "TASK_DESCRIPTION=$DESCRIPTION" >> $GITHUB_ENV
+      
+      - name: Run agent CLI tool
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # Create a prompt that includes the context and best practices
+          cat > agent_prompt.txt << 'EOL'
+          GitHub Issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}
+          
+          ISSUE DESCRIPTION:
+          ${{ github.event.issue.body }}
+          
+          REPOSITORY CONTEXT:
+          This is running in a GitHub Action triggered by an issue. 
+          Repository: ${{ github.repository }}
+          
+          BEST PRACTICES:
+          - Try to get as far as you can agentically with the task
+          - Read the project README and find out how to execute tests
+          - Do TDD if possible
+          - No need to push changes, just make them locally
+          - Make sure to understand the codebase structure before making changes
+          - Run tests after making changes to verify functionality
+          - Follow the project's coding style guidelines
+          
+          INSTRUCTIONS:
+          Please implement the requested changes based on the issue description.
+          EOL
+          
+          # Run Claude Code with the prepared prompt and verbose flag
+          claude -p "$(cat agent_prompt.txt)" --verbose
+          
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Auto-changes from issue #${{ github.event.issue.number }}"
+          
+      - name: Push changes
+        run: |
+          git push origin agent/issue-${{ github.event.issue.number }}
+          
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Auto: ${{ github.event.issue.title }}"
+          body: "Automated changes based on issue #${{ github.event.issue.number }}\n\n${{ github.event.issue.body }}"
+          branch: agent/issue-${{ github.event.issue.number }}
+          base: main
+          labels: automated,agent
+          
+      - name: Update comment with results
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.initial-comment.outputs.comment-id }}
+          edit-mode: replace
+          body: "✅ Task completed! Created PR for this issue. See the changes [here](https://github.com/${{ github.repository }}/pull/${{ steps.create-pr.outputs.pull-request-number }})."
