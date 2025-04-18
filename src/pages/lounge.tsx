@@ -130,12 +130,16 @@ const VideoInterstitial = ({ isLoading, onStart }: { isLoading: boolean; onStart
             e.currentTarget.style.backgroundColor = "transparent";
           }}
         >
-          Tap to Start
+          Enter Lounge
         </button>
       )}
     </div>
   );
 };
+
+function isIOSOrIpadSafari() {
+  return typeof window !== 'undefined' && window.navigator.userAgent.includes('iPhone') && window.navigator.userAgent.includes('Safari');
+}
 
 const Artboard = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> }) => {
   /*
@@ -246,6 +250,7 @@ const ExclusiveLoungeModal: React.FC<PageProps> = () => {
     
     // Create timeupdate event listener for the video
     const handleTimeUpdate = () => {
+      if (isIOSOrIpadSafari()) { return } // disable
       const currentTime = videoRef.current?.currentTime || 0;
 
       const DEBUG = false;
