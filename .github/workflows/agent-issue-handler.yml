@@ -106,3 +106,7 @@ jobs:
           comment-id: ${{ steps.initial-comment.outputs.comment-id }}
           edit-mode: replace
           body: "✅ Task completed! Created PR for this issue. See the changes [here](https://github.com/${{ github.repository }}/pull/${{ steps.create-pr.outputs.pull-request-number }})."
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
