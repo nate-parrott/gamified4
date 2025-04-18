@@ -22,7 +22,8 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-scroll-parallax": "^3.4.5"
+    "react-scroll-parallax": "^3.4.5",
+    "google-analytics": "~5.3.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.8",
