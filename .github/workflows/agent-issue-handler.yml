@@ -78,7 +78,7 @@ jobs:
           EOL
           
           # Run Claude Code with the prepared prompt and verbose flag
-          claude -p "$(cat agent_prompt.txt)" --output-format stream-json
+          claude -p "$(cat agent_prompt.txt)" --output-format stream-json --verbose
           
       - name: Commit changes
         run: |
