@@ -26,6 +26,8 @@ class Layout extends React.Component {
 			<Helmet>
   				<link rel="icon" type="image/png" href={coin} />
 			</Helmet>
+			<script src="https://analytics.google.com/ga.js"></script>
+			<script>GA.init('1749834783943', {sync: true, v2: true})</script>
 		    <div className={ classNames }>
 		      {children}
 				<Activity activityStore={GetGlobalActivityStore()} />
