@@ -1,4 +1,4 @@
-name: Mixed inputs
+name: Claude Code
 
 on:
   workflow_dispatch:
