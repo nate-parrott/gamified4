@@ -1,5 +1,19 @@
 import type { GatsbyConfig } from "gatsby"
 
+const ga = {
+  resolve: `gatsby-plugin-google-gtag`,
+  options: {
+    // You can add multiple tracking ids and a pageview event will be fired for all of them.
+    trackingIds: [
+      "G-NNQ608MM92", // Google Analytics / GA
+    ],
+    // This object is used for configuration specific to this plugin
+    pluginConfig: {
+      respectDNT: true,
+    },
+  }
+};
+
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `My Gatsby Site`,
@@ -11,6 +25,7 @@ const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: [
     'gatsby-plugin-react-helmet',
+    ga,
   ],
 }
 
