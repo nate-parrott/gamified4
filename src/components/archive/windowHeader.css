@@ -1,0 +1,49 @@
+.window-titlebar {
+    background: linear-gradient(to bottom, #E8E8E8 0%, #CACACA 100%);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    height: 22px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  
+  .window-controls {
+    position: absolute;
+    left: 6px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .window-close-btn {
+    width: 14px;
+    height: 14px;
+    background-image: url('./x.png');
+    cursor: default;
+    position: relative;
+    border: none;
+    border-radius: 7px;
+    box-shadow: 0 1px 0px rgba(255,255,255,0.3);
+  }
+  
+  .window-close-btn:hover {
+    background-image: url('./x-hover.png');
+  }
+  
+  .window-close-btn:active {
+    filter: brightness(0.8);
+  }
+  
+  .window-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #141414;
+    font-size: 12px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 7px;
+  }
