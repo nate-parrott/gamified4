@@ -67,7 +67,7 @@ const Archive: React.FC<PageProps> = () => {
       <div className="menubar">
         {/* <img src={menu} /> */}
       </div>
-      <div className="desktop">
+      <div className="archive-desktop">
         <div className="icon-grid">
           {filteredItems.map(item => (
             <ClickableArchiveItem key={item.path} item={item} onOpen={openWindow} />
