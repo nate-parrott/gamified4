@@ -36,6 +36,7 @@ import { SubscriptionCanceller } from "../components/announcer";
 import { bigEmojiModalItem } from "../components/bigEmojiModal";
 import Intro from "../components/intro";
 import Social from "../components/social";
+import ArchiveEmbed from "../components/archive/ArchiveEmbed";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -179,7 +180,8 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section footer'>
 							2024. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
 					</div>
-			</div>
+					<ArchiveEmbed />
+				</div>
 		  </Layout>
 		)
 	}
@@ -207,12 +209,3 @@ let Tile = ({src, alt, onClick, altLink}: TileProps) => {
 	}
 	return <a href={altLink} className='tile hover-offset' style={{backgroundImage: `url(${src})`}} aria-label={alt} onClick={click} />
 }
-
-// const container = document.getElementById('app');
-// const root = createRoot(container); // createRoot(container!) if you use TypeScript
-
-// if (container.children.length > 0) {
-// 	hydrateRoot(container, <IndexPage />);
-// } else {
-// 	root.render(<IndexPage />);
-// }
