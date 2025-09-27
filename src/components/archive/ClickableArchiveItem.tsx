@@ -12,7 +12,7 @@ const Icon = ({ item }: { item: ArchiveItem }) => {
       const style: React.CSSProperties = {
         aspectRatio: `${item.width} / ${item.height}`,
       };
-      const scale = Math.min(1, 42 / Math.max(item.width, item.height));
+      const scale = Math.min(1, 70 / Math.max(item.width, item.height));
       const width = item.width * scale;
       const height = item.height * scale;
       style.width = width;

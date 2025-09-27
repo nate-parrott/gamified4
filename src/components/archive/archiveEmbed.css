@@ -18,11 +18,13 @@
     position: relative;
     background: black;
     container-type: size;
+
+    font-family: 'Lucida Grande', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
 }
 .archive-box {
     width: 100cqmin;
     aspect-ratio: 1;  
-    border: 2px solid red;
     box-sizing: border-box;
     position: relative;
 }
@@ -85,4 +87,11 @@
     width: 100%;
     height: 100%;
     border: none;
+}
+
+.archive-desktop-stack {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }

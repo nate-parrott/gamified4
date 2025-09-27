@@ -10,6 +10,7 @@ interface WindowProps {
   onBringToFront: (windowId: string) => void;
   onUpdatePosition: (windowId: string, x: number, y: number) => void;
   onItemOpen: (item: ArchiveItem) => void;
+  active: boolean;
 }
 
 const Window: React.FC<WindowProps> = ({
@@ -17,7 +18,8 @@ const Window: React.FC<WindowProps> = ({
   onClose,
   onBringToFront,
   onUpdatePosition,
-  onItemOpen
+  onItemOpen,
+  active
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0, windowX: 0, windowY: 0 });
@@ -92,7 +94,7 @@ const Window: React.FC<WindowProps> = ({
   return (
     <div
       ref={windowRef}
-      className={`finder-window ${isDragging ? ' dragging' : ''}${isOpening ? ' animate-in' : ''} ${contentClass}`}
+      className={`finder-window ${active ? 'window-active' : 'window-inactive'} ${isDragging ? ' dragging' : ''}${isOpening ? ' animate-in' : ''} ${contentClass}`}
       style={{
         left: window.x,
         top: window.y,

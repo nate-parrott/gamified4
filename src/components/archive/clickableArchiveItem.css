@@ -9,14 +9,6 @@
     transition: background-color 0.15s ease;
   }
   
-  /* .desktop-icon:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
-  .desktop-icon:active {
-    background: rgba(255, 255, 255, 0.3);
-  } */
-  
 
   .icon-container {
     width: 42px;
@@ -26,6 +18,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .finder-window .icon-container {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 16px;;
   }
 
   .icon-thumbnail {
