@@ -30,6 +30,8 @@ import arc from '../images/tiles/arc.svg'
 import max from '../images/tiles/max.svg'
 import feeeed from '../images/tiles/feeeed.svg'
 import boosts from '../images/tiles/boosts.svg'
+import vsc from '../images/tiles/vsc.svg'
+import pages42 from '../images/tiles/42pages.svg'
 
 import { withPrefix } from 'gatsby-link';
 import SlotMachine from "../components/slots";
@@ -116,10 +118,10 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3>Recent work!<div className='tooltip'>1 point per click</div></h3>
 						<div className='content-tiles'>
+							<Tile src={vsc} altLink={withPrefix('/claude-vscode/index.html')} alt="Claude for VS Code" onClick={ () => this.playWithRewards('vsc', [ web(withPrefix('/claude-vscode/index.html')) ], {category: 'content'}) } />
+							<Tile src={pages42} altLink={withPrefix('/42pages/index.html')} alt="42pages: A new way to make software" onClick={ () => this.playWithRewards('42pages', [ web(withPrefix('/42pages/index.html')) ], {category: 'content'}) } />
 							<Tile src={arc} altLink={withPrefix('/arc/index.html')} alt="Designing Arc" onClick={ () => this.playWithRewards('arc', [ web(withPrefix('/arc/index.html')) ], {category: 'content'}) } />
 							<Tile src={feeeed} altLink="https://feeeed.nateparrott.com" alt="A more personal news feed" onClick={ () => this.playWithRewards('feeeed', [ web('https://feeeed.nateparrott.com/') ], {category: 'content'}) } />
-							<Tile src={max} altLink={withPrefix('/arc-max/index.html')} alt="Arc Max: AI in Arc" onClick={ () => this.playWithRewards('max', [ web(withPrefix('/arc-max/index.html')) ], {category: 'content'}) } />
-							<Tile src={boosts} altLink={withPrefix('/arc-boosts/index.html')} alt="Arc Boosts: Edit the web" onClick={ () => this.playWithRewards('boosts', [ web(withPrefix('/arc-boosts/index.html')) ], {category: 'content'}) } />	
 						</div>
 					</div>
 
@@ -134,6 +136,8 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section'>
 						<h3><span className='nowrap'>Fun stuff! <div className='tooltip'>1 point per click</div></span></h3>
 						<div className='content-tiles'>
+							<Tile src={max} altLink={withPrefix('/arc-max/index.html')} alt="Arc Max: AI in Arc" onClick={ () => this.playWithRewards('max', [ web(withPrefix('/arc-max/index.html')) ], {category: 'content'}) } />
+							<Tile src={boosts} altLink={withPrefix('/arc-boosts/index.html')} alt="Arc Boosts: Edit the web" onClick={ () => this.playWithRewards('boosts', [ web(withPrefix('/arc-boosts/index.html')) ], {category: 'content'}) } />
 							<Tile src={uhoh} altLink={withPrefix('/uhoh/index.html')} alt="A fake Duolingo lesson for anything" onClick={ () => this.playWithRewards('uhoh', [ web(withPrefix('/uhoh/index.html')) ], {category: 'content'}) } />
 							<Tile src={web98} altLink={withPrefix('/web98/index.html')} alt="A fantasy internet simulator" onClick={ () => this.playWithRewards('web98', [ web(withPrefix('/web98/index.html')) ], {category: 'content'}) } />
 						</div>

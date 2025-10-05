@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Claude for VS Code</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+	body {
+		background-color: #111;
+		font-family: "Helvetica Neue", "Helvetica", sans-serif;
+		margin: 0;
+		color: white;
+	}
+    a {
+        color: white;
+    }
+	.blue {
+		background-color: #234EF3;
+		color: white;
+		padding: 2em;
+		margin-block-start: 0;
+	}
+	article {
+		max-width: 740px;
+		margin: auto;
+		font-size: large;
+		line-height: 1.5;
+		padding-left: 2em;
+		padding-right: 2em;
+	}
+	video, img {
+		width: 100%;
+	}
+    .hero {
+        width: 100%;
+        max-height: 80vh;
+    }
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 3em;
+		}
+	}
+    h1 {
+        margin-bottom: 0;
+    }
+	section {
+		margin-block-start: 3em;
+		margin-block-end: 3em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+		gap: 1em;
+	}
+	.images * {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+    <video class="hero" src="video.mp4" controls loop></video>
+	<article>
+        <h1>Claude for VS Code</h1>
+		<p>
+            I designed Claude for VS Code over a few months at Anthropic — our first Claude Code product outside the terminal. We explored a bunch of ways of showing Claude's activity: show every tool call, or just some? Only show todos? A narrative format with tools interspersed?
+		</p>
+
+		<section>
+			<div class="images">
+				<img src="condensed1.jpg" />
+				<img src="condensed2.jpg" />
+				<img src="condensed3.jpg" />
+				<img src="condensed4.jpg" />
+			</div>
+			<figcaption>Exploring ways to show Claude's activity</figcaption>
+		</section>
+
+        <p>
+            Ultimately, Claude for VS Code is faithful to Claude Code in Terminal: same UI, same mechanics, but right at home in VS Code.
+        </p>
+
+		<section>
+			<img src="themes.jpg" />
+			<figcaption>Same experience, new surface</figcaption>
+		</section>
+
+		<p>
+			You shouldn't have to choose between keyboard-driven efficiency and an intuitive interface. Browse the UI with your mouse, or use a Figma-inspired command menu.
+		</p>
+
+		<section>
+			<img src="kb.jpg" />
+			<figcaption>Command menu for keyboard navigation</figcaption>
+		</section>
+
+		<p>
+			My favorite detail is the typing indicator. A little hackery, mostly something to look at.
+		</p>
+
+		<section>
+			<video src="loader.mp4" controls loop></video>
+			<figcaption>Typing indicator animation</figcaption>
+		</section>
+
+		<p>
+			This release is about parity: bringing Claude Code to a new, more accessible surface. Up next: see what new stuff we can do with all these pixels.
+		</p>
+	</article>
+</body>
+</html>
