@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useState, useEffect, useMemo } from "react"
 import workflow from '../images/workflow.svg'
 import { Trophies } from '../components/trophy';
 import ModalPlayer, {ModalItem, ModalPlaylist} from '../components/modalPlayer';
@@ -9,6 +10,7 @@ import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeD
 import IncentivesSection from '../components/incentives';
 import QuizSection from '../components/quiz.jsx';
 import Layout from '../components/Layout.jsx';
+import ArchiveStack from '../components/archive/ArchiveStack';
 
 // tiles:
 import hab from '../images/tiles/hab.svg'
@@ -36,7 +38,6 @@ import { SubscriptionCanceller } from "../components/announcer";
 import { bigEmojiModalItem } from "../components/bigEmojiModal";
 import Intro from "../components/intro";
 import Social from "../components/social";
-import ArchiveEmbed from "../components/archive/ArchiveEmbed";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -58,14 +59,15 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 	constructor(props: any) {
 		super(props);
 		this.activityStore = GetGlobalActivityStore();
-		this.state = { coins: this.activityStore.coinBalance() };
+		this.state = { 
+			coins: this.activityStore.coinBalance()
+		};
 	}
 	componentDidMount() {
 		this.cancelActivityStoreListener = this.activityStore.changeAnnouncer.listen(() => {
 			this.forceUpdate();
 			this.setState({ coins: this.activityStore.coinBalance() });
 		});
-
 	}
 	componentWillUnmount() {
 		if (this.cancelActivityStoreListener) {
@@ -180,7 +182,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<div className='readable-width section footer'>
 							2024. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
 					</div>
-					<ArchiveEmbed />
+					<ArchiveStack />
 				</div>
 		  </Layout>
 		)

@@ -1,0 +1,31 @@
+<svg width="1000" height="238" viewBox="0 0 1000 238" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M691.011 -706L775.485 156H223.515L307.989 -706H691.011Z" fill="#25272E" stroke="#333642" stroke-width="10"/>
+<path d="M192 155H807L759 238H240L192 155Z" fill="#25272F"/>
+<path d="M192 155H807L759 238H240L192 155Z" fill="url(#paint0_linear_1349_608)" fill-opacity="0.2"/>
+<path d="M806.134 155.5L758.712 237.5H240.288L192.866 155.5H806.134Z" stroke="white" stroke-opacity="0.1"/>
+<g opacity="0.9">
+<g clip-path="url(#paint1_angular_1349_608_clip_path)" data-figma-skip-parse="true"><g transform="matrix(0 0.0125 -0.027 0 499 196.5)"><foreignObject x="-1080" y="-1080" width="2160" height="2160"><div xmlns="http://www.w3.org/1999/xhtml" style="background:conic-gradient(from 90deg,rgba(228, 228, 228, 1) 0deg,rgba(126, 126, 126, 1) 129.808deg,rgba(228, 228, 228, 1) 197.308deg,rgba(126, 126, 126, 1) 247.5deg,rgba(228, 228, 228, 1) 315deg,rgba(228, 228, 228, 1) 360deg);height:100%;width:100%;opacity:1"></div></foreignObject></g></g><ellipse cx="499" cy="196.5" rx="27" ry="12.5" data-figma-gradient-fill="{&#34;type&#34;:&#34;GRADIENT_ANGULAR&#34;,&#34;stops&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.49411764740943909,&#34;g&#34;:0.49411764740943909,&#34;b&#34;:0.49411764740943909,&#34;a&#34;:1.0},&#34;position&#34;:0.36057692766189575},{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.54807692766189575},{&#34;color&#34;:{&#34;r&#34;:0.49411764740943909,&#34;g&#34;:0.49411764740943909,&#34;b&#34;:0.49411764740943909,&#34;a&#34;:1.0},&#34;position&#34;:0.68750},{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.8750}],&#34;stopsVar&#34;:[{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.0},{&#34;color&#34;:{&#34;r&#34;:0.49411764740943909,&#34;g&#34;:0.49411764740943909,&#34;b&#34;:0.49411764740943909,&#34;a&#34;:1.0},&#34;position&#34;:0.36057692766189575},{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.54807692766189575},{&#34;color&#34;:{&#34;r&#34;:0.49411764740943909,&#34;g&#34;:0.49411764740943909,&#34;b&#34;:0.49411764740943909,&#34;a&#34;:1.0},&#34;position&#34;:0.68750},{&#34;color&#34;:{&#34;r&#34;:0.89411765336990356,&#34;g&#34;:0.89411765336990356,&#34;b&#34;:0.89411765336990356,&#34;a&#34;:1.0},&#34;position&#34;:0.8750}],&#34;transform&#34;:{&#34;m00&#34;:3.3065464225706144e-15,&#34;m01&#34;:-54.0,&#34;m02&#34;:526.0,&#34;m10&#34;:25.0,&#34;m11&#34;:1.5308085524965700e-15,&#34;m12&#34;:184.0},&#34;opacity&#34;:1.0,&#34;blendMode&#34;:&#34;NORMAL&#34;,&#34;visible&#34;:true}"/>
+<g filter="url(#filter0_d_1349_608)">
+<ellipse cx="499" cy="201.5" rx="28" ry="12.5" fill="#A0A3A7"/>
+</g>
+<ellipse opacity="0.1" cx="499" cy="201.5" rx="16" ry="7.5" fill="#1A1F28"/>
+<rect opacity="0.5" x="500.19" y="199.217" width="1.24207" height="5.92497" rx="0.621035" transform="rotate(34.9926 500.19 199.217)" fill="#22242B"/>
+</g>
+<path d="M192 155H807L796 115H203L192 155Z" fill="#333642"/>
+<path d="M806.344 154.5L795.618 115.5H203.382L192.656 154.5H806.344Z" stroke="white" stroke-opacity="0.2"/>
+<defs>
+<clipPath id="paint1_angular_1349_608_clip_path"><ellipse cx="499" cy="196.5" rx="27" ry="12.5"/></clipPath><filter id="filter0_d_1349_608" x="471" y="187" width="56" height="27" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1349_608"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1349_608" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_1349_608" x1="499.5" y1="155" x2="499.5" y2="301.238" gradientUnits="userSpaceOnUse">
+<stop stop-opacity="0"/>
+<stop offset="1"/>
+</linearGradient>
+</defs>
+</svg>

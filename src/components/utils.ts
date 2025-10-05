@@ -1,3 +1,4 @@
+import { RefCallback, useCallback, useEffect, useState } from 'react'
 import { withPrefix as wp } from 'gatsby-link'
 
 export const withPrefix = wp;
@@ -63,4 +64,56 @@ export function runWhenTabVisible(fn: () => void) {
       }
     });
   }
+}
+
+type UseInViewportOptions = {
+  viewportPaddingTop?: number;
+  viewportPaddingBottom?: number;
+};
+
+export function useInViewport<T extends Element>(
+  options: UseInViewportOptions = {}
+): [RefCallback<T>, boolean] {
+  const [target, setTarget] = useState<T | null>(null);
+  const [isInViewport, setIsInViewport] = useState(false);
+
+  const paddingTop = clamp(options.viewportPaddingTop ?? 0, 0, 0.99);
+  const paddingBottom = clamp(options.viewportPaddingBottom ?? 0, 0, 0.99);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!target) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setIsInViewport(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsInViewport(entry.isIntersecting && entry.intersectionRatio > 0);
+      },
+      {
+        root: null,
+        rootMargin: `${-paddingTop * 100}% 0% ${-paddingBottom * 100}% 0%`,
+        threshold: 0,
+      }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [target, paddingTop, paddingBottom]);
+
+  const ref = useCallback<RefCallback<T>>((node) => {
+    setTarget(node);
+    if (!node) {
+      setIsInViewport(false);
+    }
+  }, []);
+
+  return [ref, isInViewport];
 }

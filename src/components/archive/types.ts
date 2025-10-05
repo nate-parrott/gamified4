@@ -22,10 +22,3 @@ export interface ArchiveManifest {
   items: ArchiveItem[];
 }
 
-export interface WindowState {
-  id: string;
-  item: ArchiveItem;
-  x: number;
-  y: number;
-  zIndex: number;
-}

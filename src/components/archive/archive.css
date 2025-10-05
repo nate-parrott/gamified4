@@ -1,302 +1,141 @@
 @import '../../images/archive-fonts/fonts.css';
 
-/* Mac OS X Tiger Spatial Finder Styles */
-
-.spatial-finder {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  font-family: 'Lucida Grande', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 12px;
-  position: relative;
-  user-select: none;
+/* Archive Embed Styles */
+.archive-embed {
+    width: 100%;
+    height: 200vh;
+    background-color: black;
 }
 
-.archive-desktop {
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
-  flex-shrink: 1;
-  background: url('./bg.jpg'), linear-gradient(135deg, #5f9dd7 0%, #4a89d2 25%, #3f7bc9 50%, #3570c1 75%, #2d65b8 100%);
-  background-size: cover;
-  position: relative;
-  overflow-y: auto;
-  box-sizing: border-box;
-  padding-top: 30px;
-
-  scrollbar-color: rgba(0,0,0,0.2) rgba(255,255,255,0);
-  scrollbar-width: thin;
-
-  
+.archive-commute {
+    width: 100%;
+    height: 1000vh;
+    background: linear-gradient(to bottom, #fff, #000);
 }
 
-.menubar {
-  height: 22px;
+/* Archive Stack Styles */
+.archive-stack-container {
+  position: relative;
+  background-color: black;
+}
+
+.archive-scroll-spacer {
   width: 100%;
-  background: url('./titlebar.png');
-  box-shadow: 0 3px 20px rgba(0,0,0,0.33);
+  background: transparent;
+}
+
+.archive-stack-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
   z-index: 1000;
+  perspective: 1000px;
 }
 
-.menubar, .menubar img {
-  /* disable antialiasing */
-  image-rendering: pixelated;
-}
-
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 90px);
-  grid-auto-rows: 90px;
-  gap: 10px;
-  padding: 10px;
-  align-content: start;
-}
-
-.finder-window .icon-grid {
-  grid-template-columns: repeat(auto-fill, 96px);
-  grid-auto-rows: 130px;
-}
-
-/* Finder Windows */
-.finder-window {
-  position: absolute;
-  background: linear-gradient(to bottom, #e8e8e8 0%, #d4d4d4 100%);
-  border: 1px solid rgba(0,0,0,0.2);
-  border-radius: 8px 8px 0 0;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-
-  display: flex;
-  flex-direction: column;
-}
-
-.finder-window.window-inactive {
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.finder-window.window-with-directory {
-  min-width: 470px;
-  max-width: 800px;
-  max-height: calc(min(600px, 70vh));
-}
-
-.finder-window.window-with-file {
-  width: calc(min(600px, 70vw));
-  height: calc(min(600px, 70vh));
-}
-
-.finder-window.window-with-file .window-content {
-  display: flex;
-}
-
-.window-content {
-  min-height: 0;
-  flex-shrink: 1;
-  flex-grow: 1;
-  background: white;
-  overflow-y: auto;
+.archive-card-stack {
   position: relative;
+  width: calc(100vw - 2 * max(8vh, 50px));
+  height: calc(100vh - 2 * max(8vh, 50px));
+  margin: calc(max(5vh, 30px));
 }
 
-/* Window Directory View */
-.window-directory {
-  padding: 16px;
+.archive-card {
+  position: absolute;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 80px);
-  grid-auto-rows: 100px;
-  gap: 12px;
-  align-content: start;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background: #1a1a1a;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transform-origin: center center;
 }
 
-.window-directory .icon-label {
-  color: #333;
-  text-shadow: none;
-  font-weight: 500;
-}
-
-/* File Preview */
-.window-preview {
-  /* padding: 20px; */
+.archive-card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 600px;
-  height: auto;
+  flex-direction: column;
 }
 
-.window-preview img {
+.archive-card-media {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.archive-card-media img,
+.archive-card-media video {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  min-height: 0;
 }
 
-.window-preview video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  min-height: 0;
-}
-
-/* File Info */
-.window-file-info {
-  width: 100%;
-  padding: 40px;
+.archive-card-folder {
+  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  min-height: 150px;
-}
-
-.file-icon-large {
-  font-size: 64px;
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-.file-details {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.file-size {
-  font-size: 13px;
-  color: #666;
-  font-weight: 500;
-}
-
-.file-type {
-  font-size: 11px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.file-open-btn {
-  display: inline-block;
-  padding: 6px 16px;
-  background: linear-gradient(to bottom, #6ba3d7 0%, #4a89d2 100%);
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
   color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-size: 11px;
+  font-size: 2rem;
   font-weight: 600;
-  border: 1px solid #3570c1;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-  transition: all 0.15s ease;
+  text-align: center;
+  padding: 2rem;
 }
 
-.file-open-btn:hover {
-  background: linear-gradient(to bottom, #5a93c7 0%, #3a79c2 100%);
-}
-
-.file-open-btn:active {
-  background: linear-gradient(to bottom, #4a83b7 0%, #2a69b2 100%);
-  transform: translateY(1px);
-}
-
-/* Aqua-style scroll bars */
-/* .window-content::-webkit-scrollbar {
-  width: 15px;
-  background: #f0f0f0;
-}
-
-.window-content::-webkit-scrollbar-track {
-  background: linear-gradient(to right, #e6e6e6, #f0f0f0, #e6e6e6);
-  border-radius: 8px;
-}
-
-.window-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #d0d0d0 0%, #b0b0b0 50%, #a0a0a0 51%, #909090 100%);
-  border-radius: 8px;
-  border: 1px solid #808080;
-}
-
-.window-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #c0c0c0 0%, #a0a0a0 50%, #909090 51%, #808080 100%);
-} */
-
-/* Selection states */
-/* .desktop-icon.selected {
-  background: rgba(56, 117, 215, 0.3) !important;
-}
-
-.desktop-icon.selected .icon-label {
-  background: #3875d7;
+.archive-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
   color: white;
-  padding: 1px 4px;
-  border-radius: 2px;
-} */
-
-/* Window dragging state */
-.finder-window.dragging {
-  /* opacity: 0.8; */
+  padding: 2rem 1.5rem 1.5rem;
+  z-index: 2;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .desktop-icons {
-    grid-template-columns: repeat(auto-fill, 70px);
-    grid-auto-rows: 80px;
-    gap: 8px;
-    padding: 15px;
-  }
-  
-  .finder-window {
-    min-width: 300px;
-    min-height: 250px;
-  }
-  
-  .window-directory {
-    grid-template-columns: repeat(auto-fill, 70px);
-    grid-auto-rows: 80px;
-    gap: 10px;
-    padding: 12px;
-  }
-  
-  .icon-image {
-    font-size: 28px;
-  }
-  
-  .file-icon-large {
-    font-size: 48px;
-  }
+.archive-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Animation for window opening */
-@keyframes windowOpen {
-  from {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+.archive-card-path {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.finder-window.animate-in {
-  animation: windowOpen 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.archive-content-after {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  padding: 2rem;
 }
 
-
-/* .archive-desktop::-webkit-scrollbar {
-  width: 15px;
-  background: #f0f0f0;
+.archive-content-after h1 {
+  color: white;
+  margin-bottom: 1rem;
 }
 
-.archive-desktop::-webkit-scrollbar-track {
-  background: linear-gradient(to right, #e6e6e6, #f0f0f0, #e6e6e6);
-  border-radius: 8px;
+.archive-content-after p {
+  color: #ccc;
+  font-size: 1.1rem;
 }
 
-.archive-desktop::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #d0d0d0 0%, #b0b0b0 50%, #a0a0a0 51%, #909090 100%);
-  border-radius: 8px;
-  border: 1px solid #808080;
-} */
