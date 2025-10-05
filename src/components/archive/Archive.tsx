@@ -143,15 +143,15 @@ const Archive = forwardRef<ArchiveRef, ArchiveProps>(({ activityStore, playPlayl
 
 const NotOpenPostItNote = ({ isUnlocked }: { isUnlocked: boolean }) => {
   const text = isUnlocked 
-    ? "this is the archive. a jumble of unorganized work. click to open" 
-    : "this is the archive. a jumble of unorganized work. click to unlock";
+    ? "this is the archive. a jumble of unorganized work. click it to open" 
+    : "this is the archive. a jumble of unorganized work. click it to unlock";
   return (
-    <PostItNote text={text} style={{ top: `calc(var(--size) * 0.1)`, left: `calc(50% - var(--size) * 0.3)` }} />
+    <PostItNote text={text} style={{ top: `calc(var(--size) * 0.1)`, left: `calc(50% - var(--size) * 0.4)` }} />
   )
 }
 
 const OpenPostItNote = () => {
-  const hint = isMobile ? 'drag your finger across the files to browse; tap with another finger to open in a new tab.' : 'hover on a file to browse; click to open in a new tab.';
+  const hint = isMobile ? 'drag your finger across the files to flip through. Tap with another finger to open in a new tab.' : 'Hover across the files to flip through them; click to open in a new tab.';
   return (
     <PostItNote text={hint} style={{ top: `calc(var(--size) * 0.4)`, left: `calc(50% - var(--size) * 0.4)` }} />
   )

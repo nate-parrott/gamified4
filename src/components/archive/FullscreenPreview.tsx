@@ -52,23 +52,30 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
         const handleTouchStart = (e: TouchEvent) => {
             // Prevent page scroll while interacting
             e.preventDefault();
-            
+
             if (e.touches.length === 1) {
                 const rect = element.getBoundingClientRect();
                 const y = (e.touches[0].clientY - rect.top) / rect.height;
                 setHoveredItemBasedOnFractionalYPosition(y);
                 setTriggeredByHover(false);
+                firedAdditionalTapYet.current = false;
+            } else if (e.touches.length > 1) {
+                // Second finger detected - trigger open in new tab
+                if (!firedAdditionalTapYet.current) {
+                    firedAdditionalTapYet.current = true;
+                    additionalFingerTapHandler();
+                }
             }
         };
 
         const handleTouchMove = (e: TouchEvent) => {
             // Prevent page scroll while scrubbing
             e.preventDefault();
-            
+
             if (e.touches.length === 1) {
                 const rect = element.getBoundingClientRect();
                 const touch = e.touches[0];
-                
+
                 // Check if touch is outside the drawer bounds
                 if (touch.clientX < rect.left || touch.clientX > rect.right ||
                     touch.clientY < rect.top || touch.clientY > rect.bottom) {
@@ -76,12 +83,12 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
                     setHoveredItem(null);
                     return;
                 }
-                
+
                 const y = (touch.clientY - rect.top) / rect.height;
                 setHoveredItemBasedOnFractionalYPosition(y);
                 setTriggeredByHover(false);
             } else if (e.touches.length > 1) {
-                // Additional finger tap
+                // Additional finger tap during move
                 if (!firedAdditionalTapYet.current) {
                     firedAdditionalTapYet.current = true;
                     additionalFingerTapHandler();
@@ -96,8 +103,8 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
 
         element.addEventListener('mousemove', handleMouseMove);
         element.addEventListener('mouseleave', handleMouseLeave);
-        element.addEventListener('touchstart', handleTouchStart);
-        element.addEventListener('touchmove', handleTouchMove);
+        element.addEventListener('touchstart', handleTouchStart, { passive: false });
+        element.addEventListener('touchmove', handleTouchMove, { passive: false });
         element.addEventListener('touchend', handleTouchEnd);
 
         return () => {
@@ -107,7 +114,7 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
             element.removeEventListener('touchmove', handleTouchMove);
             element.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [setHoveredItemBasedOnFractionalYPosition, additionalFingerTapHandler]);
+    }, [setHoveredItemBasedOnFractionalYPosition, additionalFingerTapHandler, active]);
 
     const shouldInterceptClicks = active && hoveredItem !== null && triggeredByHover;
     useClickInterceptor(shouldInterceptClicks ? additionalFingerTapHandler : undefined);
