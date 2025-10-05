@@ -9,7 +9,7 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
     const [triggeredByHover, setTriggeredByHover] = useState(false);
     const hoverRef = useRef<HTMLDivElement>(null);
-    const firedAdditionalTapYet = useRef(false);
+    // const firedAdditionalTapYet = useRef(false);
 
     useEffect(() => {
         if (!active) {
@@ -34,6 +34,21 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
         }
     }, [hoveredItem, renderableItems]);
 
+    useMultitouchGesture({
+        ref: hoverRef,
+        handleSingleFingerPress: (e: TouchEvent) => {
+            const rect = hoverRef.current?.getBoundingClientRect();
+            if (!rect) return;
+            const y = (e.touches[0].clientY - rect.top) / rect.height;
+            setHoveredItemBasedOnFractionalYPosition(y);
+            setTriggeredByHover(true);
+        },
+        handleSecondaryTap: additionalFingerTapHandler,
+        handleTouchEnd: () => {
+            setHoveredItem(null);
+        },
+    });
+
     useEffect(() => {
         const element = hoverRef.current;
         if (!element || !active) return;
@@ -49,70 +64,31 @@ export function useFullscreenPreviewPresenter(active: boolean): {hoverRef: React
             setHoveredItem(null);
         };
 
-        const handleTouchStart = (e: TouchEvent) => {
-            // Prevent page scroll while interacting
-            e.preventDefault();
+        // const handleTouchStart = (e: TouchEvent) => {
+        //     // Prevent page scroll while interacting
+        //     e.preventDefault();
 
-            if (e.touches.length === 1) {
-                const rect = element.getBoundingClientRect();
-                const y = (e.touches[0].clientY - rect.top) / rect.height;
-                setHoveredItemBasedOnFractionalYPosition(y);
-                setTriggeredByHover(false);
-                firedAdditionalTapYet.current = false;
-            } else if (e.touches.length > 1) {
-                // Second finger detected - trigger open in new tab
-                if (!firedAdditionalTapYet.current) {
-                    firedAdditionalTapYet.current = true;
-                    additionalFingerTapHandler();
-                }
-            }
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            // Prevent page scroll while scrubbing
-            e.preventDefault();
-
-            if (e.touches.length === 1) {
-                const rect = element.getBoundingClientRect();
-                const touch = e.touches[0];
-
-                // Check if touch is outside the drawer bounds
-                if (touch.clientX < rect.left || touch.clientX > rect.right ||
-                    touch.clientY < rect.top || touch.clientY > rect.bottom) {
-                    // Touch left the drawer, dismiss immediately
-                    setHoveredItem(null);
-                    return;
-                }
-
-                const y = (touch.clientY - rect.top) / rect.height;
-                setHoveredItemBasedOnFractionalYPosition(y);
-                setTriggeredByHover(false);
-            } else if (e.touches.length > 1) {
-                // Additional finger tap during move
-                if (!firedAdditionalTapYet.current) {
-                    firedAdditionalTapYet.current = true;
-                    additionalFingerTapHandler();
-                }
-            }
-        };
-
-        const handleTouchEnd = () => {
-            setHoveredItem(null);
-            firedAdditionalTapYet.current = false;
-        };
+        //     if (e.touches.length === 1) {
+        //         const rect = element.getBoundingClientRect();
+        //         const y = (e.touches[0].clientY - rect.top) / rect.height;
+        //         setHoveredItemBasedOnFractionalYPosition(y);
+        //         setTriggeredByHover(false);
+        //         firedAdditionalTapYet.current = false;
+        //     } else if (e.touches.length > 1) {
+        //         // Second finger detected - trigger open in new tab
+        //         if (!firedAdditionalTapYet.current) {
+        //             firedAdditionalTapYet.current = true;
+        //             additionalFingerTapHandler();
+        //         }
+        //     }
+        // };
 
         element.addEventListener('mousemove', handleMouseMove);
         element.addEventListener('mouseleave', handleMouseLeave);
-        element.addEventListener('touchstart', handleTouchStart, { passive: false });
-        element.addEventListener('touchmove', handleTouchMove, { passive: false });
-        element.addEventListener('touchend', handleTouchEnd);
 
         return () => {
             element.removeEventListener('mousemove', handleMouseMove);
             element.removeEventListener('mouseleave', handleMouseLeave);
-            element.removeEventListener('touchstart', handleTouchStart);
-            element.removeEventListener('touchmove', handleTouchMove);
-            element.removeEventListener('touchend', handleTouchEnd);
         };
     }, [setHoveredItemBasedOnFractionalYPosition, additionalFingerTapHandler, active]);
 
@@ -206,4 +182,82 @@ function ContentPreview({item}: {item: ArchiveItem}) {
 
 function openItemInNewTab(item: ArchiveItem) {
     window.open('archive/' + item.path, '_blank');
+}
+
+interface MultitouchGestureProps {
+    ref: React.RefObject<HTMLDivElement>;
+    handleSingleFingerPress: (e: TouchEvent) => void; // initial and move
+    handleSecondaryTap: () => void;
+    handleTouchEnd: () => void;
+}
+
+function useMultitouchGesture({ref, handleSingleFingerPress, handleSecondaryTap, handleTouchEnd}: MultitouchGestureProps) {
+    // Install a touchstart and touchmove on the ref, and a touchend on the document
+    const firstTouchId = useRef<number | null>(null);
+
+    const [isPressed, setIsPressed] = useState(false);
+
+    const touchStartHandler = useCallback((e: TouchEvent) => {
+        console.log('touchStartHandler');
+        e.preventDefault();
+        e.stopPropagation();
+        setIsPressed(true);
+        if (firstTouchId.current === null) {
+            // First touch
+            firstTouchId.current = e.changedTouches[0].identifier;
+            handleSingleFingerPress(e);
+        } else {
+            handleSecondaryTap();
+        }
+    }, [handleSingleFingerPress, handleSecondaryTap]);
+
+    const touchMoveHandler = useCallback((e: TouchEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleSingleFingerPress(e);
+        // if (firstTouchId.current === e.changedTouches[0].identifier) {
+        //     handleSingleFingerPress(e);
+        // }
+    }, [handleSingleFingerPress]);
+
+    const touchEndHandler = useCallback((e: TouchEvent) => {
+        if (e.touches.length === 0) {
+            // no more touches
+            firstTouchId.current = null;
+            handleTouchEnd();
+            setIsPressed(false);
+        }
+    }, [handleTouchEnd]);
+
+    const touchCancelHandler = useCallback((e: TouchEvent) => {
+        firstTouchId.current = null;
+        handleTouchEnd();
+        setIsPressed(false);
+    }, [handleTouchEnd]);
+
+    useEffect(() => {
+        const element = ref.current;
+        if (!element) return;
+
+        element.addEventListener('touchstart', touchStartHandler, { passive: false });
+        element.addEventListener('touchmove', touchMoveHandler, { passive: false });
+        document.addEventListener('touchend', touchEndHandler);
+        document.addEventListener('touchcancel', touchCancelHandler);
+        return () => {
+            element.removeEventListener('touchstart', touchStartHandler);
+            element.removeEventListener('touchmove', touchMoveHandler);
+            document.removeEventListener('touchend', touchEndHandler);
+            document.removeEventListener('touchcancel', touchCancelHandler);
+        };
+    }, [ref, touchStartHandler, touchMoveHandler, touchEndHandler, touchCancelHandler]);
+
+    // useEffect(() => {
+    //     // If isPressed, install global touch handler to handler additional taps anywhere onscreen
+    //     if (!isPressed) return;
+
+    //     document.addEventListener('touchstart', touchStartHandler, { passive: false, capture: true });
+    //     return () => {
+    //         document.removeEventListener('touchstart', touchStartHandler, { capture: true });
+    //     };
+    // }, [isPressed, touchStartHandler]);
 }
