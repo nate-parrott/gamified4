@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>42pages</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+	body {
+		background-color: #111;
+		font-family: "Helvetica Neue", "Helvetica", sans-serif;
+		margin: 0;
+		color: white;
+	}
+    a {
+        color: white;
+    }
+	.blue {
+		background-color: #234EF3;
+		color: white;
+		padding: 2em;
+		margin-block-start: 0;
+	}
+	article {
+		max-width: 740px;
+		margin: auto;
+		font-size: large;
+		line-height: 1.5;
+		padding-left: 2em;
+		padding-right: 2em;
+	}
+	video, img {
+		width: 100%;
+	}
+    .hero {
+        width: 100%;
+        max-height: 80vh;
+    }
+	@media screen and (min-width: 700px) {
+		body {
+			font-size: 20px;
+		}
+		h1 {
+			font-size: 3em;
+		}
+	}
+    h1 {
+        margin-bottom: 0;
+    }
+	section {
+		margin-block-start: 3em;
+		margin-block-end: 3em;
+	}
+	.images {
+		display: flex;
+		width: 100%;
+		gap: 1em;
+	}
+	.images * {
+		width: 0;
+		flex-basis: 0;
+		flex-grow: 1;
+	}
+	figcaption {
+		margin: 1em;
+		opacity: 0.5;
+		text-align: center;
+	}
+	</style>
+</head>
+<body>
+    <video class="hero" src="Generating a Clickable Button.mp4" controls loop></video>
+	<article>
+        <h1>42pages</h1>
+		<p>
+            A personal experiment in a new way to make software. It feels like a design tool: mock something up, then the LLM infers the functionality, turning it into real code. I hosted it online for a while, but it's no longer up.
+		</p>
+
+		<p>
+			Your designs are converted to HTML and given to the LLM. We say "please make this work without changing the UI!" It's pretty good at inferring functionality from context — no code or prompts needed.
+		</p>
+
+		<section>
+			<video src="todos.mp4" controls loop></video>
+			<figcaption>Building a todo list with pixel-perfect results</figcaption>
+		</section>
+
+        <p>
+            You don't need to design if you don't want to. Just ask the computer to code something up. It's like Claude artifacts, but the canvas makes it easier to iterate. You can even chat.
+        </p>
+
+		<p>
+			One cool thing about 42pages is that every design is just HTML. This makes things complicated (perf, layout) but enables some cool things, like infinite effects.
+		</p>
+
+		<section>
+			<video src="vfx.mp4" controls loop></video>
+			<figcaption>Type the effect you want — if it's possible with CSS, the bot creates your very own effects panel</figcaption>
+		</section>
+
+		<p>
+			HTML is also nice because you can trivially export your design to the web. Still missing some basic web-publishing features, but pretty powerful overall.
+		</p>
+
+		<section>
+			<video src="Chatbot.mp4" controls loop></video>
+			<figcaption>A more complicated example: a chatbot with a database and two pages</figcaption>
+		</section>
+
+		<p>
+			A little experiment in UI: magic wand. Can you tell the computer to modify part of a complicated document by "pointing" at it?
+		</p>
+
+		<section>
+			<video src="magic wand.mp4" controls loop></video>
+			<figcaption>Magic wand for targeted modifications</figcaption>
+		</section>
+
+		<p>
+			Had to reimplement a lot of Figma logic: object hierarchy, undo/redo, copy/paste, property panels, autolayout, click and drag logic, grouping and ungrouping, group resize, reparenting, a scalable, compact design system with floating panels, various input types, containers, panels, etc.
+		</p>
+	</article>
+</body>
+</html>
