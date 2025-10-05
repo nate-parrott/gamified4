@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-09-05T01:37:06.981Z",
+  "generatedAt": "2025-10-05T02:08:52.840Z",
   "rootPath": "archive",
   "thumbnailPath": "archive-thumbnails",
   "items": [
@@ -1611,15 +1611,103 @@
           "path": "arc/Little Arc",
           "children": [
             {
-              "name": "1.jpg",
+              "name": "_1.jpg",
               "type": "file",
-              "path": "arc/Little Arc/1.jpg",
+              "path": "arc/Little Arc/_1.jpg",
               "size": 36255,
               "fileType": "image",
               "extension": ".jpg",
               "width": 1000,
               "height": 684,
               "sizeFormatted": "35.41 KB"
+            },
+            {
+              "name": "_11.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_11.jpg",
+              "size": 131367,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 551,
+              "sizeFormatted": "128.29 KB"
+            },
+            {
+              "name": "_2.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_2.jpg",
+              "size": 178884,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 594,
+              "sizeFormatted": "174.69 KB"
+            },
+            {
+              "name": "_3.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_3.jpg",
+              "size": 196905,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 594,
+              "sizeFormatted": "192.29 KB"
+            },
+            {
+              "name": "_4.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_4.jpg",
+              "size": 199219,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 594,
+              "sizeFormatted": "194.55 KB"
+            },
+            {
+              "name": "_5.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_5.jpg",
+              "size": 217713,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 594,
+              "sizeFormatted": "212.61 KB"
+            },
+            {
+              "name": "_6.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_6.jpg",
+              "size": 79857,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 684,
+              "sizeFormatted": "77.99 KB"
+            },
+            {
+              "name": "_7.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_7.jpg",
+              "size": 167530,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 551,
+              "sizeFormatted": "163.6 KB"
+            },
+            {
+              "name": "_8.jpg",
+              "type": "file",
+              "path": "arc/Little Arc/_8.jpg",
+              "size": 214158,
+              "fileType": "image",
+              "extension": ".jpg",
+              "width": 1000,
+              "height": 551,
+              "sizeFormatted": "209.14 KB"
             },
             {
               "name": "10.jpg",
@@ -1631,94 +1719,6 @@
               "width": 1000,
               "height": 551,
               "sizeFormatted": "205.6 KB"
-            },
-            {
-              "name": "11.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/11.jpg",
-              "size": 131367,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 551,
-              "sizeFormatted": "128.29 KB"
-            },
-            {
-              "name": "2.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/2.jpg",
-              "size": 178884,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 594,
-              "sizeFormatted": "174.69 KB"
-            },
-            {
-              "name": "3.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/3.jpg",
-              "size": 196905,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 594,
-              "sizeFormatted": "192.29 KB"
-            },
-            {
-              "name": "4.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/4.jpg",
-              "size": 199219,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 594,
-              "sizeFormatted": "194.55 KB"
-            },
-            {
-              "name": "5.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/5.jpg",
-              "size": 217713,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 594,
-              "sizeFormatted": "212.61 KB"
-            },
-            {
-              "name": "6.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/6.jpg",
-              "size": 79857,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 684,
-              "sizeFormatted": "77.99 KB"
-            },
-            {
-              "name": "7.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/7.jpg",
-              "size": 167530,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 551,
-              "sizeFormatted": "163.6 KB"
-            },
-            {
-              "name": "8.jpg",
-              "type": "file",
-              "path": "arc/Little Arc/8.jpg",
-              "size": 214158,
-              "fileType": "image",
-              "extension": ".jpg",
-              "width": 1000,
-              "height": 551,
-              "sizeFormatted": "209.14 KB"
             },
             {
               "name": "9.jpg",
@@ -2327,9 +2327,9 @@
                   "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c",
                   "children": [
                     {
-                      "name": "duplex.gif",
+                      "name": "_duplex.gif",
                       "type": "file",
-                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/duplex.gif",
+                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/_duplex.gif",
                       "size": 33958,
                       "fileType": "image",
                       "extension": ".gif",
@@ -2338,9 +2338,9 @@
                       "sizeFormatted": "33.16 KB"
                     },
                     {
-                      "name": "fused.gif",
+                      "name": "_fused.gif",
                       "type": "file",
-                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/fused.gif",
+                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/_fused.gif",
                       "size": 31471,
                       "fileType": "image",
                       "extension": ".gif",
@@ -2349,9 +2349,9 @@
                       "sizeFormatted": "30.73 KB"
                     },
                     {
-                      "name": "multi.gif",
+                      "name": "_multi.gif",
                       "type": "file",
-                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/multi.gif",
+                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/_multi.gif",
                       "size": 33122,
                       "fileType": "image",
                       "extension": ".gif",
@@ -2360,9 +2360,9 @@
                       "sizeFormatted": "32.35 KB"
                     },
                     {
-                      "name": "persistent.gif",
+                      "name": "_persistent.gif",
                       "type": "file",
-                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/persistent.gif",
+                      "path": "arc/split view/Split Model Proposals/Split View in Sidebar 83504be6702e4c83b28e392e6f3c766c/_persistent.gif",
                       "size": 33650,
                       "fileType": "image",
                       "extension": ".gif",

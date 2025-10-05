@@ -1,141 +1,171 @@
-@import '../../images/archive-fonts/fonts.css';
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 
-/* Archive Embed Styles */
-.archive-embed {
-    width: 100%;
-    height: 200vh;
-    background-color: black;
-}
-
-.archive-commute {
-    width: 100%;
-    height: 1000vh;
-    background: linear-gradient(to bottom, #fff, #000);
-}
-
-/* Archive Stack Styles */
-.archive-stack-container {
-  position: relative;
-  background-color: black;
-}
-
-.archive-scroll-spacer {
+.archive-container {
+  --size: calc(min(133vw, 100vh)); /* 133vw = 1000 (image height) / 750 (image width) */
+  background-color: #1B182D;
+  height: 100vh;
   width: 100%;
-  background: transparent;
+  position: relative;
+  overflow: hidden;
 }
 
-.archive-stack-overlay {
-  position: fixed;
+.archive-container img.fullsize {
+  position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 1000;
-  perspective: 1000px;
-}
-
-.archive-card-stack {
-  position: relative;
-  width: calc(100vw - 2 * max(8vh, 50px));
-  height: calc(100vh - 2 * max(8vh, 50px));
-  margin: calc(max(5vh, 30px));
-}
-
-.archive-card {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  background: #1a1a1a;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transform-origin: center center;
-}
-
-.archive-card-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.archive-card-media {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-}
-
-.archive-card-media img,
-.archive-card-media video {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  object-position: top;
+  transition: top 0.3s ease-in-out;
+  pointer-events: none;
 }
 
-.archive-card-folder {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-  color: white;
-  font-size: 2rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 2rem;
+.archive-container.closed {
+  cursor: url('./Key.png'), auto;
 }
 
-.archive-card-overlay {
+.archive-container .drawer-contents-clipper {
+  --drawer-width: calc(var(--size) * 0.5);
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: white;
-  padding: 2rem 1.5rem 1.5rem;
-  z-index: 2;
+  width: var(--drawer-width);
+  left: calc((100% - var(--drawer-width)) * 0.5);
+  display: flex;
+  /* align bottom */
+  align-items: flex-end;
+  box-sizing: border-box;
+  transition: height 0.3s ease-in-out, top 0.3s ease-in-out;
 }
 
-.archive-card-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+.archive-container .drawer-contents {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: calc(var(--size) * 0.77);
+  cursor: url('./Eyes.png'), auto;
 }
 
-.archive-card-path {
-  font-family: 'Monaco', 'Menlo', monospace;
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin: 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-.archive-content-after {
-  min-height: 100vh;
+.drawer-content-inner {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: black;
-  padding: 2rem;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 300px;
+  perspective-origin: bottom;
 }
 
-.archive-content-after h1 {
+.rotated-drawer-item {
+  height: 0;
+  flex-grow: 1;
+
+  /* transform: rotateX(-20deg); */
+  transform-origin: top center;
+}
+
+.rotated-drawer-item > * {
+  position: relative;
+}
+
+.rotated-drawer-item > *:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.1) 10%);
+}
+
+.archive-item-card {
+  width: var(--drawer-width);
+  height: calc(var(--drawer-width) * 0.5);
+  object-fit: cover;
+  object-position: top;
+  border: 4px solid #d7d7df;
+  box-sizing: border-box;
+  border-radius: 2px;
+}
+
+.archive-item-card.directory {
+  background-color: #C1AB91;
+  position: relative;
+  border: 0;
+}
+
+.archive-item-card.directory h3 {
+  position: absolute;
+  top: calc(var(--drawer-width) * -0.12);
+  left: calc(var(--drawer-width) * 0.1);
+  height: calc(var(--drawer-width) * 0.1);
+  width: calc(var(--drawer-width) * 0.5);
+  padding-left: calc(var(--drawer-width) * 0.08);
+  padding-top: calc(var(--drawer-width) * 0.03);
+  font-size: calc(var(--drawer-width) * 0.03);
+  color: rgba(0,0,0,0.8);
+  font-family: 'Gloria Hallelujah', cursive;
+  /* do not escape container */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-image: url('./Tab.svg');
+  /* fill the container stretching */
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(0.8);
+  transform-origin: bottom left;
+}
+
+.fullscreen-artifact {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.fullscreen-preview {
+  background-color: black;
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen-preview .overlay-caption {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  font-size: small;
+  font-weight: semibold;
+  /* system font */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   color: white;
-  margin-bottom: 1rem;
+  background-color: rgba(0,0,0,0.7);
+  padding: 0.5em;
+  border-radius: 5px;
 }
 
-.archive-content-after p {
-  color: #ccc;
-  font-size: 1.1rem;
+.post-it-note {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  background-image: url('./PostIt.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
 }
 
+.post-it-text {
+  position: absolute;
+  inset: 30px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+  text-align: left;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #2c2c2c;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  overflow: hidden;
+}

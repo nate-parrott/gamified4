@@ -10,7 +10,7 @@ import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeD
 import IncentivesSection from '../components/incentives';
 import QuizSection from '../components/quiz.jsx';
 import Layout from '../components/Layout.jsx';
-import ArchiveStack from '../components/archive/ArchiveStack';
+import Archive from '../components/archive/Archive';
 
 // tiles:
 import hab from '../images/tiles/hab.svg'
@@ -179,10 +179,12 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 					<TV />
 
 					<TradeEmailDataSection activityStore={this.activityStore} />
-					<div className='readable-width section footer'>
-							2024. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
+
+					<Archive />
+
+					<div className='section footer'>
+							2025. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!
 					</div>
-					<ArchiveStack />
 				</div>
 		  </Layout>
 		)

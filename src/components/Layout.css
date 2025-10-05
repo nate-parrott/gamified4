@@ -241,7 +241,17 @@ input[type='submit'] {
 .goldMode input[type='submit'] {
 	background-color: #665C00;
 }
+
 .footer {
 	text-align: center;
-	opacity: 0.8;
+	color: rgba(255,255,255,0.5);
+	background-color: #1B182D;
+	width: 100%;
+	padding: 2em;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.footer a {
+	color: inherit;
 }

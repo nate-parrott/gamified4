@@ -1,3 +1,25 @@
+/**
+ * Archive Manifest Generator
+ * 
+ * This script scans the archive directory and generates a manifest JSON file
+ * with metadata about all files and directories, including:
+ * - Image dimensions
+ * - Video dimensions and duration
+ * - Auto-generated video thumbnails
+ * 
+ * Directory Structure:
+ * - Input:  static/archive/              (place your archive files here)
+ * - Output: src/data/archive-manifest.json  (generated manifest)
+ * - Output: static/archive-thumbnails/       (auto-generated video thumbnails)
+ * 
+ * Usage:
+ *   node scripts/generate-archive-manifest.js
+ * 
+ * Optional Dependencies:
+ * - sharp: for image dimensions (npm install sharp)
+ * - ffmpeg/ffprobe: for video metadata and thumbnails
+ */
+
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');

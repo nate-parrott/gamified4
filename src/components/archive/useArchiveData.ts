@@ -11,7 +11,7 @@ export function useArchiveData(): { allItems: ArchiveItem[] } {
         const fullPath = parentPath ? `${parentPath}/${item.name}` : item.name;
         
         // Skip items that start with underscore or are in _shared directory
-        if (!item.name.startsWith('_') && !fullPath.startsWith('_shared/') && fullPath !== '_shared' && item.type !== 'directory') {
+        if (!item.name.startsWith('_') && !fullPath.startsWith('_shared/') && fullPath !== '_shared') {
           result.push(item);
         }
         
