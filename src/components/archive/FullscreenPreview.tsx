@@ -155,8 +155,8 @@ function Preview({item, triggeredByHover}: {item: ArchiveItem, triggeredByHover:
         // Touch mode: handled by touch events, so click does nothing
     };
 
-    const hint = triggeredByHover ? 'Click to open in new tab' : 'Tap with another finger to open in a new tab';
-    const text = `${item.name}: ${hint}`;
+    const hint = triggeredByHover ? 'Mouse left to exit' : 'Tap with another finger to open in new tab';
+    // const text = `${item.name}: ${hint}`;
 
     return (
         <div 
@@ -166,7 +166,7 @@ function Preview({item, triggeredByHover}: {item: ArchiveItem, triggeredByHover:
         >
             <ContentPreview item={item} />
 
-            <PostItNote text={text} style={{ left: `1em`, bottom: `-80px` }} />
+            <PostItNote text={hint} style={{ left: `1em`, bottom: `-80px` }} />
         </div>
     );
 }

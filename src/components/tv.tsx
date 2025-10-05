@@ -93,7 +93,7 @@ function TV() {
                 <div className='tv-body'>
                     <div className='tv-content'>
                         <div className='tv-screen'>
-                            <video src={withPrefix('nptv/static.mp4')} muted autoPlay loop disablePictureInPicture />
+                            <video src={withPrefix('nptv/static.mp4')} muted autoPlay loop disablePictureInPicture playsInline />
 
                             <video key={videoIdx} src={vidSrc(curVid, channel)} muted={muted} autoPlay onEnded={showNextVid} disablePictureInPicture style={{ opacity: showStatic ? 0 : 1 }} playsInline />
 
