@@ -7,10 +7,10 @@ import { web } from '../components/playlistHelpers';
 import ActivityStore, { GetGlobalActivityStore } from '../components/activityStore';
 import { playlistWithAward, comingSoonPage } from '../components/awardUtils';
 import {TradeEmailDataSection, TradeNameDataSection } from '../components/tradeDataSection.jsx';
-import IncentivesSection from '../components/incentives';
+import IncentivesSection, { Incentives } from '../components/incentives';
 import QuizSection from '../components/quiz.jsx';
 import Layout from '../components/Layout.jsx';
-import Archive from '../components/archive/Archive';
+import Archive, { ArchiveRef } from '../components/archive/Archive';
 
 // tiles:
 import hab from '../images/tiles/hab.svg'
@@ -55,13 +55,25 @@ Features:
 export default class IndexPage extends React.Component<{}, IndexState> {
   activityStore: ActivityStore;
   cancelActivityStoreListener?: SubscriptionCanceller;
+  archiveRef: React.RefObject<ArchiveRef>;
 
 	constructor(props: any) {
 		super(props);
 		this.activityStore = GetGlobalActivityStore();
+		this.archiveRef = React.createRef<ArchiveRef>();
 		this.state = { 
 			coins: this.activityStore.coinBalance()
 		};
+		
+		// Set up the archive unlock callback to scroll to it
+		const archiveIncentive = Incentives.find(i => i.id === 'archive');
+		if (archiveIncentive) {
+			archiveIncentive.onUnlock = () => {
+				setTimeout(() => {
+					this.archiveRef.current?.scrollToAndOpen();
+				}, 500);
+			};
+		}
 	}
 	componentDidMount() {
 		this.cancelActivityStoreListener = this.activityStore.changeAnnouncer.listen(() => {
@@ -180,7 +192,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 
 					<TradeEmailDataSection activityStore={this.activityStore} />
 
-					<Archive />
+					<Archive ref={this.archiveRef} activityStore={this.activityStore} playPlaylist={this.playPlaylist.bind(this)} />
 
 					<div className='section footer'>
 							2025. <a href='.' onClick={this.reset.bind(this)}>Reset</a> Thanks for reading!

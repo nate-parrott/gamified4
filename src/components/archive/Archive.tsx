@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import { useArchiveData } from './useArchiveData';
 import './archive.css';
 import { ArchiveItem } from './types';
@@ -9,8 +9,21 @@ import PostIt from './PostIt.svg';
 import { remap } from '../utils';
 import { useFullscreenPreviewPresenter } from './FullscreenPreview';
 import {isMobile} from 'react-device-detect';
+import ActivityStore from '../activityStore';
+import { ModalPlaylist } from '../modalPlayer';
+import { coinUnlockModalItem } from '../coinUnlockModalItem';
+import { Incentives } from '../incentives';
 
-export default function Archive() {
+interface ArchiveProps {
+  activityStore: ActivityStore;
+  playPlaylist: (playlist: ModalPlaylist) => void;
+}
+
+export interface ArchiveRef {
+  scrollToAndOpen: () => void;
+}
+
+const Archive = forwardRef<ArchiveRef, ArchiveProps>(({ activityStore, playPlaylist }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,25 +40,61 @@ export default function Archive() {
     }, 1000);
   }, [isOpen]);
 
-  const isTallViewport = window.innerHeight > window.innerWidth * 1.2;
+  const isTallViewport = typeof window !== 'undefined' && window.innerHeight > window.innerWidth * 1.2;
   const scootDrawerBackAmt = isOpen && !isTallViewport;
   const cabinetBaseY = scootDrawerBackAmt ? -0.11 : 0;
   const slideDist = 0.822;
-  const peekAmount = (!isOpen && isHovering) ? 0.05 : 0;
+  const peekAmount = (!isOpen && isHovering) ? 0.025 : 0;
   const drawerBaseY = cabinetBaseY - 0.762 + (isOpen ? slideDist : 0) + peekAmount;
   // Drawer content is 0.77
   const drawerClipperHeight = isOpen ? slideDist : 0;
   const drawerClipperTop = cabinetBaseY + 0.117 + (isOpen ? slideDist : 0) - drawerClipperHeight;
 
-  const onClick = useCallback(() => {
-    setIsOpen((prev) => {
-      const newIsOpen = !prev;
-      if (newIsOpen && containerRef.current) {
-        containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      return newIsOpen;
-    });
+  const openArchive = useCallback(() => {
+    setIsOpen(true);
+    if (containerRef.current) {
+      containerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, []);
+
+  const closeArchive = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    scrollToAndOpen: openArchive
+  }));
+
+  const onClick = useCallback(() => {
+    // Check if archive is unlocked
+    const isUnlocked = activityStore.hasIncentive('archive');
+    
+    if (isOpen) {
+      closeArchive();
+      return;
+    }
+
+    if (!isUnlocked) {
+      // Show unlock modal
+      const archiveIncentive = Incentives.find(i => i.id === 'archive');
+      if (!archiveIncentive) return;
+      
+      const canUnlock = activityStore.coinBalance() >= archiveIncentive.cost;
+      playPlaylist(new ModalPlaylist([coinUnlockModalItem(() => {
+        if (!canUnlock) {
+          return;
+        }
+        activityStore.unlockIncentive(archiveIncentive);
+        setTimeout(() => {
+          openArchive();
+        }, 200);
+      }, !canUnlock)]));
+      return;
+    }
+
+    // If unlocked, just open it
+    openArchive();
+  }, [isOpen, activityStore, playPlaylist, openArchive, closeArchive]);
   
   // Handle Escape key to close the archive
   useEffect(() => {
@@ -59,17 +108,16 @@ export default function Archive() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, closeArchive]);
 
   const {hoverRef, preview} = useFullscreenPreviewPresenter(isOpen && delayedIsOpen);
+  
+  const isUnlocked = activityStore.hasIncentive('archive');
   
   return (
     <div 
       ref={containerRef} 
-      className={`archive-container ${isOpen ? 'open' : 'closed'}`} 
-      onClick={onClick}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      className={`archive-container ${isOpen ? 'open' : 'closed'}`}
     >
       <img className="fullsize" src={FixedBottom} style={{ top: `calc(var(--size) * ${cabinetBaseY})` }} />
       <img className="fullsize" src={Sliding} style={{ top: `calc(var(--size) * ${drawerBaseY})` }} />
@@ -80,14 +128,25 @@ export default function Archive() {
       </div>
       <img className="fullsize" src={FixedTop} style={{ top: `calc(var(--size) * ${cabinetBaseY})` }} />
       <div className='fullscreen-artifact'>{preview}</div>
-      {isOpen ? <OpenPostItNote /> : <NotOpenPostItNote />}
+      {!isOpen && (
+        <div 
+          className="archive-click-target"
+          onClick={onClick}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        />
+      )}
+      {isOpen ? <OpenPostItNote /> : <NotOpenPostItNote isUnlocked={isUnlocked} />}
     </div>
   )
-}
+});
 
-const NotOpenPostItNote = () => {
+const NotOpenPostItNote = ({ isUnlocked }: { isUnlocked: boolean }) => {
+  const text = isUnlocked 
+    ? "this is the archive. a jumble of unorganized work. click to open" 
+    : "this is the archive. a jumble of unorganized work. click to unlock";
   return (
-    <PostItNote text="this is the archive. a jumble of unorganized work. click to unlock" style={{ top: `calc(var(--size) * 0.1)`, left: `calc(50% - var(--size) * 0.3)` }} />
+    <PostItNote text={text} style={{ top: `calc(var(--size) * 0.1)`, left: `calc(50% - var(--size) * 0.3)` }} />
   )
 }
 
@@ -166,3 +225,5 @@ function keepAtMostN<T>(array: T[], n: number): T[] {
     return false;
   });
 }
+
+export default Archive;

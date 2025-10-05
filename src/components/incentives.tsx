@@ -16,6 +16,7 @@ export interface Incentive {
 	activityText: string;
 	coinMultiplier?: number;
 	cssUnlock?: string;
+	onUnlock?: () => void;
 }
 
 export let Incentives: Incentive[] = [
@@ -58,6 +59,13 @@ export let Incentives: Incentive[] = [
 			return item ? [item] : [];
 		},
 		activityText: "You paid 50 coins to visit the Exclusive Lounge!"
+	},
+	{
+		cost: 30,
+		id: 'archive',
+		name: "Unlock the Archive",
+		playlist: [BasicPageItem({ title: "Archive unlocked!", subtitle: "A jumble of unorganized work from over the years.", nextButtonTitle: 'Explore' })],
+		activityText: "You paid 30 coins to unlock the Archive!"
 	},
 	// https://m.me/join/AbbqCUCEphSULk3r
 	// {
@@ -136,6 +144,9 @@ const IncentivesSection = ({ playPlaylist, activityStore }: IncentivesSectionPro
 						activityStore.unlockIncentive(incentive);
 						setTimeout(() => {
 							showIncentiveContent();
+							if (incentive.onUnlock) {
+								incentive.onUnlock();
+							}
 						}, 200);
 					}, !canUnlock)]));
 				};
