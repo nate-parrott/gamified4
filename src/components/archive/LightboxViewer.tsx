@@ -55,14 +55,12 @@ export function LightboxViewer() {
   const navigatePrev = useCallback(() => {
     if (currentIndex > 0) {
       navigateTo(currentIndex - 1);
-      setControlsVisible(false);
     }
   }, [currentIndex, navigateTo]);
 
   const navigateNext = useCallback(() => {
     if (currentIndex < viewableItems.length - 1) {
       navigateTo(currentIndex + 1);
-      setControlsVisible(false);
     }
   }, [currentIndex, viewableItems.length, navigateTo]);
 
@@ -79,9 +77,11 @@ export function LightboxViewer() {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         navigatePrev();
+        setControlsVisible(false);
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
         navigateNext();
+        setControlsVisible(false);
       } else if (e.key === 'Escape') {
         e.preventDefault();
         close();
