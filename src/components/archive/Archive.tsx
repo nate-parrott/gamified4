@@ -5,14 +5,12 @@ import { ArchiveItem } from './types';
 import FixedTop from './FixedTop.svg';
 import FixedBottom from './FixedBottom.svg';
 import Sliding from './Sliding.svg';
-import PostIt from './PostIt.svg';
-import { remap } from '../utils';
-import { useFullscreenPreviewPresenter } from './FullscreenPreview';
-import {isMobile} from 'react-device-detect';
+import { remap, withPrefix } from '../utils';
 import ActivityStore from '../activityStore';
 import { ModalPlaylist } from '../modalPlayer';
 import { coinUnlockModalItem } from '../coinUnlockModalItem';
 import { Incentives } from '../incentives';
+import { isMobile } from 'react-device-detect';
 
 interface ArchiveProps {
   activityStore: ActivityStore;
@@ -110,7 +108,8 @@ const Archive = forwardRef<ArchiveRef, ArchiveProps>(({ activityStore, playPlayl
     };
   }, [isOpen, closeArchive]);
 
-  const {hoverRef, preview} = useFullscreenPreviewPresenter(isOpen && delayedIsOpen);
+  // const {hoverRef, preview} = useFullscreenPreviewPresenter(isOpen && delayedIsOpen);
+  // const hoverRef = useRef<HTMLDivElement>(null);
   
   const isUnlocked = activityStore.hasIncentive('archive');
   
@@ -123,11 +122,11 @@ const Archive = forwardRef<ArchiveRef, ArchiveProps>(({ activityStore, playPlayl
       <img className="fullsize" src={Sliding} style={{ top: `calc(var(--size) * ${drawerBaseY})` }} />
       <div className="drawer-contents-clipper" style={{ top: `calc(var(--size) * ${drawerClipperTop})`, height: `calc(var(--size) * ${drawerClipperHeight})` }}>
         <div className="drawer-contents">
-          { everOpen.current ? <DrawerContentInner hoverRef={hoverRef} /> : null }
+          { everOpen.current ? <DrawerContentInner /> : null }
         </div>
       </div>
       <img className="fullsize" src={FixedTop} style={{ top: `calc(var(--size) * ${cabinetBaseY})` }} />
-      <div className='fullscreen-artifact'>{preview}</div>
+      {/* <div className='fullscreen-artifact'>{preview}</div> */}
       {!isOpen && (
         <div 
           className="archive-click-target"
@@ -136,7 +135,7 @@ const Archive = forwardRef<ArchiveRef, ArchiveProps>(({ activityStore, playPlayl
           onMouseLeave={() => setIsHovering(false)}
         />
       )}
-      {isOpen ? <OpenPostItNote /> : <NotOpenPostItNote isUnlocked={isUnlocked} />}
+      {isOpen ? null : <NotOpenPostItNote isUnlocked={isUnlocked} />}
     </div>
   )
 });
@@ -146,16 +145,16 @@ const NotOpenPostItNote = ({ isUnlocked }: { isUnlocked: boolean }) => {
     ? "this is the archive. a jumble of unorganized work. click it to open" 
     : "this is the archive. a jumble of unorganized work. click it to unlock";
   return (
-    <PostItNote text={text} style={{ top: `calc(var(--size) * 0.1)`, left: `calc(50% - var(--size) * 0.4)` }} />
+    <PostItNote text={text} style={{ top: `calc(var(--size) * 0.6)`, left: `calc(50% - 100px)` }} />
   )
 }
 
-const OpenPostItNote = () => {
-  const hint = isMobile ? 'drag your finger across the files to flip through. Tap with another finger to open in a new tab.' : 'Hover across the files to flip through them; click to open in a new tab.';
-  return (
-    <PostItNote text={hint} style={{ top: `calc(var(--size) * 0.4)`, left: `calc(50% - var(--size) * 0.4)` }} />
-  )
-}
+// const OpenPostItNote = () => {
+//   const hint = isMobile ? 'drag your finger across the files to flip through. Tap with another finger to open in a new tab.' : 'Hover across the files to flip through them; click to open in a new tab.';
+//   return (
+//     <PostItNote text={hint} style={{ top: `calc(var(--size) * 0.4)`, left: `calc(50% - var(--size) * 0.4)` }} />
+//   )
+// }
 
 /*
   top: calc(var(--size) * 0.6);
@@ -177,27 +176,132 @@ export function PostItNote({text, style}: PostItNoteProps) {
   );
 }
 
-function DrawerContentInner({hoverRef}: {hoverRef: React.RefObject<HTMLDivElement>}) {
+function DrawerContentInner() {
   const {allItems} = useArchiveData();
   const filteredItems = allItems.filter(i => 
-  i.type === 'file' && i.thumbnail || i.type === 'directory'
+  i.type === 'file' && i.thumbnail //|| i.type === 'directory'
   )
-  const renderedItems = keepAtMostN(filteredItems, 30);
+  const groups = groupItems(filteredItems, 30).filter(group => group.length > 0);
+  const groupSize = groups[0].length;
+
+  const [hoverPos, setHoverPos] = useState<{groupIdx: number, itemIdx: number} | undefined>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const groupHeightRef = useRef<number | undefined>();
+
+  const setSelectedItemBasedOnClientY = useCallback((clientY: number) => {
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    if (!containerRect) return;
+    const groupHeight = containerRect.height / groups.length;
+    const groupIdx = Math.floor((clientY - containerRect.top) / groupHeight);
+    const groupOffsetY = containerRect.top + groupHeight * groupIdx;
+    const itemIdx = Math.floor((clientY - groupOffsetY) / groupHeight * groupSize);
+    setHoverPos({groupIdx, itemIdx});
+    groupHeightRef.current = groupHeight;
+  }, [groups]);
+
+
+  const mouseMoveHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    setSelectedItemBasedOnClientY(e.clientY);
+  }, [groups, setSelectedItemBasedOnClientY]);
+
+  const mouseLeaveHandler = useCallback(() => {
+    setHoverPos(undefined);
+    // console.log('mouseLeaveHandler');
+  }, []);
+
+  const handleTouchUpdate = useCallback((clientY: number) => {
+    const containerRect = containerRef.current?.getBoundingClientRect();
+    if (!containerRect) return;
+    
+    // Check if touch is inside the container
+    if (clientY >= containerRect.top && clientY <= containerRect.bottom) {
+      setSelectedItemBasedOnClientY(clientY);
+    } else {
+      setHoverPos(undefined);
+    }
+  }, [setSelectedItemBasedOnClientY]);
+
+  const touchStartHandler = useCallback((e: TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.touches.length > 0) {
+      handleTouchUpdate(e.touches[0].clientY);
+    }
+  }, [handleTouchUpdate]);
+
+  const touchMoveHandler = useCallback((e: TouchEvent) => {
+    console.log('touchMoveHandler');
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.touches.length > 0) {
+      handleTouchUpdate(e.touches[0].clientY);
+    }
+  }, [handleTouchUpdate]);
+
+  const touchEndHandler = useCallback((e: TouchEvent) => {
+    e.preventDefault();
+    if (!hoverPos) return;
+    const item = safeGet(groups[hoverPos.groupIdx], hoverPos.itemIdx)!;
+    openItem(item);
+    setHoverPos(undefined);
+  }, [groups, hoverPos, openItem]);
+
+  // Add touch event listeners with { passive: false }
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    element.addEventListener('touchstart', touchStartHandler, { passive: false });
+    element.addEventListener('touchmove', touchMoveHandler, { passive: false });
+    document.body.addEventListener('touchend', touchEndHandler);
+
+    return () => {
+      element.removeEventListener('touchstart', touchStartHandler);
+      element.removeEventListener('touchmove', touchMoveHandler);
+      document.body.removeEventListener('touchend', touchEndHandler);
+    };
+  }, [touchStartHandler, touchMoveHandler, touchEndHandler]);
+
+  const onClickHandler = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hoverPos) return;
+    const item = safeGet(groups[hoverPos.groupIdx], hoverPos.itemIdx)!;
+    openItem(item);
+    e.stopPropagation();
+    e.preventDefault();
+  }, [hoverPos, groups, openItem]);
 
   return (
-    <div className="drawer-content-inner" ref={hoverRef}>
-      {renderedItems.map((item, i) => {
-        const t = i / renderedItems.length;
+    <div 
+      className="drawer-content-inner" 
+      onMouseMove={mouseMoveHandler} 
+      onMouseLeave={mouseLeaveHandler} 
+      onClick={onClickHandler}
+      ref={containerRef}
+    >
+      {groups.map((group, i) => {
+        const t = i / groups.length;
+        const item = hoverPos?.groupIdx === i ? safeGet(group, hoverPos.itemIdx)! : group[0];
         const scale = remap(t, 0, 1, 0.7, 1);
-        const transform = `scale(${scale}) rotateX(-20deg)`;
+        const translateY = hoverPos?.groupIdx === i ? -150 : 0;
+        const translateZ = 0 // hoverPos?.groupIdx === i ? -(hoverPos?.groupIdx ?? 0) / group.length * (groupHeightRef.current ?? 0) : 0;
+        const transform = `rotateX(0deg) translateZ(${translateZ}px) translateY(${translateY}px) scale(${scale})`;
+        const brightness = hoverPos ? (hoverPos.groupIdx === i ? 1 : 0.5) : 1;
+        const filter = brightness === 1 ? 'none' : `brightness(${brightness})`;
         return (
-          <div className="rotated-drawer-item" key={item.path} style={{ transform }}>
+          <div className="rotated-drawer-item" key={item.path} style={{ transform, filter, pointerEvents: 'none' }}>
             <ArchiveItemCard item={item} />
           </div>
         )
       })}
     </div>
   )
+}
+
+function safeGet<T>(array: T[], idx: number): T | undefined {
+  if (array.length === 0) return undefined;
+  if (idx < 0) return array[0];
+  if (idx >= array.length) return array[array.length - 1];
+  return array[idx];
 }
 
 function ArchiveItemCard({item}: {item: ArchiveItem}) {
@@ -213,17 +317,31 @@ function ArchiveItemCard({item}: {item: ArchiveItem}) {
   )
 }
 
-function keepAtMostN<T>(array: T[], n: number): T[] {
-  const frac = n / array.length;
-  let k = 0;
-  return array.filter((item, index) => {
-    k += frac;
-    if (k >= 1) {
-      k = 0;
-      return true;
+// Creates, at most, N groups
+function groupItems<T>(array: T[], n: number): T[][] {
+  const groups: T[][] = [];
+  const groupSize = Math.floor(array.length / n);
+  for (let i = 0; i < array.length; i += groupSize) {
+    groups.push(array.slice(i, i + groupSize));
+  }
+  return groups;
+}
+
+function openItem(item: ArchiveItem) {
+  const url = (() => {
+    if (item.fileType === 'image' || item.fileType === 'video') {
+      const encodedPath = encodeURIComponent(item.path);
+      return withPrefix(`/archive-view#view=${encodedPath}`);
+    } else {
+      return withPrefix('archive/' + item.path);
     }
-    return false;
-  });
+  })();
+  if (isMobile) {
+    // ios doesnt let us open a new tab on touchend
+    location.href = url;
+  } else {
+    window.open(url, '_blank');
+  }
 }
 
 export default Archive;

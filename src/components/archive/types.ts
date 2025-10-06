@@ -5,7 +5,7 @@ export interface ArchiveItem {
   path: string;
   size?: number;
   sizeFormatted?: string;
-  fileType?: string;
+  fileType?: string; // image, video, audio, document, code
   extension?: string;
   children?: ArchiveItem[];
   // Media metadata
