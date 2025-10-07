@@ -42,6 +42,10 @@ export function LightboxViewer() {
   }, [currentPath, viewableItems]);
 
   const currentItem = currentIndex >= 0 ? viewableItems[currentIndex] : null;
+  const prevItem = currentIndex > 0 ? viewableItems[currentIndex - 1] : null;
+  const nextItem = currentIndex >= 0 && currentIndex < viewableItems.length - 1
+    ? viewableItems[currentIndex + 1]
+    : null;
 
   const navigateTo = useCallback((index: number) => {
     if (index < 0 || index >= viewableItems.length) return;
@@ -104,30 +108,46 @@ export function LightboxViewer() {
 
   if (!currentItem) return null;
 
-  const canGoPrev = currentIndex > 0;
-  const canGoNext = currentIndex < viewableItems.length - 1;
+  const canGoPrev = !!prevItem;
+  const canGoNext = !!nextItem;
+
+  const renderMedia = (item: ArchiveItem, hidden = false) => {
+    const key = hidden ? `preload-${item.path}` : item.path;
+    const hiddenStyle = hidden ? { display: 'none' as const } : undefined;
+
+    if (item.fileType === 'video') {
+      return (
+        <video
+          key={key}
+          src={withPrefix('archive/' + item.path)}
+          autoPlay={!hidden}
+          loop={!hidden}
+          muted
+          playsInline
+          preload={hidden ? 'auto' : undefined}
+          className="lightbox-media"
+          style={hiddenStyle}
+        />
+      );
+    }
+
+    return (
+      <img
+        key={key}
+        src={withPrefix('archive/' + item.path)}
+        alt={item.name}
+        className="lightbox-media"
+        style={hiddenStyle}
+      />
+    );
+  };
 
   return (
     <div className={`lightbox-overlay ${controlsVisible ? '' : 'cursor-hidden'}`}>
       <div className="lightbox-content">
-        {currentItem.fileType === 'video' ? (
-          <video
-            key={currentItem.path}
-            src={withPrefix('archive/' + currentItem.path)}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="lightbox-media"
-          />
-        ) : (
-          <img
-            key={currentItem.path}
-            src={withPrefix('archive/' + currentItem.path)}
-            alt={currentItem.name}
-            className="lightbox-media"
-          />
-        )}
+        {renderMedia(currentItem)}
+        {prevItem ? renderMedia(prevItem, true) : null}
+        {nextItem ? renderMedia(nextItem, true) : null}
       </div>
 
       <div className={`lightbox-controls ${controlsVisible ? 'visible' : 'hidden'}`}>
@@ -169,4 +189,3 @@ export function LightboxViewer() {
     </div>
   );
 }
-
