@@ -160,7 +160,7 @@ async function traverseDirectory(dirPath, basePath = '', thumbnailDir = null) {
     
     for (const entry of entries) {
       // Skip hidden files and .DS_Store
-      if (entry.startsWith('.')) continue;
+      if (entry.startsWith('.') || entry.startsWith('_')) continue;
       
       const fullPath = path.join(dirPath, entry);
       const relativePath = path.join(basePath, entry);
