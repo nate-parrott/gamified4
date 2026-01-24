@@ -94,7 +94,7 @@
 <body>
   <div id="__overlay">
     <canvas id="noise-overlay"></canvas>
-    <div id="generating-label">Generating page just for you using <span id="model-name">&lt;model&gt;</span></div>
+    <div id="generating-label">Generating page just for you using <span id="model-name">&lt;model&gt;</span> (might take a sec)</div>
   </div>
 
   <script>
@@ -721,7 +721,7 @@ Remember: Output raw HTML only, inline styles only, be creative, at least 2000 c
 
     window.addEventListener('resize', updateOverlayHeight);
 
-    async function fetchWithTimeout(model, systemPrompt, userPrompt, timeoutMs = 10000) {
+    async function fetchWithTimeout(model, systemPrompt, userPrompt, timeoutMs = 7_000) {
       const client = new OpenAI({
         baseURL: 'https://openrouter.ai/api/v1',
         apiKey: decode(ENC),
@@ -797,7 +797,7 @@ Remember: Output raw HTML only, inline styles only, be creative, at least 2000 c
     }
 
     async function generate() {
-      const maxAttempts = 2;
+      const maxAttempts = 3;
 
       for (let attempt = 0; attempt < maxAttempts; attempt++) {
         const model = pick(MODELS);
@@ -805,7 +805,7 @@ Remember: Output raw HTML only, inline styles only, be creative, at least 2000 c
         modelNameEl.textContent = model.name;
 
         try {
-          const html = await fetchWithTimeout(model, systemPrompt, userPrompt, 10000);
+          const html = await fetchWithTimeout(model, systemPrompt, userPrompt, 7_000);
           console.log('=== RAW LLM OUTPUT ===\n', html);
           generatingLabelEl.innerHTML = `Generated page just for you using <span id="model-name">${model.name}</span>. You are the only person who will ever see this page.`;
           return; // Success!
