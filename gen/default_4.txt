@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Welcome to Nate Parrott's World</title>
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #121212; color: #DC143C; }
+        a { color: #DC143C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .container { width: 80%; margin: 0 auto; text-align: center; }
+        .header { font-size: 2.5em; margin-top: 50px; }
+        .subheader { font-size: 1.2em; color: #FFFFFF; margin: 20px 0; }
+        .content { font-size: 1em; line-height: 1.6; color: #FFFFFF; }
+        .recipe-step { margin: 20px 0; }
+        .highlight { color: #FFD700; }
+        .image { display: block; margin: 20px auto; }
+        .icon { width: 30px; height: 30px; margin: 0 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Welcome to Nate Parrott's Digital Kitchen</h1>
+        <p class="subheader">Just For You: A Handcrafted Experience</p>
+        <p class="content">Dive into the creative mind of Nate Parrott, a developer, designer, and gamification enthusiast based in New York. This page is generated just for you and will never be the same, thanks to the magic of an LLM!</p>
+        <hr style="border: 1px solid #DC143C; width: 50%; margin: 20px auto;">
+        <h2 class="recipe-step">Instructions for Discovering Nate's Wonders</h2>
+        <ol style="list-style-type: none; padding: 0;">
+            <li class="recipe-step">
+                <a href="/arc/index.html"><img src="/arc/arc.png" alt="Arc Browser" class="image"></a>
+                <p>Step 1: Explore the <a href="/arc/index.html" class="highlight">Arc Browser</a>, where Nate was a founding designer. Discover innovative features like the Command Bar and Split View.</p>
+            </li>
+            <li class="recipe-step">
+                <a href="/arc-boosts/index.html"><img src="/arc-boosts/ZAP SLIDER.gif" alt="Arc Boosts" class="image"></a>
+                <p>Step 2: Personalize any website with <a href="/arc-boosts/index.html" class="highlight">Arc Boosts</a>. Change fonts, colors, and delete elements with ease, thanks to Nate's algorithm.</p>
+            </li>
+            <li class="recipe-step">
+                <a href="/uhoh/index.html"><img src="/uhoh/uhoh.png" alt="Uhohlingo" class="image"></a>
+                <p>Step 3: Learn any topic with <a href="/uhoh/index.html" class="highlight">Uhohlingo</a>, Nate's AI-powered Duolingo for custom topics. Generate lessons and quizzes with the power of GPT.</p>
+            </li>
+            <li class="recipe-step">
+                <a href="/42pages/index.html"><img src="/42pages/42pages.png" alt="42pages" class="image"></a>
+                <p>Step 4: Turn designs into reality with <a href="/42pages/index.html" class="highlight">42pages</a>. Nate's design tool experiment converts mock-ups into working code, offering infinite CSS effects and a magic wand for edits.</p>
+            </li>
+            <li class="recipe-step">
+                <a href="/web98/index.html"><img src="/web98/w1.jpg" alt="Web98" class="image"></a>
+                <p>Step 5: Travel back in time with <a href="/web98/index.html" class="highlight">Web98</a>, a fantasy internet simulator where pages come from ChatGPT pretending it's 1996. Featured in Bloomberg, this project lets you browse the internet of your dreams or nightmares.</p>
+            </li>
+        </ol>
+        <h2 class="recipe-step">Connect with Nate</h2>
+        <p class="content">Join Nate's social journey and stay updated with his latest creations:</p>
+        <div style="display: flex; justify-content: center;">
+            <a href="https://twitter.com/nateparrott"><img src="/icons/twitter.png" alt="Twitter" class="icon"></a>
+            <a href="https://www.instagram.com/nate_loved_an_image/"><img src="/icons/instagram.png" alt="Instagram" class="icon"></a>
+            <a href="https://github.com/nate-parrott"><img src="/icons/github.png" alt="GitHub" class="icon"></a>
+            <a href="https://bsky.app/profile/nateparrott.bsky.social"><img src="/icons/bluesky.png" alt="Bluesky" class="icon"></a>
+            <a href="https://www.instagram.com/nate_loved_a_movie/"><img src="/icons/3d_instagram.png" alt="3D Instagram" class="icon"></a>
+            <a href="https://www.threads.net/@nate_loved_an_image"><img src="/icons/threads.png" alt="Threads" class="icon"></a>
+            <a href="https://mstdn.social/@nate"><img src="/icons/mastodon.png" alt="Mastodon" class="icon"></a>
+        </div>
+    </div>
+</body>
+</html>

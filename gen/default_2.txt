@@ -1,0 +1,43 @@
+ <html>
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <title>Welcome to Nate Parrott's Whimsical World!</title>
+</head>
+<body style="background-color: #F0E8FF; font-family: 'Cormorant Garamond', serif; color: #333; margin: 0; padding: 0;">
+  <header style="background-color: #B8B8FF; padding: 20px; text-align: center;">
+    <h1 style="font-size: 48px; margin: 0;">Nate Parrott's Whimsical World</h1>
+    <p style="font-size: 24px;">Developer, Designer, and Gamification Enthusiast</p>
+  </header>
+
+  <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
+    <section>
+      <h2 style="font-size: 36px; color: #555;">About Nate</h2>
+      <p style="font-size: 18px;">Nate Parrott is a creative soul based in New York, blending design and engineering to craft delightful software experiences. He's a self-described "gamification enthusiast" who loves to sprinkle a dash of whimsy into everything he creates.</p>
+      <p style="font-size: 18px;">Connect with Nate on <a href="https://twitter.com/nateparrott" style="color: #7A5FFF;">Twitter</a>, <a href="https://www.instagram.com/nate_loved_an_image/" style="color: #7A5FFF;">Instagram</a>, <a href="https://github.com/nate-parrott" style="color: #7A5FFF;">GitHub</a>, <a href="https://bsky.app/profile/nateparrott.bsky.social" style="color: #7A5FFF;">Bluesky</a>, and more!</p>
+    </section>
+
+    <section>
+      <h2 style="font-size: 36px; color: #555;">Featured Projects</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <div style="background-color: #E6E6FF; padding: 20px; margin: 10px; border-radius: 10px; flex-basis: 45%;">
+          <img src="/arc/arc.png" alt="Arc Browser" style="width: 100%; height: auto; border-radius: 10px;">
+          <h3 style="font-size: 24px; color: #555; margin: 10px 0;">Arc Browser</h3>
+          <p style="font-size: 16px;">Nate joined The Browser Company as founding designer in 2020. He worked with founding engineers to rapidly prototype browser features such as Command Bar, Split View, Focus Mode, Little Arc, Notes, Easel, Previews, PIP, Mini Audio Player, Boosts, Arc Max, and Arc for iOS.</p>
+          <a href="/arc/index.html" style="display: inline-block; background-color: #B8B8FF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Learn More</a>
+        </div>
+
+        <div style="background-color: #E6E6FF; padding: 20px; margin: 10px; border-radius: 10px; flex-basis: 45%;">
+          <img src="/web98/w1.jpg" alt="Web98 - Fantasy Internet Simulator" style="width: 100%; height: auto; border-radius: 10px;">
+          <h3 style="font-size: 24px; color: #555; margin: 10px 0;">Web98</h3>
+          <p style="font-size: 16px;">A browser where pages come from ChatGPT pretending it's 1996. Browse any internet that ever existed or never existed: ancient Rome internet, Star Wars internet, "internet where everyone is mean to you." Can interact with generated utilities like unit converters.</p>
+          <a href="/web98/index.html" style="display: inline-block; background-color: #B8B8FF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px;">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background-color: #B8B8FF; padding: 20px; text-align: center; color: white;">
+    <p style="font-size: 18px; margin: 0;">Made with ❤️ by Nate Parrott</p>
+  </footer>
+</body>
+</html>

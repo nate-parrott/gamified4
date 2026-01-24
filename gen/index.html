@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nate Parrott</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    #__overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 40px;
+    }
+    #__overlay.condensed {
+      height: auto;
+      padding: 20px 0;
+      justify-content: center;
+    }
+    #__overlay.condensed #noise-overlay {
+      display: none;
+    }
+    #__overlay.condensed #generating-label {
+      font-size: 16px;
+    }
+    #noise-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #generating-label {
+      position: relative;
+      font-family: 'Doto', monospace;
+      font-size: 18px;
+      font-weight: 500;
+      color: #000;
+      padding: 8px 16px;
+      text-align: center;
+      max-width: 80%;
+      z-index: 100;
+    }
+    #generating-label::before {
+      content: '';
+      position: absolute;
+      inset: 10px;
+      background: #fff;
+      z-index: -1;
+      border-radius: 30px;
+      box-shadow: 0 0 40px 70px #fff;
+      filter: blur(20px);
+      opacity: 1;
+    }
+    @media (min-width: 700px) {
+      #generating-label {
+        font-size: 36px;
+        padding: 12px 24px;
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #000;
+        color: #fff;
+      }
+      #generating-label {
+        color: #fff;
+      }
+      #generating-label::before {
+        background: #000;
+        box-shadow: 0 0 40px 30px #000;
+      }
+      #noise-overlay {
+        filter: invert(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="__overlay">
+    <canvas id="noise-overlay"></canvas>
+    <div id="generating-label">Generating page just for you using <span id="model-name">&lt;model&gt;</span></div>
+  </div>
+
+  <script>
+    // === NOISE OVERLAY SHADER ===
+    (function() {
+      const canvas = document.getElementById('noise-overlay');
+      const gl = canvas.getContext('webgl');
+      const dpr = window.devicePixelRatio || 1;
+
+      function resize() {
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        gl.viewport(0, 0, canvas.width, canvas.height);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const vertexShaderSource = `
+        attribute vec2 a_position;
+        void main() {
+          gl_Position = vec4(a_position, 0.0, 1.0);
+        }
+      `;
+
+      const fragmentShaderSource = `
+        precision highp float;
+        uniform vec2 u_resolution;
+        uniform float u_frame;
+        uniform float u_dpr;
+
+        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+        vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+        float snoise(vec3 v) {
+          const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+          const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+
+          vec3 i  = floor(v + dot(v, C.yyy));
+          vec3 x0 = v - i + dot(i, C.xxx);
+
+          vec3 g = step(x0.yzx, x0.xyz);
+          vec3 l = 1.0 - g;
+          vec3 i1 = min(g.xyz, l.zxy);
+          vec3 i2 = max(g.xyz, l.zxy);
+
+          vec3 x1 = x0 - i1 + C.xxx;
+          vec3 x2 = x0 - i2 + C.yyy;
+          vec3 x3 = x0 - D.yyy;
+
+          i = mod289(i);
+          vec4 p = permute(permute(permute(
+                    i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                  + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                  + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+
+          float n_ = 0.142857142857;
+          vec3 ns = n_ * D.wyz - D.xzx;
+
+          vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+
+          vec4 x_ = floor(j * ns.z);
+          vec4 y_ = floor(j - 7.0 * x_);
+
+          vec4 x = x_ *ns.x + ns.yyyy;
+          vec4 y = y_ *ns.x + ns.yyyy;
+          vec4 h = 1.0 - abs(x) - abs(y);
+
+          vec4 b0 = vec4(x.xy, y.xy);
+          vec4 b1 = vec4(x.zw, y.zw);
+
+          vec4 s0 = floor(b0)*2.0 + 1.0;
+          vec4 s1 = floor(b1)*2.0 + 1.0;
+          vec4 sh = -step(h, vec4(0.0));
+
+          vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+          vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+
+          vec3 p0 = vec3(a0.xy, h.x);
+          vec3 p1 = vec3(a0.zw, h.y);
+          vec3 p2 = vec3(a1.xy, h.z);
+          vec3 p3 = vec3(a1.zw, h.w);
+
+          vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+          p0 *= norm.x;
+          p1 *= norm.y;
+          p2 *= norm.z;
+          p3 *= norm.w;
+
+          vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+          m = m * m;
+          return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+        }
+
+        void main() {
+          // Convert to CSS pixels for consistent sizing across DPR
+          vec2 uv = gl_FragCoord.xy / u_dpr;
+
+          float gridSize = 10.0;
+          float dotRadius = 2.0;
+
+          vec2 cellId = floor(uv / gridSize);
+          vec2 cellCenter = (cellId + 0.5) * gridSize * u_dpr;
+
+          float dist = length(gl_FragCoord.xy - cellCenter);
+
+          float normalizedY = gl_FragCoord.y / u_resolution.y;
+          float fadeAmount = 1.0 - normalizedY;
+          fadeAmount = pow(fadeAmount, 1.5);
+
+          // 3D Perlin noise - x,y from cell, z from frame
+          float noise = snoise(vec3(cellId * 0.05, u_frame * 0.01));
+          noise = noise * 0.5 + 0.5; // normalize to 0-1
+
+          // Remap noise from 0.2..0.6 -> 0..2 radius
+          float radius = clamp((noise - 0.2) / 0.4, 0.0, 1.0) * dotRadius;
+          float scaledRadius = radius * u_dpr;
+
+          float circle = 1.0 - smoothstep(scaledRadius - 0.5, scaledRadius + 0.5, dist);
+
+          float alpha = circle * fadeAmount;
+
+          gl_FragColor = vec4(0.0, 0.0, 0.0, alpha);
+        }
+      `;
+
+      function createShader(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      }
+
+      const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+      const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+      const program = gl.createProgram();
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+
+      const positionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1,
+      ]), gl.STATIC_DRAW);
+
+      const positionLocation = gl.getAttribLocation(program, 'a_position');
+      const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+      const frameLocation = gl.getUniformLocation(program, 'u_frame');
+      const dprLocation = gl.getUniformLocation(program, 'u_dpr');
+
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      let frame = 0;
+      function render() {
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.useProgram(program);
+        gl.enableVertexAttribArray(positionLocation);
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+        gl.uniform1f(frameLocation, frame++);
+        gl.uniform1f(dprLocation, dpr);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    })();
+  </script>
+
+  <script type="module">
+    import OpenAI from 'https://esm.sh/openai';
+
+    // === MODELS ===
+    const MODELS = [
+      {"id": "nvidia/nemotron-3-nano-30b-a3b:free", "name": "NVIDIA Nemotron 30B", "context": 256000},
+      {"id": "arcee-ai/trinity-mini:free", "name": "Arcee Trinity Mini", "context": 131072},
+      {"id": "qwen/qwen3-next-80b-a3b-instruct:free", "name": "Qwen3 80B", "context": 262144},
+      // {"id": "nvidia/nemotron-nano-9b-v2:free", "name": "NVIDIA Nemotron 9B", "context": 128000},
+      // {"id": "openai/gpt-oss-120b:free", "name": "GPT-OSS 120B", "context": 131072},
+      // {"id": "openai/gpt-oss-20b:free", "name": "GPT-OSS 20B", "context": 131072},
+      {"id": "z-ai/glm-4.5-air:free", "name": "GLM 4.5 Air", "context": 131072},
+      {"id": "qwen/qwen3-coder:free", "name": "Qwen3 Coder 480B", "context": 262000},
+      {"id": "moonshotai/kimi-k2:free", "name": "Kimi K2", "context": 32768},
+      {"id": "cognitivecomputations/dolphin-mistral-24b-venice-edition:free", "name": "Dolphin Mistral 24B", "context": 32768},
+      // {"id": "deepseek/deepseek-r1-0528:free", "name": "DeepSeek R1", "context": 163840},
+      {"id": "mistralai/mistral-small-3.1-24b-instruct:free", "name": "Mistral Small 24B", "context": 128000},
+      {"id": "google/gemma-3-12b-it:free", "name": "Gemma 3 12B", "context": 32768},
+      {"id": "google/gemma-3-27b-it:free", "name": "Gemma 3 27B", "context": 131072},
+      {"id": "meta-llama/llama-3.3-70b-instruct:free", "name": "Llama 3.3 70B", "context": 131072},
+      {"id": "nousresearch/hermes-3-llama-3.1-405b:free", "name": "Hermes 3 405B", "context": 131072},
+      {"id": "meta-llama/llama-3.1-405b-instruct:free", "name": "Llama 3.1 405B", "context": 131072}
+    ];
+
+    // hey nerds... this key has a $1 spend limit...
+    // === API KEY (XOR with "gen") ===
+    const ENC = [20,14,67,8,23,67,17,84,67,85,93,13,85,4,95,86,1,13,95,85,95,83,85,10,84,4,94,4,1,8,87,87,91,95,3,92,95,83,15,84,81,91,2,92,13,94,6,91,5,82,12,85,86,92,86,84,90,3,87,95,85,82,91,3,87,95,84,84,87,86,6,8,94];
+    const KEY = "gen";
+    const decode = enc => enc.map((c, i) => String.fromCharCode(c ^ KEY.charCodeAt(i % KEY.length))).join('');
+
+    // === DOCS ABOUT NATE ===
+    const DOC_INTRO = `# About Nate Parrott
+Nate Parrott is a developer, designer, and self-described "gamification enthusiast" based in New York. He builds creative software that blends design and engineering.
+
+**Social links:**
+- Twitter: https://twitter.com/nateparrott
+- Instagram: https://www.instagram.com/nate_loved_an_image/
+- GitHub: https://github.com/nate-parrott
+- Bluesky: https://bsky.app/profile/nateparrott.bsky.social
+- 3D Instagram: https://www.instagram.com/nate_loved_a_movie/
+- Threads: https://www.threads.net/@nate_loved_an_image
+- Mastodon: https://mstdn.social/@nate
+
+**Website:** https://nateparrott.com
+
+You should mention this site is generated JUST FOR YOU and will NEVER BE THE SAME because it's generated by an LLM.
+`;
+
+    const DOC_WORK_SUMMARY = `# Nate's Work Summary
+Nate has worked at several notable companies and built many independent projects:
+
+**Professional:**
+- **Anthropic** (current, Feb 2025-): Designed Claude for VS Code, bringing Claude Code to a new surface with the same terminal experience but in VS Code. Worked on UI explorations for showing Claude's activity.
+- **The Browser Company** (2020-2025): Founding designer of Arc browser. Designed Command Bar, Split View, Focus Mode, Little Arc, Notes, Easel, Previews, PIP, Mini Audio Player, Boosts, Arc Max, and Arc for iOS. Built the first company website.
+- **Apple** (2015): Interned on the Spotlight team after Flashlight got noticed.
+
+**Recent Independent Projects (most important):**
+- **feeeed** (https://feeeed.nateparrott.com): A personal news feed app that puts you in control of what you see. Aggregates content from RSS feeds, newsletters, YouTube channels, podcasts, subreddits, Twitter/X accounts, and more into one unified feed. Key features: no algorithmic manipulation, chronological timeline, supports dozens of source types, beautiful reading experience, local-first with sync. Built as a native iOS app. Very important project to Nate - represents his philosophy of user-controlled information consumption.
+- **42pages**: A design tool experiment where you mock something up in a Figma-like interface, then the LLM infers functionality and turns it into real working code. Features infinite CSS effects, web export, magic wand for targeted edits.
+- **Web98**: Fantasy internet simulator where all pages come from ChatGPT pretending it's 1996. Browse any internet that ever existed or never existed: ancient Rome internet, Star Wars internet, etc. Featured in Bloomberg.
+- **Uhohlingo**: AI Duolingo for any topic - all content is LLM-generated. Create a section, GPT generates topics with lessons and quizzes.
+
+**Classic Projects:**
+- Flashlight: Natural-language interface to Mac OS (hundreds of thousands of downloads, led to Apple internship)
+- InstaGrade: iOS app that grades paper quizzes with camera using computer vision
+- Stacks: Social network for building social networks, inspired by HyperCard
+- Neural network baby name generator using variational autoencoders
+
+He attended Brown University.`;
+
+    const SECONDARY_DOCS = [
+      `# Arc Browser
+Nate joined The Browser Company as founding designer in 2020. He worked with founding engineers to rapidly prototype browser features. Features he designed initial versions of: Command Bar, Split View, Focus Mode (hidden sidebar), Little Arc, Notes, Easel, Previews, PIP, Mini Audio Player, Boosts, Arc Max, Arc for iOS.
+Team: Kristina Varshavskaya, Dustin Senos, Karla Cole, Omar Elfanek, Dara Oke, Peter Vidani.
+Images: /arc/arc.png, /arc/sidebar1.png
+Link: /arc/index.html`,
+
+      `# Arc Boosts
+Arc Boosts lets users personalize any website - change fonts, colors, delete elements. Nate wrote the algorithm for generating CSS selectors with varying specificities for the "zapper" tool. He worked with Darin Fisher (original Chrome creator) to implement color transformation matrices in Chromium.
+Images: /arc-boosts/ZAP SLIDER.gif, /arc-boosts/COLOR PICKER.png
+Link: /arc-boosts/index.html`,
+
+      `# Arc Max
+Arc Max is Arc's first AI features bundle - useful AI that improves browsing without new learning. Nate worked with engineers Rosey Eisenbrand and Nathan Tannar, and prototyped with Patrick Moberg. Karla Cole designed the brand and settings.
+Coverage: The Verge, Techcrunch
+Link: /arc-max/index.html`,
+
+      `# Claude for VS Code
+Designed at Anthropic - their first Claude Code product outside the terminal. Explored ways to show Claude's activity: every tool call vs just some, todos, narrative format. Features Figma-inspired command menu for keyboard navigation. Favorite detail: the typing indicator animation.
+Images: /claude-vscode/condensed1.jpg, /claude-vscode/themes.jpg, /claude-vscode/kb.jpg
+Link: /claude-vscode/index.html`,
+
+      `# 42pages
+A design tool experiment where you mock something up, then the LLM infers functionality and turns it into real code. Designs convert to HTML; the LLM is told "make this work without changing the UI." Features infinite CSS effects, web export, magic wand for targeted edits. Nate reimplemented much Figma logic: undo/redo, autolayout, grouping, etc.
+Link: /42pages/index.html`,
+
+      `# Flashlight
+OS X hack allowing plugins for Spotlight (2014). Posted on Product Hunt, got hundreds of upvotes, coverage in The Next Web and MacStories. Learned users preferred short syntactic shortcuts over verbose Siri-like commands. Eventually got noticed by Apple - Nate interned on Spotlight team in May 2015.
+Images: /flashlight/fl.png, /flashlight/animation-loop.gif
+Link: /flashlight/index.html`,
+
+      `# InstaGrade
+iOS app for teachers to grade multiple-choice tests with iPhone camera (2012-2014). Built computer vision for page recognition and de-skewing. V2 added online quiz builder with customization, barcodes linking sheets to quizzes. Continuous scanning model replaced tap-to-scan.
+Images: /instagrade/product.png, /instagrade/anim.gif
+Link: /instagrade/index.html`,
+
+      `# Web98 - Fantasy Internet Simulator
+A browser where pages come from ChatGPT pretending it's 1996. Browse any internet that ever existed or never existed: ancient Rome internet, Star Wars internet, "internet where everyone is mean to you." Can interact with generated utilities like unit converters.
+GitHub: https://github.com/nate-parrott/web98
+Images: /web98/w1.jpg, /web98/w2.jpg
+Link: /web98/index.html
+Coverage: Bloomberg`,
+
+      `# Uhohlingo
+AI Duolingo for any topic - all content is generated. Create a section, name it, GPT generates 20 topics with lessons and quizzes. Has chat function to ask your "teacher" questions. Due to hallucinations, not practical for serious learning but fun to build.
+GitHub: https://github.com/nate-parrott/uhohlingo
+Link: /uhoh/index.html`,
+
+      `# Stacks
+Built during RISD's Computer Utopias course with Zach deOcadiz. Inspired by HyperCard - lets people build their own online communities. Drag-and-drop "card builder" for defining template posts with different media types. Released on App Store.
+Link: /stacks/index.html`,
+
+      `# Hack@Brown 2016
+Co-led design team for the hackathon. Developed brand identity emphasizing: inclusive/approachable, sophisticated but not intimidating, more than technical, fun. Used paper confetti motif, Circular typeface. Created 3D promotional images in Clara.io.
+Images: /hab/title.png, /hab/brand.png, /hab/iterations.png
+Link: /hab/index.html
+Medium writeup: https://medium.com/hack-at-brown/hack-brown-2016-designing-an-approachable-hackathon-1b05cccd86b`,
+
+      `# Neural Network Baby Names
+Trained a variational autoencoder on 7500 baby names to generate embeddings. Can add/subtract/blend names mathematically. "Sara - Sarah + Nathan = Nathana". Can generate random plausible names like "Pruliaa", "Halden", "Aradey".
+GitHub: https://github.com/nate-parrott/juypter-notebooks/blob/master/names-variational-autoencoder.ipynb
+Link: /names/index.html`,
+
+      `# Other Projects
+- feeeed: Personal news feed app (https://feeeed.nateparrott.com)
+- Zest: Spice rack powered by computer vision (https://zest.nateparrott.com)
+- Table: Augmented reality table prototype (https://table.nateparrott.com)
+- Subway: Subway map visualizing travel time (https://subway.nateparrott.com)
+- Content: App for creating exciting animations (https://content.nateparrott.com)`
+    ];
+
+    // === COLORS & FONTS ===
+    const COLORS = [
+      { name: "Coral", hex: "#FF6B6B" },
+      { name: "Teal", hex: "#2EC4B6" },
+      { name: "Mustard", hex: "#E9C46A" },
+      { name: "Deep Purple", hex: "#7B2CBF" },
+      { name: "Electric Blue", hex: "#0096FF" },
+      { name: "Sage Green", hex: "#9DC88D" },
+      { name: "Terracotta", hex: "#E07A5F" },
+      { name: "Navy", hex: "#1D3557" },
+      { name: "Lavender", hex: "#B8B8FF" },
+      { name: "Burnt Orange", hex: "#F77F00" },
+      { name: "Rose", hex: "#FF85A1" },
+      { name: "Forest Green", hex: "#2D6A4F" },
+      { name: "Crimson", hex: "#DC143C" },
+      { name: "Goldenrod", hex: "#DAA520" },
+      { name: "Slate", hex: "#708090" },
+      { name: "Magenta", hex: "#FF00FF" },
+      { name: "Olive", hex: "#808000" },
+      { name: "Periwinkle", hex: "#CCCCFF" },
+      { name: "Tangerine", hex: "#FF9966" },
+      { name: "Indigo", hex: "#4B0082" },
+      { name: "Hot Pink", hex: "#FF69B4" },
+      { name: "Mint", hex: "#98FF98" },
+      { name: "Copper", hex: "#B87333" },
+      { name: "Cyan", hex: "#00CED1" },
+      { name: "Plum", hex: "#8E4585" },
+      { name: "Chartreuse", hex: "#7FFF00" },
+      { name: "Burgundy", hex: "#800020" },
+      { name: "Peach", hex: "#FFCBA4" },
+    ];
+
+    const FONTS = [
+      { name: "Space Grotesk", import: "Space+Grotesk:wght@400;700" },
+      { name: "Playfair Display", import: "Playfair+Display:wght@400;700" },
+      { name: "Inter", import: "Inter:wght@400;600;800" },
+      { name: "Libre Baskerville", import: "Libre+Baskerville:wght@400;700" },
+      { name: "Archivo Black", import: "Archivo+Black" },
+      { name: "DM Sans", import: "DM+Sans:wght@400;500;700" },
+      { name: "Fraunces", import: "Fraunces:wght@400;700" },
+      { name: "Sora", import: "Sora:wght@400;600" },
+      { name: "Crimson Pro", import: "Crimson+Pro:wght@400;600" },
+      { name: "Unbounded", import: "Unbounded:wght@400;700" },
+      { name: "Work Sans", import: "Work+Sans:wght@400;600;800" },
+      { name: "Cormorant Garamond", import: "Cormorant+Garamond:wght@400;600" },
+      { name: "Outfit", import: "Outfit:wght@400;600;800" },
+      { name: "Bitter", import: "Bitter:wght@400;700" },
+      { name: "Rubik", import: "Rubik:wght@400;600;800" },
+      { name: "Lora", import: "Lora:wght@400;600" },
+      { name: "Nunito", import: "Nunito:wght@400;700;900" },
+      { name: "Source Serif Pro", import: "Source+Serif+Pro:wght@400;700" },
+      { name: "Manrope", import: "Manrope:wght@400;600;800" },
+      { name: "Recursive", import: "Recursive:wght@400;700" },
+      { name: "Righteous", import: "Righteous" },
+      { name: "Lexend", import: "Lexend:wght@400;600;800" },
+      { name: "Josefin Sans", import: "Josefin+Sans:wght@400;600;700" },
+      { name: "Spectral", import: "Spectral:wght@400;600" },
+      { name: "Bebas Neue", import: "Bebas+Neue" },
+      { name: "Prata", import: "Prata" },
+      { name: "Karla", import: "Karla:wght@400;600;800" },
+      { name: "Vollkorn", import: "Vollkorn:wght@400;600" },
+      { name: "Cabin", import: "Cabin:wght@400;600;700" },
+      { name: "Geologica", import: "Geologica:wght@400;600;800" },
+    ];
+
+    // === VIBES, STYLES, GIMMICKS ===
+    const VIBES = [
+      "cozy and warm", "energetic and punchy", "mysterious and intriguing", "playful and whimsical",
+      "retro 90s web", "minimalist zen", "maximalist chaos", "corporate satire", "dreamy and ethereal",
+      "brutalist", "vaporwave aesthetic", "newspaper editorial", "zine punk", "children's book",
+      "sci-fi terminal", "handwritten letter", "museum exhibit", "infomercial energy", "nature documentary",
+      "windows 95", "kawaii", "christian", "medieval scroll",
+      "Wordart", "with horrendous svgs", "Like a wikipedia article", "Like a dialogue with an old friend",
+      "uses tons of emojis... if you know what i mean 😉",
+    ];
+
+    const WRITING_STYLES = [
+      "like a excited friend telling you about someone cool they met",
+      "like a wikipedia article but way more fun",
+      "like a movie trailer narrator",
+      "in the style of a nature documentary about a rare species",
+      "like a hyped up sports announcer",
+      "as if writing a letter to a pen pal",
+      "like a gallery exhibition description",
+      "in the voice of a wise mentor figure",
+      "like a tech blogger who's genuinely impressed",
+      "as a series of enthusiastic bullet points",
+      "like a time traveler describing someone from the past",
+      "in the style of a late night talk show introduction",
+      "sarcastic and self-deprecating in first person",
+      "Playing up Nate's jewish heritage humorously",
+    ];
+
+    const GIMMICKS = [
+      "use exactly 3 fun emojis strategically placed",
+      "include one surprising metaphor comparing Nate's work to something unexpected",
+      "structure it like a recipe or instruction manual",
+      "include a fake 'fun fact' sidebar",
+      "use a color theme based on one of his projects",
+      "include playful hover-like visual elements (borders, shadows)",
+      "make it feel like a trading card or profile",
+      "include a visual timeline element",
+      "use pull quotes for emphasis",
+      "structure it as a mini choose-your-own-adventure with links",
+      "include ASCII art somewhere",
+      "make it feel like an old geocities page but modern",
+      "use newspaper-style columns for part of it",
+      "All blue",
+      "All orange",
+      "All a huge poem with links",
+      "Large text with inline images",
+      "Movie script",
+      "SVG comic strip",
+      "Super minimal, with very little info, as if this person has no need for attention",
+      "Spoken in the first person directly from Nate to you",
+      "ALL JOKES SUPER FUNNY",
+      'in 3d using aframe.js (import it and use it)',
+    ];
+
+    // === UTILITY ===
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+    const shuffle = arr => arr.map(x => [Math.random(), x]).sort((a,b) => a[0]-b[0]).map(x => x[1]);
+    const estimateTokens = str => Math.ceil(str.length / 3.5);
+
+    // === CONTEXT ===
+    function getContext() {
+      const now = new Date();
+      const width = window.innerWidth;
+      const deviceType = width < 700 ? 'mobile' : width < 1024 ? 'tablet' : 'desktop';
+      const colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      return {
+        time: now.toLocaleTimeString(),
+        date: now.toLocaleDateString(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language,
+        os: navigator.platform,
+        browser: navigator.userAgent.includes('Chrome') ? 'Chrome' :
+                 navigator.userAgent.includes('Firefox') ? 'Firefox' :
+                 navigator.userAgent.includes('Safari') ? 'Safari' : 'Unknown',
+        deviceType,
+        colorScheme
+      };
+    }
+
+    // === BUILD PROMPT ===
+    function buildPrompt(model) {
+      const maxTokens = Math.min(10000, Math.floor(model.context * 0.7));
+      const reserveForOutput = Math.ceil(2500 / 3.5); // ~715 tokens for 2500 chars
+      const maxInputTokens = maxTokens - reserveForOutput;
+
+      const vibe = pick(VIBES);
+      const style = pick(WRITING_STYLES);
+      const gimmick = pick(GIMMICKS);
+      const color = pick(COLORS);
+      const font = pick(FONTS);
+      const ctx = getContext();
+
+      // Always include intro and work summary
+      let docs = [DOC_INTRO, DOC_WORK_SUMMARY];
+
+      // Shuffle and pick up to 5 secondary docs
+      const shuffledSecondary = shuffle([...SECONDARY_DOCS]);
+      const selectedSecondary = shuffledSecondary.slice(0, 5);
+      docs = docs.concat(selectedSecondary);
+
+      // Build content string
+      let content = docs.join('\n\n---\n\n');
+
+      // Truncate if needed
+      while (estimateTokens(content) > maxInputTokens * 0.7 && docs.length > 2) {
+        docs.pop();
+        content = docs.join('\n\n---\n\n');
+      }
+
+      const systemPrompt = `You are a creative web designer generating a unique welcome page about Nate Parrott.
+
+OUTPUT REQUIREMENTS:
+- Output ONLY valid HTML
+- Use INLINE STYLES ONLY (style="..." attributes) - no <style> tags or external CSS
+- Be super creative and visually interesting
+- Output at least 2000 characters of HTML
+- You may reference images from Nate's site using relative paths like: /arc/arc.png, /flashlight/fl.png, /hab/brand.png, etc.
+- Make links to project pages work (e.g., /arc/index.html)
+- Do NOT wrap in markdown code blocks
+- ONLY use URLs given DIRECTLY in the docs - do NOT make up new URLs
+- Make the page colorful and interesting!
+
+VIBE: ${vibe}
+WRITING STYLE: ${style}
+GIMMICK: ${gimmick}
+
+PRIMARY COLOR: ${color.name} (${color.hex}) - use this as your main accent color, determine reasonable pairings for background, text, etc.
+PRIMARY FONT: "${font.name}" - import it using: <link href="https://fonts.googleapis.com/css2?family=${font.import}&display=swap" rel="stylesheet">
+Make sure to import all Google Fonts properly using <link> tags in the output!
+
+VISITOR CONTEXT:
+- Local time: ${ctx.time}
+- Date: ${ctx.date}
+- Timezone: ${ctx.timezone}
+- Language: ${ctx.language}
+- OS: ${ctx.os}
+- Browser: ${ctx.browser}
+- Device: ${ctx.deviceType}
+- Color scheme: ${ctx.colorScheme} -- try to respect dark or light mode!!
+
+Use this context creatively if relevant (e.g., greet based on time of day, use ${ctx.colorScheme} mode colors, optimize layout for ${ctx.deviceType})`;
+
+      const userPrompt = `Here is information about Nate Parrott. Create a creative, visually striking HTML welcome page about him using ONLY inline styles.
+
+${content}
+
+Remember: Output raw HTML only, inline styles only, be creative, at least 2000 characters!`;
+
+      return { systemPrompt, userPrompt, vibe, style, gimmick };
+    }
+
+    // === MAIN ===
+    const overlayEl = document.getElementById('__overlay');
+    const modelNameEl = document.getElementById('model-name');
+    const generatingLabelEl = document.getElementById('generating-label');
+
+    // Track injected head elements so we can remove them on next pass
+    let injectedHeadElements = [];
+
+    // Container for generated content to avoid flickering
+    let contentContainer = null;
+    let lastMountedHtml = '';
+
+    function mountHtml(rawHtml) {
+      // Skip if nothing changed
+      if (rawHtml === lastMountedHtml) return;
+      lastMountedHtml = rawHtml;
+
+      // Parse the HTML
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(rawHtml, 'text/html');
+
+      // Only update head elements occasionally (check if they changed)
+      const newHeadHtml = Array.from(doc.head.querySelectorAll('style, link[rel="stylesheet"]'))
+        .map(el => el.outerHTML).join('');
+      const currentHeadHtml = injectedHeadElements.map(el => el.outerHTML).join('');
+
+      if (newHeadHtml !== currentHeadHtml) {
+        injectedHeadElements.forEach(el => el.remove());
+        injectedHeadElements = [];
+        doc.head.querySelectorAll('style, link[rel="stylesheet"]').forEach(el => {
+          const clone = el.cloneNode(true);
+          document.head.appendChild(clone);
+          injectedHeadElements.push(clone);
+        });
+      }
+
+      // Copy body styles
+      const newBodyStyle = doc.body.getAttribute('style') || '';
+      if (document.body.getAttribute('style') !== newBodyStyle) {
+        document.body.setAttribute('style', newBodyStyle);
+      }
+
+      // Create content container if needed
+      if (!contentContainer) {
+        contentContainer = document.createElement('div');
+        contentContainer.id = '__content';
+        document.body.insertBefore(contentContainer, overlayEl);
+      }
+
+      // Build new content
+      let newContent = '';
+      Array.from(doc.body.children).forEach(child => {
+        if (child.tagName !== 'SCRIPT') {
+          newContent += child.outerHTML;
+        }
+      });
+      contentContainer.innerHTML = newContent;
+
+      // Update overlay height
+      updateOverlayHeight();
+    }
+
+    function updateOverlayHeight() {
+      // Find the bottom of the content
+      let maxBottom = 0;
+      if (contentContainer) {
+        const rect = contentContainer.getBoundingClientRect();
+        maxBottom = rect.bottom + window.scrollY;
+      }
+
+      // If body content is >= 50% of viewport, switch to condensed mode
+      const bodyHeightRatio = maxBottom / window.innerHeight;
+      if (bodyHeightRatio >= 0.5) {
+        overlayEl.classList.add('condensed');
+        overlayEl.style.height = '';
+      } else {
+        overlayEl.classList.remove('condensed');
+        const overlayHeight = Math.max(80, window.innerHeight - maxBottom);
+        overlayEl.style.height = overlayHeight + 'px';
+      }
+    }
+
+    window.addEventListener('resize', updateOverlayHeight);
+
+    async function fetchWithTimeout(model, systemPrompt, userPrompt, timeoutMs = 10000) {
+      const client = new OpenAI({
+        baseURL: 'https://openrouter.ai/api/v1',
+        apiKey: decode(ENC),
+        dangerouslyAllowBrowser: true,
+      });
+
+      const stream = await client.chat.completions.create({
+        model: model.id,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        stream: true,
+        max_tokens: 4000,
+        provider: { sort: 'throughput', max_price: {prompt: 0, completion: 0} },
+      });
+
+      let html = '';
+      let pendingUpdate = false;
+      let timedOut = false;
+
+      const throttledMount = () => {
+        let cleanHtml = html.replace(/^```html?\n?/i, '').replace(/\n?```$/i, '');
+        mountHtml(cleanHtml);
+        pendingUpdate = false;
+      };
+
+      // Set up timeout - fires if we haven't received at least 5 chars
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => {
+          if (html.length < 5) {
+            timedOut = true;
+            reject(new Error('Timeout waiting for content'));
+          }
+        }, timeoutMs);
+      });
+
+      // Race between stream and timeout
+      const streamPromise = (async () => {
+        for await (const chunk of stream) {
+          if (timedOut) break;
+          const delta = chunk.choices?.[0]?.delta?.content || '';
+          html += delta;
+          if (!pendingUpdate) {
+            pendingUpdate = true;
+            requestAnimationFrame(throttledMount);
+          }
+        }
+        throttledMount();
+        return html;
+      })();
+
+      // Wait for either first chunk or timeout
+      await Promise.race([
+        streamPromise,
+        timeoutPromise
+      ]);
+
+      // If we got here without timing out, wait for stream to finish
+      if (!timedOut) {
+        return await streamPromise;
+      }
+      throw new Error('Timeout');
+    }
+
+    async function loadFallback() {
+      const fileNum = Math.floor(Math.random() * 5); // 0-4
+      const url = `/gen/default_${fileNum}.txt`;
+      const response = await fetch(url);
+      const html = await response.text();
+      mountHtml(html);
+      generatingLabelEl.innerHTML = `Rate limited... using cached copy :(`;
+    }
+
+    async function generate() {
+      const maxAttempts = 2;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        const model = pick(MODELS);
+        const { systemPrompt, userPrompt } = buildPrompt(model);
+        modelNameEl.textContent = model.name;
+
+        try {
+          const html = await fetchWithTimeout(model, systemPrompt, userPrompt, 10000);
+          console.log('=== RAW LLM OUTPUT ===\n', html);
+          generatingLabelEl.innerHTML = `Generated page just for you using <span id="model-name">${model.name}</span>. You are the only person who will ever see this page.`;
+          return; // Success!
+        } catch (err) {
+          console.log(`Attempt ${attempt + 1} failed:`, err.message);
+          if (attempt < maxAttempts - 1) {
+            // Try again with a different model
+            continue;
+          }
+        }
+      }
+
+      // Both attempts failed, load fallback
+      try {
+        await loadFallback();
+      } catch (err) {
+        mountHtml(`<div style="color: #c00; padding: 40px; text-align: center;">
+          <h2>Error</h2>
+          <p>Failed to load page</p>
+          <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">Try Again</button>
+        </div>`);
+      }
+    }
+
+    generate();
+  </script>
+</body>
+</html>
