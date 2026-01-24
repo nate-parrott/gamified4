@@ -40,6 +40,7 @@ import { SubscriptionCanceller } from "../components/announcer";
 import { bigEmojiModalItem } from "../components/bigEmojiModal";
 import Intro from "../components/intro";
 import Social from "../components/social";
+import LeavingOverlay from "../components/leavingOverlay";
 
 interface IndexState {
 	playlist?: ModalPlaylist;
@@ -108,6 +109,7 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 		<Layout>
 			<div className='index-page'>
 					<ModalPlayer playlist={this.state.playlist} onDone={() => this.setState({playlist: undefined})} />
+					<LeavingOverlay />
 					<Intro />
 
 					<div className='readable-width boxed-content workflow section'>

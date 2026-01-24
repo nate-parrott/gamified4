@@ -200,7 +200,7 @@ function SlotMachine(props: SlotMachineProps) {
     }, [playPlaylist, activityStore, requestAnimationFrameIdRef]);
 
     return (
-        <div className={`slot-machine-container ${anim}`}>
+        <div className={`slot-machine-container ${anim}`} id="slot-machine">
             <Parallax speed={10}>
                 <div className='slot-machine'>
                     <div className='slot-header' role="heading" aria-label="Gamble away your hard-earned coins at the slot machine" />

@@ -1,0 +1,80 @@
+ <div style="background-color: #2f2f2f; padding: 50px; font-family: Arial, sans-serif; color: #ffffff; text-align: center;">
+  <h1 style="font-size: 48px; margin-bottom: 20px;">Welcome to Nate Parrott's World</h1>
+  <p style="font-size: 18px; margin-bottom: 30px;">It's 12:15:53 AM on January 24, 2026. We're glad you're here to explore the creative realm of Nate Parrott, a developer, designer, and gamification enthusiast based in New York.</p>
+  <div style="display: flex; justify-content: center; margin-bottom: 50px;">
+    <a href="https://twitter.com/nateparrott" target="_blank" style="margin: 10px; text-decoration: none; color: #ffffff;"><img src="/twitter.png" alt="Twitter" style="width: 30px; height: 30px;"></a>
+    <a href="https://www.instagram.com/nate_loved_an_image/" target="_blank" style="margin: 10px; text-decoration: none; color: #ffffff;"><img src="/instagram.png" alt="Instagram" style="width: 30px; height: 30px;"></a>
+    <a href="https://github.com/nate-parrott" target="_blank" style="margin: 10px; text-decoration: none; color: #ffffff;"><img src="/github.png" alt="GitHub" style="width: 30px; height: 30px;"></a>
+    <a href="https://bsky.app/profile/nateparrott.bsky.social" target="_blank" style="margin: 10px; text-decoration: none; color: #ffffff;"><img src="/bluesky.png" alt="Bluesky" style="width: 30px; height: 30px;"></a>
+  </div>
+  <div style="background-color: #4f4f4f; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
+    <h2 style="font-size: 24px; margin-bottom: 10px;">Professional Journey</h2>
+    <p style="font-size: 16px; margin-bottom: 20px;">Nate has worked at several notable companies, including Anthropic, The Browser Company, and Apple. He has also built many independent projects, such as feeeed, 42pages, Web98, and Uhohlingo.</p>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">Anthropic (2025-Present)</p>
+        <p style="font-size: 14px; color: #cccccc;">Designed Claude for VS Code</p>
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">The Browser Company (2020-2025)</p>
+        <p style="font-size: 14px; color: #cccccc;">Founding designer of Arc browser</p>
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">Apple (2015)</p>
+        <p style="font-size: 14px; color: #cccccc;">Interned on the Spotlight team</p>
+      </div>
+    </div>
+  </div>
+  <div style="background-color: #4f4f4f; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
+    <h2 style="font-size: 24px; margin-bottom: 10px;">Independent Projects</h2>
+    <p style="font-size: 16px; margin-bottom: 20px;">Nate has built many independent projects, including feeeed, 42pages, Web98, and Uhohlingo. These projects showcase his creativity and passion for innovative design and technology.</p>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">feeeed</p>
+        <p style="font-size: 14px; color: #cccccc;">Personal news feed app</p>
+        <a href="https://feeeed.nateparrott.com" target="_blank" style="text-decoration: none; color: #cccccc;">Learn more</a>
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">42pages</p>
+        <p style="font-size: 14px; color: #cccccc;">Design tool experiment</p>
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">Web98</p>
+        <p style="font-size: 14px; color: #cccccc;">Fantasy internet simulator</p>
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%;">
+        <p style="font-size: 14px; margin-bottom: 5px;">Uhohlingo</p>
+        <p style="font-size: 14px; color: #cccccc;">AI Duolingo for any topic</p>
+        <a href="https://github.com/nate-parrott/uhohlingo" target="_blank" style="text-decoration: none; color: #cccccc;">Learn more</a>
+      </div>
+    </div>
+  </div>
+  <div style="background-color: #4f4f4f; padding: 20px; border-radius: 10px; margin-bottom: 50px;">
+    <h2 style="font-size: 24px; margin-bottom: 10px;">Visual Timeline</h2>
+    <p style="font-size: 16px; margin-bottom: 20px;">Explore Nate's journey through a visual timeline of his projects and experiences.</p>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%; position: relative;">
+        <p style="font-size: 14px; margin-bottom: 5px;">2014</p>
+        <p style="font-size: 14px; color: #cccccc;">Flashlight</p>
+        <img src="/flashlight/fl.png" alt="Flashlight" style="width: 50px; height: 50px; position: absolute; top: 10px; right: 10px;">
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%; position: relative;">
+        <p style="font-size: 14px; margin-bottom: 5px;">2015</p>
+        <p style="font-size: 14px; color: #cccccc;">Internship at Apple</p>
+        <img src="/apple.png" alt="Apple" style="width: 50px; height: 50px; position: absolute; top: 10px; right: 10px;">
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%; position: relative;">
+        <p style="font-size: 14px; margin-bottom: 5px;">2020</p>
+        <p style="font-size: 14px; color: #cccccc;">The Browser Company</p>
+        <img src="/arc/arc.png" alt="Arc" style="width: 50px; height: 50px; position: absolute; top: 10px; right: 10px;">
+      </div>
+      <div style="background-color: #5f5f5f; padding: 10px; border-radius: 10px; margin-bottom: 10px; width: 80%; position: relative;">
+        <p style="font-size: 14px; margin-bottom: 5px;">2025</p>
+        <p style="font-size: 14px; color: #cccccc;">Anthropic</p>
+        <img src="/anthropic.png" alt="Anthropic" style="width: 50px; height: 50px; position: absolute; top: 10px; right: 10px;">
+      </div>
+    </div>
+  </div>
+  <p style="font-size: 18px; margin-bottom: 20px;">Thanks for exploring Nate Parrott's world. We hope you've enjoyed this journey through his projects and experiences.</p>
+  <a href="https://nateparrott.com" target="_blank" style="text-decoration: none; color: #ffffff; font-size: 18px;">Visit Nate's website</a>
+</div>

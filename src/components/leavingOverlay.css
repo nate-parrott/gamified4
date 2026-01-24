@@ -1,0 +1,57 @@
+.LeavingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 200;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: leavingOverlayFadeIn 0.3s ease-out;
+}
+
+@keyframes leavingOverlayFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.LeavingOverlay-content {
+    cursor: pointer;
+    transition: transform 0.2s ease-out;
+    animation: leavingOverlayBounceIn 0.4s ease-out;
+}
+
+@keyframes leavingOverlayBounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    60% {
+        transform: scale(1.05) translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.LeavingOverlay-content:hover {
+    transform: scale(1.03);
+}
+
+.LeavingOverlay-content:active {
+    transform: scale(0.98);
+}
+
+.LeavingOverlay-content img {
+    max-width: 90vw;
+    max-height: 80vh;
+    display: block;
+}
+
