@@ -101,33 +101,38 @@ async function getVideoDimensions(filePath) {
 
 async function generateVideoThumbnail(filePath, thumbnailDir) {
   if (!hasFFprobe) return null;
-  
+
   try {
     const hash = generateHashFromPath(filePath);
     const thumbnailPath = path.join(thumbnailDir, `${hash}.jpg`);
-    
+
     // Skip if thumbnail already exists
     if (fs.existsSync(thumbnailPath)) {
       return `archive-thumbnails/${hash}.jpg`;
     }
-    
+
     // Ensure thumbnail directory exists
     if (!fs.existsSync(thumbnailDir)) {
       fs.mkdirSync(thumbnailDir, { recursive: true });
     }
-    
-    // Generate thumbnail at 2 seconds into the video, or 10% through if shorter
-    const command = `ffmpeg -i "${filePath}" -ss 00:00:02 -vframes 1 -q:v 2 -s 320x240 "${thumbnailPath}" -y`;
-    
+
+    // Get video duration first
+    let duration = 2;
     try {
-      execSync(command, { stdio: 'ignore' });
-      return `archive-thumbnails/${hash}.jpg`;
-    } catch (ffmpegError) {
-      // Try at 10% through the video if 2 seconds fails
-      const command2 = `ffmpeg -i "${filePath}" -ss 10% -vframes 1 -q:v 2 -s 320x240 "${thumbnailPath}" -y`;
-      execSync(command2, { stdio: 'ignore' });
-      return `archive-thumbnails/${hash}.jpg`;
+      const probeCommand = `ffprobe -v quiet -print_format json -show_format "${filePath}"`;
+      const probeOutput = execSync(probeCommand, { encoding: 'utf8' });
+      const probeData = JSON.parse(probeOutput);
+      duration = parseFloat(probeData.format.duration) || 2;
+    } catch (e) {
+      // Use default duration if probe fails
     }
+
+    // Use 10% of duration or 0.5 seconds, whichever is larger (but not more than 2 seconds)
+    const seekTime = Math.min(2, Math.max(0.5, duration * 0.1));
+    const command = `ffmpeg -i "${filePath}" -ss ${seekTime.toFixed(2)} -vframes 1 -q:v 2 -s 320x240 "${thumbnailPath}" -y`;
+
+    execSync(command, { stdio: 'ignore' });
+    return `archive-thumbnails/${hash}.jpg`;
   } catch (error) {
     console.warn(`Failed to generate thumbnail for video ${filePath}:`, error.message);
     return null;
