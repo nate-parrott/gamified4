@@ -83,6 +83,21 @@ export default class IndexPage extends React.Component<{}, IndexState> {
 			this.forceUpdate();
 			this.setState({ coins: this.activityStore.coinBalance() });
 		});
+
+		// Handle #freearchive hash - auto-unlock archive for free and scroll to it
+		if (typeof window !== 'undefined' && window.location.hash === '#freearchive') {
+			// Free unlock the archive if not already unlocked
+			if (!this.activityStore.hasIncentive('archive')) {
+				this.activityStore.unlockedIncentives['archive'] = 1;
+				this.activityStore.save();
+				this.activityStore.changeAnnouncer.announce(this.activityStore);
+			}
+			// Replace hash with #archive and scroll to archive
+			window.history.replaceState(null, '', '#archive');
+			setTimeout(() => {
+				this.archiveRef.current?.scrollToAndOpen();
+			}, 100);
+		}
 	}
 	componentWillUnmount() {
 		if (this.cancelActivityStoreListener) {
